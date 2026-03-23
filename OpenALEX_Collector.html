@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenALEX Collector</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+/* ============================================================
+   CSS Design System — White & Blue Consulting Theme
+   ============================================================ */
+:root {
+  --primary: #1a73e8;
+  --primary-dark: #1565c0;
+  --primary-darker: #0d47a1;
+  --primary-light: #e8f0fe;
+  --primary-lighter: #f0f6ff;
+  --bg: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-tertiary: #f1f3f4;
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --text-tertiary: #80868b;
+  --border: #dadce0;
+  --border-light: #e8eaed;
+  --shadow: 0 1px 3px rgba(60,64,67,0.12), 0 1px 2px rgba(60,64,67,0.08);
+  --shadow-md: 0 4px 12px rgba(60,64,67,0.15);
+  --shadow-lg: 0 8px 24px rgba(60,64,67,0.18);
+  --success: #1e8e3e;
+  --success-bg: #e6f4ea;
+  --warning: #e37400;
+  --warning-bg: #fef7e0;
+  --error: #d93025;
+  --error-bg: #fce8e6;
+  --radius: 8px;
+  --radius-sm: 4px;
+  --transition: 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Layout --- */
+.app-header {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  color: #fff;
+  padding: 32px 0 28px;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+.app-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.app-header .subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  font-weight: 400;
+}
+.app-header .badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  margin-top: 8px;
+  letter-spacing: 0.3px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+.card {
+  background: var(--bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: box-shadow var(--transition);
+}
+.card:hover { box-shadow: var(--shadow-md); }
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title .icon {
+  width: 20px;
+  height: 20px;
+  background: var(--primary);
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* --- Form Elements --- */
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+input[type="number"], input[type="text"], input[type="email"], textarea, select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,115,232,0.15);
+}
+textarea { resize: vertical; min-height: 80px; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.form-group { margin-bottom: 12px; }
+.form-hint {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+/* Checkbox / Toggle */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+.checkbox-group label {
+  display: inline;
+  margin: 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* Multi-select chips */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+  user-select: none;
+  background: var(--bg);
+  color: var(--text-secondary);
+}
+.chip:hover { border-color: var(--primary); color: var(--primary); }
+.chip.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-primary:active { background: var(--primary-darker); }
+.btn-primary:disabled {
+  background: var(--border);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+.btn-secondary {
+  background: var(--bg);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+.btn-secondary:hover { background: var(--primary-light); }
+.btn-danger {
+  background: var(--error);
+  color: #fff;
+}
+.btn-danger:hover { background: #c62828; }
+.btn-sm { padding: 6px 14px; font-size: 13px; }
+
+/* Details / Collapsible */
+details {
+  margin-top: 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+details summary {
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  user-select: none;
+  list-style: none;
+}
+details summary::before {
+  content: "\25B6";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 10px;
+  transition: transform var(--transition);
+}
+details[open] summary::before { transform: rotate(90deg); }
+details .details-content { padding: 16px; }
+
+/* --- Progress --- */
+.progress-section {
+  display: none;
+  margin-bottom: 20px;
+}
+.progress-section.active { display: block; }
+.progress-bar-track {
+  height: 6px;
+  background: var(--primary-light);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+.progress-status {
+  font-size: 13px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- Metrics Row --- */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.metric-card {
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+}
+.metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+.metric-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* --- Alert / Message --- */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.alert-info {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border: 1px solid rgba(26,115,232,0.2);
+}
+.alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(30,142,62,0.2); }
+.alert-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(227,116,0,0.2); }
+.alert-error { background: var(--error-bg); color: var(--error); border: 1px solid rgba(217,48,37,0.2); }
+
+/* --- Tabs --- */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border-light);
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+.tab-btn:hover { color: var(--primary); }
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* --- Table --- */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 12px 0;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+thead th {
+  background: var(--primary-light);
+  color: var(--text-primary);
+  font-weight: 600;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+thead th:hover { background: #d2e3fc; }
+thead th .sort-icon { font-size: 10px; margin-left: 4px; opacity: 0.4; }
+thead th.sorted .sort-icon { opacity: 1; color: var(--primary); }
+tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: var(--bg-secondary); }
+tbody tr:hover { background: var(--primary-lighter); }
+td.title-cell {
+  max-width: 350px;
+  font-weight: 500;
+}
+td.authors-cell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+td a {
+  color: var(--primary);
+  text-decoration: none;
+}
+td a:hover { text-decoration: underline; }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-primary);
+  transition: all var(--transition);
+}
+.pagination button:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+.pagination button:disabled { opacity: 0.4; cursor: default; }
+.pagination .page-info { color: var(--text-secondary); }
+
+/* --- Chart Area --- */
+.chart-container {
+  position: relative;
+  width: 100%;
+}
+.chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+.author-select-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  margin-top: 8px;
+}
+.author-select-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  font-size: 13px;
+}
+.author-select-item input { width: 14px; height: 14px; accent-color: var(--primary); }
+
+/* --- Export Section --- */
+.export-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* --- Footer --- */
+.app-footer {
+  text-align: center;
+  padding: 24px 0;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border-light);
+  margin-top: 40px;
+}
+
+/* --- Section visibility --- */
+.hidden { display: none !important; }
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .container { padding: 16px 12px; }
+  .card { padding: 16px; }
+  .form-row { grid-template-columns: 1fr; }
+  .metrics-row { grid-template-columns: repeat(2, 1fr); }
+  .app-header h1 { font-size: 22px; }
+  .tabs { gap: 0; }
+  .tab-btn { padding: 8px 12px; font-size: 13px; }
+}
+
+/* --- Spinner --- */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Toast --- */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.3s ease;
+  max-width: 400px;
+}
+.toast-success { background: var(--success); color: #fff; }
+.toast-error { background: var(--error); color: #fff; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- HEADER -->
+<!-- ============================================================ -->
+<header class="app-header">
+  <h1>OpenALEX Collector</h1>
+  <div class="subtitle">OpenALEX APIを活用した学術論文収集・可視化ツール</div>
+  <div class="badge">Powered by OpenAlex API</div>
+</header>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="container">
+
+  <!-- ============================================================ -->
+  <!-- SEARCH FORM -->
+  <!-- ============================================================ -->
+  <div class="card">
+    <div class="card-title"><span class="icon">Q</span> 論文検索</div>
+
+    <div class="alert alert-info">
+      <strong>検索構文:</strong>
+      スペース区切り = AND検索 / 引用符 = フレーズ一致 / 複数行 = OR検索（各クエリを個別検索し重複除去）
+    </div>
+
+    <div class="form-group">
+      <label for="searchQuery">検索キーワード（1行1クエリ、複数行でOR検索）</label>
+      <textarea id="searchQuery" placeholder='"cellulose nanofiber"&#10;"nanocellulose"'></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="institutionFilter">所属機関フィルタ（機関名を入力、キーワードとAND検索）</label>
+      <input type="text" id="institutionFilter" placeholder="例: Harvard University; Toyota（セミコロン区切りで複数指定可、OR検索）">
+      <div class="form-hint">空欄の場合はフィルタなし。セミコロン（;）区切りで複数機関をOR指定できます。機関名の一部でも検索可能です。</div>
+      <div id="institutionResolveStatus" class="hidden" style="margin-top:6px;"></div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="yearFrom">開始年</label>
+        <input type="number" id="yearFrom" min="1900" max="2026" value="2020">
+      </div>
+      <div class="form-group">
+        <label for="yearTo">終了年</label>
+        <input type="number" id="yearTo" min="1900" max="2026" value="2026">
+      </div>
+      <div class="form-group">
+        <div class="checkbox-group" style="margin-top: 22px;">
+          <input type="checkbox" id="yearlyMode">
+          <label for="yearlyMode">年別取得（10,000件超対応）</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="maxResults" id="maxResultsLabel">取得上限（クエリあたり）</label>
+        <input type="number" id="maxResults" min="50" max="10000" value="200" step="50">
+        <div class="form-hint" id="maxResultsHint">1クエリあたりの最大取得件数（最大10,000件）</div>
+      </div>
+    </div>
+
+    <!-- Advanced Filters -->
+    <details>
+      <summary>詳細フィルタ</summary>
+      <div class="details-content">
+        <div class="form-row">
+          <div class="form-group">
+            <label>論文種別（Publication Types）</label>
+            <div class="chip-group" id="pubTypeChips">
+              <span class="chip" data-value="article">Article（学術論文）</span>
+              <span class="chip" data-value="review">Review（総説）</span>
+              <span class="chip" data-value="book-chapter">Book Chapter</span>
+              <span class="chip" data-value="book">Book</span>
+              <span class="chip" data-value="dataset">Dataset</span>
+              <span class="chip" data-value="preprint">Preprint</span>
+              <span class="chip" data-value="dissertation">Dissertation（学位論文）</span>
+              <span class="chip" data-value="editorial">Editorial</span>
+              <span class="chip" data-value="letter">Letter</span>
+              <span class="chip" data-value="report">Report（技術レポート）</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sortOrder">ソート順</label>
+            <select id="sortOrder">
+              <option value="relevance">関連度順（デフォルト）</option>
+              <option value="cited_by_count:desc">引用数順（多い順）</option>
+              <option value="publication_date:desc">新しい順</option>
+              <option value="publication_date:asc">古い順</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="minCitations">最小引用数</label>
+            <input type="number" id="minCitations" min="0" max="100000" value="0" step="5">
+          </div>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="oaOnly">
+          <label for="oaOnly">オープンアクセス論文のみ</label>
+        </div>
+      </div>
+    </details>
+
+    <div style="margin-top: 20px; display: flex; gap: 10px; align-items: center;">
+      <button class="btn btn-primary" id="searchBtn" onclick="SearchController.startSearch()">
+        検索を実行
+      </button>
+      <button class="btn btn-secondary hidden" id="uploadBtn" onclick="document.getElementById('csvUpload').click()">
+        CSVをアップロード
+      </button>
+      <input type="file" id="csvUpload" accept=".csv" style="display:none" onchange="Importer.handleCSV(this)">
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PROGRESS -->
+  <!-- ============================================================ -->
+  <div class="progress-section" id="progressSection">
+    <div class="card">
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-status">
+        <span id="progressText">準備中...</span>
+        <button class="btn btn-danger btn-sm" onclick="SearchController.cancelSearch()">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- RESULTS SUMMARY -->
+  <!-- ============================================================ -->
+  <div id="resultsSection" class="hidden">
+
+    <div class="metrics-row" id="metricsRow">
+      <div class="metric-card">
+        <div class="metric-value" id="metricTotal">0</div>
+        <div class="metric-label">取得論文数</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricAbstract">0</div>
+        <div class="metric-label">要約あり</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricPeriod">-</div>
+        <div class="metric-label">データ期間</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricCAGR">-</div>
+        <div class="metric-label">CAGR</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricTrend">-</div>
+        <div class="metric-label">トレンド</div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- DATA TABLE -->
+    <!-- ============================================================ -->
+    <div class="card">
+      <div class="card-title"><span class="icon">T</span> 論文データ</div>
+      <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th onclick="TableRenderer.sortBy('title')">タイトル <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="TableRenderer.sortBy('year')" style="width:60px">年 <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="TableRenderer.sortBy('authors')">著者 <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="TableRenderer.sortBy('institutions')">所属機関 <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="TableRenderer.sortBy('venue')">ジャーナル <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th onclick="TableRenderer.sortBy('citation_count')" style="width:70px">引用数 <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th style="width:60px">DOI</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadCSV()">CSVダウンロード</button>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- CHARTS -->
+    <!-- ============================================================ -->
+    <div class="card">
+      <div class="card-title"><span class="icon">G</span> グラフ</div>
+
+      <div class="tabs">
+        <button class="tab-btn active" onclick="UIController.switchTab('trendBar', this)">件数推移（棒グラフ）</button>
+        <button class="tab-btn" onclick="UIController.switchTab('trendLine', this)">件数推移（折れ線）</button>
+        <button class="tab-btn" onclick="UIController.switchTab('authorRank', this)">著者ランキング</button>
+        <button class="tab-btn" onclick="UIController.switchTab('instRank', this)">機関ランキング</button>
+      </div>
+
+      <!-- Tab 1: Bar Chart -->
+      <div class="tab-panel active" id="panel-trendBar">
+        <div class="chart-container">
+          <canvas id="chartTrendBar"></canvas>
+        </div>
+        <div class="export-row">
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('trendBar', 'trend_bar.png')">PNGダウンロード</button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Line Chart -->
+      <div class="tab-panel" id="panel-trendLine">
+        <div class="chart-controls">
+          <div class="form-group" style="flex:1; min-width: 200px;">
+            <label>表示モード</label>
+            <select id="lineMode" onchange="ChartRenderer.updateLineChart()">
+              <option value="total">全体推移</option>
+              <option value="author">著者比較（最大5名）</option>
+            </select>
+          </div>
+        </div>
+        <div id="authorSelectContainer" class="hidden">
+          <label>著者を選択（最大5名）:</label>
+          <div class="author-select-list" id="authorSelectList"></div>
+        </div>
+        <div class="chart-container">
+          <canvas id="chartTrendLine"></canvas>
+        </div>
+        <div class="export-row">
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('trendLine', 'trend_line.png')">PNGダウンロード</button>
+        </div>
+      </div>
+
+      <!-- Tab 3: Author Ranking -->
+      <div class="tab-panel" id="panel-authorRank">
+        <div class="chart-controls">
+          <div class="form-group" style="width:150px;">
+            <label for="topNAuthors">表示数</label>
+            <input type="number" id="topNAuthors" min="5" max="50" value="20" onchange="ChartRenderer.renderAuthorRanking()">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderAuthorRanking()">描画</button>
+        </div>
+        <div class="chart-container" id="authorRankContainer" style="height:600px;">
+          <canvas id="chartAuthorRank"></canvas>
+        </div>
+        <div class="export-row">
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('authorRank', 'author_ranking.png')">PNGダウンロード</button>
+        </div>
+      </div>
+
+      <!-- Tab 4: Institution Ranking -->
+      <div class="tab-panel" id="panel-instRank">
+        <div class="chart-controls">
+          <div class="form-group" style="width:150px;">
+            <label for="topNInst">表示数</label>
+            <input type="number" id="topNInst" min="5" max="50" value="20" onchange="ChartRenderer.renderInstRanking()">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderInstRanking()">描画</button>
+        </div>
+        <div class="chart-container" id="instRankContainer" style="height:600px;">
+          <canvas id="chartInstRank"></canvas>
+        </div>
+        <div class="export-row">
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('instRank', 'institution_ranking.png')">PNGダウンロード</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload section (always visible) -->
+  <div class="card" id="uploadSection">
+    <div class="card-title"><span class="icon">U</span> 保存済みCSVのアップロード</div>
+    <div class="form-hint" style="margin-bottom: 12px;">以前ダウンロードした論文CSVファイルを読み込みます。再検索の必要がなくなります。</div>
+    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('csvUploadMain').click()">CSVファイルを選択</button>
+    <input type="file" id="csvUploadMain" accept=".csv" style="display:none" onchange="Importer.handleCSV(this)">
+  </div>
+
+</div>
+
+<!-- ============================================================ -->
+<!-- FOOTER -->
+<!-- ============================================================ -->
+<footer class="app-footer">
+  <div>&copy;2026 しばやま</div>
+</footer>
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================================ -->
+<script>
+// ============================================================
+// State Management
+// ============================================================
+const AppState = {
+  papers: [],
+  tableData: [],
+  charts: {},
+  sortColumn: 'year',
+  sortDirection: 'desc',
+  currentPage: 0,
+  pageSize: 50,
+  abortController: null,
+  isSearching: false,
+};
+
+// ============================================================
+// OpenAlex API Module
+// ============================================================
+const OpenAlexAPI = {
+  BASE_URL: 'https://api.openalex.org/works',
+  INST_URL: 'https://api.openalex.org/institutions',
+  RATE_LIMIT: 150,
+  MAILTO: 'openalex-collector@example.com',
+  MAX_RETRIES: 5,
+
+  sleep(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  },
+
+  async resolveInstitution(name, signal = null) {
+    const urlParams = new URLSearchParams({
+      search: name.trim(),
+      per_page: 5,
+      mailto: this.MAILTO,
+    });
+    const url = `${this.INST_URL}?${urlParams.toString()}`;
+    const resp = await fetch(url, { signal });
+    if (!resp.ok) throw new Error(`Institution search failed: HTTP ${resp.status}`);
+    const data = await resp.json();
+    const results = data.results || [];
+    if (!results.length) return null;
+    return {
+      id: results[0].id,  // e.g., "https://openalex.org/I136199984"
+      display_name: results[0].display_name,
+    };
+  },
+
+  async searchOpenAlex(query, params = {}, cursor = '*', signal = null) {
+    const urlParams = new URLSearchParams({
+      search: query,
+      per_page: Math.min(params.perPage || 200, 200),
+      cursor: cursor,
+      mailto: this.MAILTO,
+    });
+
+    if (params.sort && params.sort !== 'relevance') {
+      urlParams.set('sort', params.sort);
+    }
+
+    const filters = [];
+    if (params.yearFrom && params.yearTo) {
+      filters.push(`publication_year:${params.yearFrom}-${params.yearTo}`);
+    } else if (params.yearFrom) {
+      filters.push(`publication_year:${params.yearFrom}-`);
+    } else if (params.yearTo) {
+      filters.push(`publication_year:-${params.yearTo}`);
+    }
+    if (params.minCitations > 0) {
+      filters.push(`cited_by_count:>${params.minCitations - 1}`);
+    }
+    if (params.pubTypes && params.pubTypes.length > 0) {
+      filters.push(`type:${params.pubTypes.join('|')}`);
+    }
+    if (params.oaOnly) {
+      filters.push('is_oa:true');
+    }
+    if (params.institutionIds && params.institutionIds.length > 0) {
+      filters.push(`authorships.institutions.lineage:${params.institutionIds.join('|')}`);
+    } else if (params.institutionId) {
+      filters.push(`authorships.institutions.lineage:${params.institutionId}`);
+    }
+    if (filters.length > 0) {
+      urlParams.set('filter', filters.join(','));
+    }
+
+    const url = `${this.BASE_URL}?${urlParams.toString()}`;
+
+    for (let attempt = 0; attempt < this.MAX_RETRIES; attempt++) {
+      try {
+        const resp = await fetch(url, { signal });
+        if (resp.status === 429) {
+          if (attempt < this.MAX_RETRIES - 1) {
+            await this.sleep(5000 * (attempt + 1));
+            continue;
+          }
+          throw new Error('レート制限です。少し待ってから再試行してください。');
+        }
+        if (!resp.ok) {
+          throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+        }
+        const data = await resp.json();
+        return {
+          results: data.results || [],
+          total: (data.meta && data.meta.count) || 0,
+          nextCursor: data.meta && data.meta.next_cursor,
+        };
+      } catch (e) {
+        if (e.name === 'AbortError') throw e;
+        if (attempt < this.MAX_RETRIES - 1) {
+          await this.sleep(3000 * (attempt + 1));
+          continue;
+        }
+        throw e;
+      }
+    }
+  },
+
+  async fetchBatch(query, params = {}, maxResults = 200, onProgress = null, signal = null) {
+    const allPapers = [];
+    let cursor = '*';
+    let total = null;
+
+    while (allPapers.length < maxResults) {
+      if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
+
+      const perPage = Math.min(200, maxResults - allPapers.length);
+      const result = await this.searchOpenAlex(query, { ...params, perPage }, cursor, signal);
+
+      if (total === null) total = Math.min(result.total, maxResults);
+      if (!result.results.length) break;
+
+      allPapers.push(...result.results);
+      if (onProgress) onProgress(allPapers.length, total);
+      if (!result.nextCursor || allPapers.length >= maxResults) break;
+
+      cursor = result.nextCursor;
+      await this.sleep(this.RATE_LIMIT);
+    }
+    return allPapers.slice(0, maxResults);
+  },
+
+  async fetchByYear(query, params = {}, yearFrom, yearTo, maxPerYear = 10000, onProgress = null, signal = null) {
+    const allPapers = [];
+    const seenIds = new Set();
+    const years = [];
+    for (let y = yearFrom; y <= yearTo; y++) years.push(y);
+
+    for (let yi = 0; yi < years.length; yi++) {
+      if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
+
+      const year = years[yi];
+      let cursor = '*';
+      let yearCount = 0;
+      let yearTotal = null;
+
+      while (yearCount < maxPerYear) {
+        if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
+
+        const perPage = Math.min(200, maxPerYear - yearCount);
+        const yearParams = { ...params, yearFrom: year, yearTo: year, perPage };
+        const result = await this.searchOpenAlex(query, yearParams, cursor, signal);
+
+        if (yearTotal === null) yearTotal = Math.min(result.total, maxPerYear);
+        if (!result.results.length) break;
+
+        for (const paper of result.results) {
+          const pid = paper.id || '';
+          if (pid && !seenIds.has(pid)) {
+            seenIds.add(pid);
+            allPapers.push(paper);
+          }
+        }
+        yearCount += result.results.length;
+
+        if (onProgress) onProgress(yi, years.length, year, yearCount, yearTotal || 0, allPapers.length);
+        if (!result.nextCursor || yearCount >= maxPerYear) break;
+
+        cursor = result.nextCursor;
+        await this.sleep(this.RATE_LIMIT);
+      }
+    }
+    return allPapers;
+  },
+
+  async fetchMultiQuery(queries, params = {}, maxPerQuery = 200, onProgress = null, signal = null) {
+    const allPapers = [];
+    const seenIds = new Set();
+
+    for (let qi = 0; qi < queries.length; qi++) {
+      if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
+
+      const query = queries[qi].trim();
+      if (!query) continue;
+
+      const batchProgress = (current, total) => {
+        if (onProgress) onProgress(qi, queries.length, current, total);
+      };
+
+      const batch = await this.fetchBatch(query, params, maxPerQuery, batchProgress, signal);
+      for (const paper of batch) {
+        const pid = paper.id || '';
+        if (pid && !seenIds.has(pid)) {
+          seenIds.add(pid);
+          allPapers.push(paper);
+        }
+      }
+
+      if (qi < queries.length - 1) await this.sleep(this.RATE_LIMIT);
+    }
+    return allPapers;
+  },
+
+  async fetchMultiQueryByYear(queries, params = {}, yearFrom, yearTo, maxPerYear = 10000, onProgress = null, signal = null) {
+    const allPapers = [];
+    const seenIds = new Set();
+
+    for (let qi = 0; qi < queries.length; qi++) {
+      if (signal && signal.aborted) throw new DOMException('Aborted', 'AbortError');
+
+      const query = queries[qi].trim();
+      if (!query) continue;
+
+      const yearProgress = (yi, totalYears, year, yearCount, yearTotal, allCount) => {
+        if (onProgress) onProgress(qi, queries.length, yi, totalYears, year, yearCount, yearTotal, allCount);
+      };
+
+      const batch = await this.fetchByYear(query, params, yearFrom, yearTo, maxPerYear, yearProgress, signal);
+      for (const paper of batch) {
+        const pid = paper.id || '';
+        if (pid && !seenIds.has(pid)) {
+          seenIds.add(pid);
+          allPapers.push(paper);
+        }
+      }
+
+      if (qi < queries.length - 1) await this.sleep(this.RATE_LIMIT);
+    }
+    return allPapers;
+  },
+
+  reconstructAbstract(invertedIndex) {
+    if (!invertedIndex || typeof invertedIndex !== 'object') return '';
+    const pairs = [];
+    for (const [word, positions] of Object.entries(invertedIndex)) {
+      for (const pos of positions) pairs.push([pos, word]);
+    }
+    pairs.sort((a, b) => a[0] - b[0]);
+    return pairs.map(p => p[1]).join(' ');
+  },
+
+  transformPaper(raw) {
+    const authorships = raw.authorships || [];
+    const authors = authorships
+      .map(a => (a.author && a.author.display_name) || '')
+      .filter(n => n)
+      .join('; ');
+
+    let doi = raw.doi || '';
+    if (doi) doi = doi.replace('https://doi.org/', '');
+
+    let venue = '';
+    const primary = raw.primary_location || {};
+    const source = primary.source || {};
+    venue = source.display_name || '';
+
+    const oaId = raw.id || '';
+    const paperId = oaId.replace('https://openalex.org/', '');
+
+    const abstract = this.reconstructAbstract(raw.abstract_inverted_index);
+
+    const instSet = new Set();
+    authorships.forEach(a => {
+      (a.institutions || []).forEach(inst => {
+        const name = inst.display_name || '';
+        if (name) instSet.add(name);
+      });
+    });
+    const institutions = [...instSet].join('; ');
+
+    return {
+      paper_id: paperId,
+      title: raw.title || '',
+      abstract: abstract,
+      year: raw.publication_year || null,
+      authors: authors,
+      institutions: institutions,
+      venue: venue,
+      citation_count: raw.cited_by_count || 0,
+      publication_date: raw.publication_date || '',
+      doi: doi,
+    };
+  }
+};
+
+// ============================================================
+// Search Controller
+// ============================================================
+const SearchController = {
+  async startSearch() {
+    const queryText = document.getElementById('searchQuery').value.trim();
+    if (!queryText) {
+      UIController.showToast('検索キーワードを入力してください。', 'error');
+      return;
+    }
+
+    const yearFrom = parseInt(document.getElementById('yearFrom').value);
+    const yearTo = parseInt(document.getElementById('yearTo').value);
+    if (yearFrom > yearTo) {
+      UIController.showToast('開始年が終了年より大きいです。', 'error');
+      return;
+    }
+
+    const queries = queryText.split('\n').map(q => q.trim()).filter(q => q);
+    const yearlyMode = document.getElementById('yearlyMode').checked;
+    const maxResults = parseInt(document.getElementById('maxResults').value) || 200;
+
+    const selectedPubTypes = [];
+    document.querySelectorAll('#pubTypeChips .chip.active').forEach(c => {
+      selectedPubTypes.push(c.dataset.value);
+    });
+    const sortOrder = document.getElementById('sortOrder').value;
+    const minCitations = parseInt(document.getElementById('minCitations').value) || 0;
+    const oaOnly = document.getElementById('oaOnly').checked;
+
+    const params = {
+      yearFrom, yearTo,
+      pubTypes: selectedPubTypes.length ? selectedPubTypes : null,
+      sort: sortOrder,
+      minCitations,
+      oaOnly,
+      institutionId: null,
+      institutionIds: null,
+    };
+
+    AppState.abortController = new AbortController();
+    const signal = AppState.abortController.signal;
+    AppState.isSearching = true;
+
+    UIController.showProgress();
+    document.getElementById('searchBtn').disabled = true;
+
+    try {
+      const instFilterText = document.getElementById('institutionFilter').value.trim();
+      const instStatus = document.getElementById('institutionResolveStatus');
+      if (instFilterText) {
+        const instNames = instFilterText.split(';').map(s => s.trim()).filter(s => s);
+        instStatus.classList.remove('hidden');
+        instStatus.className = 'alert alert-info';
+        instStatus.textContent = `機関を検索中...（${instNames.length} 件）`;
+        UIController.updateProgress(0, `機関を検索中...`);
+
+        const resolvedIds = [];
+        const resolvedNames = [];
+        const failedNames = [];
+
+        for (const name of instNames) {
+          const inst = await OpenAlexAPI.resolveInstitution(name, signal);
+          if (inst) {
+            resolvedIds.push(inst.id);
+            resolvedNames.push(inst.display_name);
+          } else {
+            failedNames.push(name);
+          }
+        }
+
+        if (resolvedIds.length > 0) {
+          params.institutionIds = resolvedIds;
+          let msg = `機関フィルタ: ${resolvedNames.join(' / ')}`;
+          if (failedNames.length > 0) msg += `（未検出: ${failedNames.join(', ')}）`;
+          instStatus.className = 'alert alert-success';
+          instStatus.textContent = msg;
+        } else {
+          instStatus.className = 'alert alert-warning';
+          instStatus.textContent = `一致する機関が見つかりませんでした。機関フィルタなしで検索します。`;
+        }
+      } else {
+        instStatus.classList.add('hidden');
+      }
+
+      let rawPapers;
+
+      if (yearlyMode && queries.length === 1) {
+        rawPapers = await OpenAlexAPI.fetchByYear(
+          queries[0], params, yearFrom, yearTo, maxResults,
+          (yi, totalYears, year, yearCount, yearTotal, allCount) => {
+            const yearProg = yearTotal > 0 ? yearCount / yearTotal : 1;
+            const overall = (yi + Math.min(yearProg, 1)) / totalYears;
+            UIController.updateProgress(overall * 100,
+              `${year}年: ${yearCount}/${yearTotal} 件 | 合計: ${allCount} 件 (${yi + 1}/${totalYears} 年)`);
+          }, signal);
+
+      } else if (yearlyMode && queries.length > 1) {
+        rawPapers = await OpenAlexAPI.fetchMultiQueryByYear(
+          queries, params, yearFrom, yearTo, maxResults,
+          (qi, totalQ, yi, totalYears, year, yearCount, yearTotal, allCount) => {
+            const yearProg = yearTotal > 0 ? yearCount / yearTotal : 1;
+            const queryProg = (yi + Math.min(yearProg, 1)) / totalYears;
+            const overall = (qi + queryProg) / totalQ;
+            UIController.updateProgress(overall * 100,
+              `Q${qi + 1}/${totalQ} | ${year}年: ${yearCount}/${yearTotal} 件 | 合計: ${allCount} 件`);
+          }, signal);
+
+      } else if (queries.length === 1) {
+        rawPapers = await OpenAlexAPI.fetchBatch(
+          queries[0], params, maxResults,
+          (current, total) => {
+            UIController.updateProgress(Math.min(current / Math.max(total, 1), 1) * 100,
+              `取得中: ${current} / ${total} 件`);
+          }, signal);
+
+      } else {
+        rawPapers = await OpenAlexAPI.fetchMultiQuery(
+          queries, params, maxResults,
+          (qi, totalQ, current, total) => {
+            const overall = (qi / totalQ) + (1 / totalQ) * Math.min(current / Math.max(total, 1), 1);
+            UIController.updateProgress(overall * 100,
+              `クエリ ${qi + 1}/${totalQ}: ${current}/${total} 件`);
+          }, signal);
+      }
+
+      UIController.updateProgress(100, '完了');
+
+      const tableData = rawPapers.map(p => OpenAlexAPI.transformPaper(p));
+      AppState.papers = rawPapers;
+      AppState.tableData = tableData;
+      AppState.currentPage = 0;
+      AppState.sortColumn = 'year';
+      AppState.sortDirection = 'desc';
+
+      this.renderResults(tableData, queries.length);
+
+    } catch (e) {
+      if (e.name === 'AbortError') {
+        UIController.showToast('検索がキャンセルされました。', 'error');
+      } else {
+        UIController.showToast(`検索エラー: ${e.message}`, 'error');
+      }
+    } finally {
+      AppState.isSearching = false;
+      UIController.hideProgress();
+      document.getElementById('searchBtn').disabled = false;
+    }
+  },
+
+  cancelSearch() {
+    if (AppState.abortController) {
+      AppState.abortController.abort();
+    }
+  },
+
+  renderResults(data, queryCount) {
+    if (!data.length) {
+      UIController.showToast('該当する論文が見つかりませんでした。', 'error');
+      return;
+    }
+
+    document.getElementById('resultsSection').classList.remove('hidden');
+    document.getElementById('uploadSection').classList.add('hidden');
+
+    const absCount = data.filter(d => d.abstract && d.abstract.length > 0).length;
+    const years = data.map(d => d.year).filter(y => y);
+    const minY = years.length ? Math.min(...years) : '-';
+    const maxY = years.length ? Math.max(...years) : '-';
+
+    document.getElementById('metricTotal').textContent = data.length.toLocaleString();
+    document.getElementById('metricAbstract').textContent = absCount.toLocaleString();
+    document.getElementById('metricPeriod').textContent = years.length ? `${minY}-${maxY}` : '-';
+
+    const { cagr, trend } = this.calculateCAGR(data);
+    document.getElementById('metricCAGR').textContent = cagr !== null ? `${(cagr * 100).toFixed(1)}%` : '-';
+    document.getElementById('metricTrend').textContent = trend;
+
+    let msg = `論文 ${data.length} 件を取得しました（要約あり: ${absCount} 件）。`;
+    if (queryCount > 1) msg += `（${queryCount} クエリ統合、重複除去済み）`;
+    UIController.showToast(msg, 'success');
+
+    TableRenderer.sortAndRender();
+    ChartRenderer.renderTrendBar();
+    ChartRenderer.renderTrendLine();
+  },
+
+  calculateCAGR(data) {
+    const yearCounts = {};
+    data.forEach(d => {
+      if (d.year) yearCounts[d.year] = (yearCounts[d.year] || 0) + 1;
+    });
+
+    const years = Object.keys(yearCounts).map(Number).sort();
+    if (years.length < 2) return { cagr: null, trend: '不明' };
+
+    const counts = years.map(y => yearCounts[y]);
+    const n = years.length;
+    const sumX = years.reduce((a, b) => a + b, 0);
+    const sumY = counts.reduce((a, b) => a + b, 0);
+    const sumXY = years.reduce((a, x, i) => a + x * counts[i], 0);
+    const sumX2 = years.reduce((a, x) => a + x * x, 0);
+    const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+
+    let trend;
+    const avgCount = sumY / n;
+    const normalizedSlope = avgCount > 0 ? slope / avgCount : 0;
+    if (normalizedSlope > 0.15) trend = '急上昇';
+    else if (normalizedSlope > 0.03) trend = '増加傾向';
+    else if (normalizedSlope > -0.03) trend = '横ばい';
+    else if (normalizedSlope > -0.15) trend = '減少傾向';
+    else trend = '急減少';
+
+    const firstNonZero = counts.find(c => c > 0);
+    const lastVal = counts[counts.length - 1];
+    const nYears = years[years.length - 1] - years[0];
+    let cagr = null;
+    if (nYears > 0 && firstNonZero > 0 && lastVal > 0) {
+      cagr = Math.pow(lastVal / firstNonZero, 1 / nYears) - 1;
+    }
+
+    return { cagr, trend, slope };
+  }
+};
+
+// ============================================================
+// Table Renderer
+// ============================================================
+const TableRenderer = {
+  sortAndRender() {
+    const data = [...AppState.tableData];
+    const col = AppState.sortColumn;
+    const dir = AppState.sortDirection === 'asc' ? 1 : -1;
+
+    data.sort((a, b) => {
+      let va = a[col], vb = b[col];
+      if (col === 'year' || col === 'citation_count') {
+        va = Number(va) || 0;
+        vb = Number(vb) || 0;
+        return (va - vb) * dir;
+      }
+      va = String(va || '');
+      vb = String(vb || '');
+      return va.localeCompare(vb, 'ja') * dir;
+    });
+
+    this.renderPage(data);
+  },
+
+  renderPage(sortedData) {
+    const start = AppState.currentPage * AppState.pageSize;
+    const end = start + AppState.pageSize;
+    const pageData = sortedData || [...AppState.tableData];
+    const slice = pageData.slice(start, end);
+
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = slice.map(row => {
+      const doiLink = row.doi ? `<a href="https://doi.org/${this.escapeHtml(row.doi)}" target="_blank" rel="noopener">Link</a>` : '';
+      const authorsDisplay = row.authors.length > 80 ? row.authors.substring(0, 80) + '...' : row.authors;
+      const instDisplay = (row.institutions || '').length > 80 ? row.institutions.substring(0, 80) + '...' : (row.institutions || '');
+      return `<tr>
+        <td class="title-cell" title="${this.escapeHtml(row.abstract || row.title)}">${this.escapeHtml(row.title)}</td>
+        <td>${row.year || ''}</td>
+        <td class="authors-cell" title="${this.escapeHtml(row.authors)}">${this.escapeHtml(authorsDisplay)}</td>
+        <td class="authors-cell" title="${this.escapeHtml(row.institutions || '')}">${this.escapeHtml(instDisplay)}</td>
+        <td>${this.escapeHtml(row.venue)}</td>
+        <td style="text-align:right">${(row.citation_count || 0).toLocaleString()}</td>
+        <td>${doiLink}</td>
+      </tr>`;
+    }).join('');
+
+    const totalPages = Math.ceil(pageData.length / AppState.pageSize);
+    const pagDiv = document.getElementById('pagination');
+    if (totalPages <= 1) {
+      pagDiv.innerHTML = `<span class="page-info">${pageData.length} 件</span>`;
+      return;
+    }
+    pagDiv.innerHTML = `
+      <button ${AppState.currentPage === 0 ? 'disabled' : ''} onclick="TableRenderer.goPage(0)">&laquo;</button>
+      <button ${AppState.currentPage === 0 ? 'disabled' : ''} onclick="TableRenderer.goPage(${AppState.currentPage - 1})">&lsaquo;</button>
+      <span class="page-info">${AppState.currentPage + 1} / ${totalPages}（${pageData.length} 件）</span>
+      <button ${AppState.currentPage >= totalPages - 1 ? 'disabled' : ''} onclick="TableRenderer.goPage(${AppState.currentPage + 1})">&rsaquo;</button>
+      <button ${AppState.currentPage >= totalPages - 1 ? 'disabled' : ''} onclick="TableRenderer.goPage(${totalPages - 1})">&raquo;</button>
+    `;
+  },
+
+  sortBy(column) {
+    if (AppState.sortColumn === column) {
+      AppState.sortDirection = AppState.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      AppState.sortColumn = column;
+      AppState.sortDirection = column === 'year' || column === 'citation_count' ? 'desc' : 'asc';
+    }
+    AppState.currentPage = 0;
+    this.sortAndRender();
+  },
+
+  goPage(n) {
+    const totalPages = Math.ceil(AppState.tableData.length / AppState.pageSize);
+    AppState.currentPage = Math.max(0, Math.min(n, totalPages - 1));
+    this.sortAndRender();
+  },
+
+  escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+};
+
+// ============================================================
+// Chart Renderer
+// ============================================================
+const ChartRenderer = {
+  COLORS: ['#1a73e8', '#ea4335', '#34a853', '#fbbc04', '#9334e6'],
+
+  getYearCounts(data) {
+    const counts = {};
+    data.forEach(d => { if (d.year) counts[d.year] = (counts[d.year] || 0) + 1; });
+    if (Object.keys(counts).length === 0) return { years: [], values: [] };
+
+    const allYears = Object.keys(counts).map(Number);
+    const minY = Math.min(...allYears);
+    const maxY = Math.max(...allYears);
+    const years = [];
+    const values = [];
+    for (let y = minY; y <= maxY; y++) {
+      years.push(y);
+      values.push(counts[y] || 0);
+    }
+    return { years, values };
+  },
+
+  destroyChart(key) {
+    if (AppState.charts[key]) {
+      AppState.charts[key].destroy();
+      delete AppState.charts[key];
+    }
+  },
+
+  renderTrendBar() {
+    this.destroyChart('trendBar');
+    const { years, values } = this.getYearCounts(AppState.tableData);
+    if (!years.length) return;
+
+    const ctx = document.getElementById('chartTrendBar').getContext('2d');
+    AppState.charts.trendBar = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: years,
+        datasets: [{
+          label: '論文件数',
+          data: values,
+          backgroundColor: 'rgba(26, 115, 232, 0.8)',
+          borderColor: '#1565c0',
+          borderWidth: 1,
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `論文件数推移 (${years[0]}-${years[years.length - 1]})`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
+          y: { title: { display: true, text: '件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }
+        }
+      }
+    });
+  },
+
+  renderTrendLine() {
+    const mode = document.getElementById('lineMode').value;
+    if (mode === 'author') {
+      this.showAuthorSelect();
+      this.renderAuthorComparison();
+    } else {
+      document.getElementById('authorSelectContainer').classList.add('hidden');
+      this.renderTotalLine();
+    }
+  },
+
+  updateLineChart() {
+    this.renderTrendLine();
+  },
+
+  renderTotalLine() {
+    this.destroyChart('trendLine');
+    const { years, values } = this.getYearCounts(AppState.tableData);
+    if (!years.length) return;
+
+    const ctx = document.getElementById('chartTrendLine').getContext('2d');
+    AppState.charts.trendLine = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: years,
+        datasets: [{
+          label: '論文件数',
+          data: values,
+          borderColor: '#1a73e8',
+          backgroundColor: 'rgba(26, 115, 232, 0.1)',
+          fill: true,
+          tension: 0.2,
+          pointRadius: 4,
+          pointBackgroundColor: '#1a73e8',
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: '論文件数推移（折れ線）',
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
+          y: { title: { display: true, text: '件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }
+        }
+      }
+    });
+  },
+
+  showAuthorSelect() {
+    const container = document.getElementById('authorSelectContainer');
+    container.classList.remove('hidden');
+
+    const authorCounts = {};
+    AppState.tableData.forEach(d => {
+      if (!d.authors) return;
+      d.authors.split('; ').forEach(a => {
+        a = a.trim();
+        if (a) authorCounts[a] = (authorCounts[a] || 0) + 1;
+      });
+    });
+
+    const sorted = Object.entries(authorCounts).sort((a, b) => b[1] - a[1]).slice(0, 50);
+
+    const listEl = document.getElementById('authorSelectList');
+    listEl.innerHTML = sorted.map(([name, count]) =>
+      `<div class="author-select-item">
+        <input type="checkbox" class="author-cb" value="${TableRenderer.escapeHtml(name)}" onchange="ChartRenderer.onAuthorSelect()">
+        <label>${TableRenderer.escapeHtml(name)} (${count})</label>
+      </div>`
+    ).join('');
+  },
+
+  onAuthorSelect() {
+    const checked = document.querySelectorAll('.author-cb:checked');
+    if (checked.length > 5) {
+      checked[checked.length - 1].checked = false;
+      UIController.showToast('最大5名まで選択できます。', 'error');
+      return;
+    }
+    this.renderAuthorComparison();
+  },
+
+  renderAuthorComparison() {
+    this.destroyChart('trendLine');
+
+    const selected = [];
+    document.querySelectorAll('.author-cb:checked').forEach(cb => selected.push(cb.value));
+
+    if (!selected.length) {
+      this.renderTotalLine();
+      return;
+    }
+
+    const allYears = AppState.tableData.map(d => d.year).filter(y => y);
+    if (!allYears.length) return;
+    const minY = Math.min(...allYears);
+    const maxY = Math.max(...allYears);
+    const years = [];
+    for (let y = minY; y <= maxY; y++) years.push(y);
+
+    const datasets = selected.map((author, i) => {
+      const counts = {};
+      years.forEach(y => counts[y] = 0);
+      AppState.tableData.forEach(d => {
+        if (d.year && d.authors && d.authors.split('; ').map(a => a.trim()).includes(author)) {
+          counts[d.year] = (counts[d.year] || 0) + 1;
+        }
+      });
+      return {
+        label: author,
+        data: years.map(y => counts[y]),
+        borderColor: this.COLORS[i % this.COLORS.length],
+        backgroundColor: 'transparent',
+        tension: 0.2,
+        pointRadius: 4,
+        pointBackgroundColor: this.COLORS[i % this.COLORS.length],
+      };
+    });
+
+    const ctx = document.getElementById('chartTrendLine').getContext('2d');
+    AppState.charts.trendLine = new Chart(ctx, {
+      type: 'line',
+      data: { labels: years, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: {
+            display: true,
+            text: '著者別 論文件数推移',
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
+          y: { title: { display: true, text: '件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }
+        }
+      }
+    });
+  },
+
+  renderAuthorRanking() {
+    this.destroyChart('authorRank');
+    const topN = parseInt(document.getElementById('topNAuthors').value) || 20;
+
+    const authorCounts = {};
+    AppState.tableData.forEach(d => {
+      if (!d.authors) return;
+      d.authors.split('; ').forEach(a => {
+        a = a.trim();
+        if (a) authorCounts[a] = (authorCounts[a] || 0) + 1;
+      });
+    });
+
+    const sorted = Object.entries(authorCounts).sort((a, b) => b[1] - a[1]).slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(e => e[0]);
+    const values = sorted.map(e => e[1]);
+
+    const ctx = document.getElementById('chartAuthorRank').getContext('2d');
+    AppState.charts.authorRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '論文件数',
+          data: values,
+          backgroundColor: 'rgba(26, 115, 232, 0.75)',
+          borderColor: '#1565c0',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `著者ランキング Top ${topN}`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+
+    document.getElementById('authorRankContainer').style.height = Math.max(400, sorted.length * 30 + 80) + 'px';
+  },
+
+  renderInstRanking() {
+    this.destroyChart('instRank');
+    const topN = parseInt(document.getElementById('topNInst').value) || 20;
+
+    const instCounts = {};
+    AppState.tableData.forEach(d => {
+      if (!d.institutions) return;
+      d.institutions.split('; ').forEach(inst => {
+        inst = inst.trim();
+        if (inst) instCounts[inst] = (instCounts[inst] || 0) + 1;
+      });
+    });
+
+    const sorted = Object.entries(instCounts).sort((a, b) => b[1] - a[1]).slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(e => e[0]);
+    const values = sorted.map(e => e[1]);
+
+    const ctx = document.getElementById('chartInstRank').getContext('2d');
+    AppState.charts.instRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '論文件数',
+          data: values,
+          backgroundColor: 'rgba(21, 101, 192, 0.75)',
+          borderColor: '#0d47a1',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `所属機関ランキング Top ${topN}`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+
+    document.getElementById('instRankContainer').style.height = Math.max(400, sorted.length * 30 + 80) + 'px';
+  }
+};
+
+// ============================================================
+// Exporter
+// ============================================================
+const Exporter = {
+  downloadCSV() {
+    if (!AppState.tableData.length) {
+      UIController.showToast('ダウンロードするデータがありません。', 'error');
+      return;
+    }
+
+    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi'];
+    const header = columns.join(',');
+    const rows = AppState.tableData.map(row =>
+      columns.map(col => {
+        let val = String(row[col] == null ? '' : row[col]);
+        if (val.includes(',') || val.includes('"') || val.includes('\n')) {
+          val = '"' + val.replace(/"/g, '""') + '"';
+        }
+        return val;
+      }).join(',')
+    );
+
+    const csv = '\uFEFF' + header + '\n' + rows.join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `openalex_papers_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+
+  downloadChartPNG(chartKey, filename) {
+    const chart = AppState.charts[chartKey];
+    if (!chart) {
+      UIController.showToast('グラフが描画されていません。', 'error');
+      return;
+    }
+    const url = chart.toBase64Image();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+  }
+};
+
+// ============================================================
+// CSV Importer
+// ============================================================
+const Importer = {
+  handleCSV(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target.result;
+        const data = this.parseCSV(text);
+        if (!data.length) {
+          UIController.showToast('CSVにデータがありませんでした。', 'error');
+          return;
+        }
+
+        if (!data[0].hasOwnProperty('title')) {
+          UIController.showToast('必須カラム "title" が見つかりません。', 'error');
+          return;
+        }
+
+        const tableData = data.map(row => ({
+          paper_id: row.paper_id || '',
+          title: row.title || '',
+          abstract: row.abstract || '',
+          year: row.year ? parseInt(row.year) || null : null,
+          authors: row.authors || '',
+          institutions: row.institutions || '',
+          venue: row.venue || '',
+          citation_count: parseInt(row.citation_count) || 0,
+          publication_date: row.publication_date || '',
+          doi: row.doi || '',
+        }));
+
+        AppState.tableData = tableData;
+        AppState.papers = [];
+        AppState.currentPage = 0;
+        AppState.sortColumn = 'year';
+        AppState.sortDirection = 'desc';
+
+        SearchController.renderResults(tableData, 1);
+      } catch (err) {
+        UIController.showToast(`CSV読み込みエラー: ${err.message}`, 'error');
+      }
+    };
+    reader.readAsText(file, 'UTF-8');
+    input.value = '';
+  },
+
+  parseCSV(text) {
+    text = text.replace(/^\uFEFF/, '');
+    const lines = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') {
+        if (inQuotes && text[i + 1] === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+        if (ch === '\r' && text[i + 1] === '\n') i++;
+        if (current.trim()) lines.push(current);
+        current = '';
+      } else {
+        current += ch;
+      }
+    }
+    if (current.trim()) lines.push(current);
+
+    if (lines.length < 2) return [];
+
+    const parseRow = (line) => {
+      const fields = [];
+      let field = '';
+      let inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') {
+          if (inQ && line[i + 1] === '"') { field += '"'; i++; }
+          else { inQ = !inQ; }
+        } else if (c === ',' && !inQ) {
+          fields.push(field);
+          field = '';
+        } else {
+          field += c;
+        }
+      }
+      fields.push(field);
+      return fields;
+    };
+
+    const headers = parseRow(lines[0]);
+    return lines.slice(1).map(line => {
+      const vals = parseRow(line);
+      const obj = {};
+      headers.forEach((h, i) => { obj[h.trim()] = (vals[i] || '').trim(); });
+      return obj;
+    });
+  }
+};
+
+// ============================================================
+// UI Controller
+// ============================================================
+const UIController = {
+  showProgress() {
+    document.getElementById('progressSection').classList.add('active');
+    this.updateProgress(0, '準備中...');
+  },
+
+  hideProgress() {
+    document.getElementById('progressSection').classList.remove('active');
+  },
+
+  updateProgress(percent, text) {
+    document.getElementById('progressBar').style.width = Math.min(percent, 100) + '%';
+    document.getElementById('progressText').textContent = text;
+  },
+
+  switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`panel-${tabId}`).classList.add('active');
+    btn.classList.add('active');
+  },
+
+  showToast(message, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.3s';
+      setTimeout(() => toast.remove(), 300);
+    }, 4000);
+  },
+
+  init() {
+    document.querySelectorAll('#pubTypeChips .chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('active'));
+    });
+
+    document.getElementById('yearlyMode').addEventListener('change', (e) => {
+      const label = document.getElementById('maxResultsLabel');
+      const hint = document.getElementById('maxResultsHint');
+      const input = document.getElementById('maxResults');
+      if (e.target.checked) {
+        label.textContent = '取得上限（年あたり）';
+        hint.textContent = '各出版年あたりの最大取得件数（最大10,000件/年）';
+        input.value = '10000';
+        input.max = '10000';
+        input.min = '200';
+        input.step = '200';
+      } else {
+        label.textContent = '取得上限（クエリあたり）';
+        hint.textContent = '1クエリあたりの最大取得件数（最大10,000件）';
+        input.value = '200';
+        input.max = '10000';
+        input.min = '50';
+        input.step = '50';
+      }
+    });
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  UIController.init();
+});
+</script>
+</body>
+</html>
