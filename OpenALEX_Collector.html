@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenALEX Collector</title>
+<title>OpenALEX Collector v2</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a73e8'/%3E%3Cstop offset='1' stop-color='%230d47a1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='12' fill='url(%23g)'/%3E%3Crect x='10' y='22' width='28' height='36' rx='2' fill='%23bbdefb' opacity='.6'/%3E%3Crect x='15' y='17' width='28' height='36' rx='2' fill='%23e3f2fd' opacity='.85'/%3E%3Crect x='20' y='12' width='28' height='36' rx='2' fill='%23ffffff'/%3E%3Crect x='24' y='18' width='16' height='2.5' rx='1' fill='%231565c0'/%3E%3Crect x='24' y='25' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='29' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='33' width='16' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='37' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='41' width='14' height='1.5' fill='%235f6368'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <style>
 /* ============================================================
@@ -343,6 +344,11 @@ details .details-content { padding: 16px; }
 .alert-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(30,142,62,0.2); }
 .alert-warning { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(227,116,0,0.2); }
 .alert-error { background: var(--error-bg); color: var(--error); border: 1px solid rgba(217,48,37,0.2); }
+/* CJKラベルがflex-shrinkで途中改行されないようにする */
+.alert > strong {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
 
 /* --- Tabs --- */
 .tabs {
@@ -508,6 +514,77 @@ td a:hover { text-decoration: underline; }
   .tab-btn { padding: 8px 12px; font-size: 13px; }
 }
 
+/* Collaboration matrix heatmap */
+.collab-matrix-wrapper {
+  overflow: auto;
+  max-width: 100%;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+}
+.collab-matrix {
+  border-collapse: collapse;
+  font-size: 11px;
+  font-family: inherit;
+}
+.collab-matrix th, .collab-matrix td {
+  border: 1px solid var(--border-light);
+  padding: 4px 6px;
+  text-align: center;
+  min-width: 36px;
+  max-width: 180px;
+}
+.collab-matrix th {
+  background: var(--primary-light);
+  color: var(--text-primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.collab-matrix th.row-head {
+  text-align: right;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--primary-light);
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.collab-matrix th.col-head {
+  height: 140px;
+  vertical-align: bottom;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.collab-matrix th.col-head .col-head-inner {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  max-height: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.collab-matrix th.corner {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background: var(--primary-light);
+}
+.collab-matrix td.diag {
+  background: var(--bg-tertiary);
+  color: var(--text-tertiary);
+}
+.collab-matrix td.cell {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.collab-matrix td.cell.zero {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
 /* --- Spinner --- */
 .spinner {
   display: inline-block;
@@ -545,12 +622,11 @@ td a:hover { text-decoration: underline; }
 </head>
 <body>
 
-<!-- ============================================================ -->
 <!-- HEADER -->
-<!-- ============================================================ -->
 <header class="app-header">
-  <h1>OpenALEX Collector</h1>
-  <div class="subtitle">OpenALEX APIを活用した学術論文収集・可視化ツール</div>
+  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v2</span></h1>
+  <div class="tagline" style="font-size:15px;font-style:italic;opacity:0.95;margin-top:6px;letter-spacing:0.5px;">— すべての論文は、誰かの肩である —</div>
+  <div class="subtitle" style="margin-top:6px;">OpenALEX APIを活用した学術論文収集・可視化ツール</div>
   <div class="badge">Powered by OpenAlex API</div>
 </header>
 
@@ -559,27 +635,33 @@ td a:hover { text-decoration: underline; }
 
 <div class="container">
 
-  <!-- ============================================================ -->
   <!-- SEARCH FORM -->
-  <!-- ============================================================ -->
   <div class="card">
     <div class="card-title"><span class="icon">Q</span> 論文検索</div>
 
     <div class="alert alert-info">
       <strong>検索構文:</strong>
       スペース区切り = AND検索 / 引用符 = フレーズ一致 / 複数行 = OR検索（各クエリを個別検索し重複除去）
+      <br>キーワードを空欄にして、<strong>所属機関フィルタや著者フィルタだけでも検索可能</strong>です。
     </div>
 
     <div class="form-group">
       <label for="searchQuery">検索キーワード（1行1クエリ、複数行でOR検索）</label>
-      <textarea id="searchQuery" placeholder='"cellulose nanofiber"&#10;"nanocellulose"'></textarea>
+      <textarea id="searchQuery" placeholder='"lithium-ion battery"&#10;"lithium ion battery"'></textarea>
     </div>
 
     <div class="form-group">
       <label for="institutionFilter">所属機関フィルタ（機関名を入力、キーワードとAND検索）</label>
-      <input type="text" id="institutionFilter" placeholder="例: Harvard University; Toyota（セミコロン区切りで複数指定可、OR検索）">
+      <input type="text" id="institutionFilter" placeholder="例: The University of Texas at Austin; Meijo University（セミコロン区切りで複数指定可、OR検索）">
       <div class="form-hint">空欄の場合はフィルタなし。セミコロン（;）区切りで複数機関をOR指定できます。機関名の一部でも検索可能です。</div>
       <div id="institutionResolveStatus" class="hidden" style="margin-top:6px;"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="authorFilter">著者フィルタ（著者名を入力、キーワード・機関とAND検索）</label>
+      <input type="text" id="authorFilter" placeholder="例: Akira Yoshino; John Goodenough（セミコロン区切りで複数指定可、AND検索）">
+      <div class="form-hint">空欄の場合はフィルタなし。セミコロン（;）区切りで複数著者を指定すると、すべての著者を含む論文（AND）を抽出します。同名異人がある場合は最も引用数の多い著者が自動選択されます（解決後の正式名はステータスバーに表示されます）。</div>
+      <div id="authorResolveStatus" class="hidden" style="margin-top:6px;"></div>
     </div>
 
     <div class="form-row">
@@ -647,6 +729,14 @@ td a:hover { text-decoration: underline; }
           <input type="checkbox" id="oaOnly">
           <label for="oaOnly">オープンアクセス論文のみ</label>
         </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="hasAbstractOnly" checked>
+          <label for="hasAbstractOnly">📄 要約ありの論文のみ取得（OpenAlex の has_abstract:true）</label>
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="englishOnly" checked>
+          <label for="englishOnly">🌐 英語論文のみ取得（language:en + タイトルにCJK等が含まれるものを除外）</label>
+        </div>
       </div>
     </details>
 
@@ -661,9 +751,7 @@ td a:hover { text-decoration: underline; }
     </div>
   </div>
 
-  <!-- ============================================================ -->
   <!-- PROGRESS -->
-  <!-- ============================================================ -->
   <div class="progress-section" id="progressSection">
     <div class="card">
       <div class="progress-bar-track">
@@ -676,9 +764,7 @@ td a:hover { text-decoration: underline; }
     </div>
   </div>
 
-  <!-- ============================================================ -->
   <!-- RESULTS SUMMARY -->
-  <!-- ============================================================ -->
   <div id="resultsSection" class="hidden">
 
     <div class="metrics-row" id="metricsRow">
@@ -704,9 +790,7 @@ td a:hover { text-decoration: underline; }
       </div>
     </div>
 
-    <!-- ============================================================ -->
     <!-- DATA TABLE -->
-    <!-- ============================================================ -->
     <div class="card">
       <div class="card-title"><span class="icon">T</span> 論文データ</div>
       <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
@@ -732,9 +816,7 @@ td a:hover { text-decoration: underline; }
       </div>
     </div>
 
-    <!-- ============================================================ -->
     <!-- CHARTS -->
-    <!-- ============================================================ -->
     <div class="card">
       <div class="card-title"><span class="icon">G</span> グラフ</div>
 
@@ -747,11 +829,12 @@ td a:hover { text-decoration: underline; }
 
       <!-- Tab 1: Bar Chart -->
       <div class="tab-panel active" id="panel-trendBar">
-        <div class="chart-container">
+        <div class="chart-container" style="height:520px;">
           <canvas id="chartTrendBar"></canvas>
         </div>
         <div class="export-row">
           <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('trendBar', 'trend_bar.png')">PNGダウンロード</button>
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('trendBar', 'trend_bar.csv')">CSVダウンロード</button>
         </div>
       </div>
 
@@ -770,11 +853,12 @@ td a:hover { text-decoration: underline; }
           <label>著者を選択（最大5名）:</label>
           <div class="author-select-list" id="authorSelectList"></div>
         </div>
-        <div class="chart-container">
+        <div class="chart-container" style="height:520px;">
           <canvas id="chartTrendLine"></canvas>
         </div>
         <div class="export-row">
           <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('trendLine', 'trend_line.png')">PNGダウンロード</button>
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('trendLine', 'trend_line.csv')">CSVダウンロード</button>
         </div>
       </div>
 
@@ -787,11 +871,12 @@ td a:hover { text-decoration: underline; }
           </div>
           <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderAuthorRanking()">描画</button>
         </div>
-        <div class="chart-container" id="authorRankContainer" style="height:600px;">
+        <div class="chart-container" id="authorRankContainer">
           <canvas id="chartAuthorRank"></canvas>
         </div>
         <div class="export-row">
           <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('authorRank', 'author_ranking.png')">PNGダウンロード</button>
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('authorRank', 'author_ranking_full.csv')">CSVダウンロード（全著者）</button>
         </div>
       </div>
 
@@ -804,15 +889,278 @@ td a:hover { text-decoration: underline; }
           </div>
           <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderInstRanking()">描画</button>
         </div>
-        <div class="chart-container" id="instRankContainer" style="height:600px;">
+        <div class="chart-container" id="instRankContainer">
           <canvas id="chartInstRank"></canvas>
         </div>
         <div class="export-row">
           <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('instRank', 'institution_ranking.png')">PNGダウンロード</button>
+          <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('instRank', 'institution_ranking_full.csv')">CSVダウンロード（全機関）</button>
         </div>
       </div>
     </div>
+
+  <!-- Citation Rankings -->
+  <div class="card">
+    <div class="card-title"><span class="icon">★</span> 引用ランキング</div>
+
+    <div class="alert alert-info">
+      <strong>引用ベースの分析:</strong>
+      件数（量）ではなく、被引用数（質・影響力）で著者・機関・ジャーナルを並べます。h-index は量×質の国際標準指標です。各タブの「描画」ボタンで再計算されます。
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="UIController.switchTab('paperCiteRank', this)">被引用論文 Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('authorCiteRank', this)">被引用著者 Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('instCiteRank', this)">被引用機関 Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('venueCiteRank', this)">被引用ジャーナル Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('qqScatter', this)">件数×平均被引用数</button>
+      <button class="tab-btn" onclick="UIController.switchTab('hIndex', this)">h-index Top-N</button>
+    </div>
+
+    <!-- Tab A: Paper Top-N (most-cited individual papers) -->
+    <div class="tab-panel active" id="panel-paperCiteRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNPaperCite">表示数</label>
+          <input type="number" id="topNPaperCite" min="5" max="100" value="20" onchange="ChartRenderer.renderPaperCiteRank()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderPaperCiteRank()">描画</button>
+      </div>
+      <div class="chart-container" id="paperCiteRankContainer">
+        <canvas id="chartPaperCiteRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('paperCiteRank', 'paper_citation_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('paperCiteRank', 'paper_citation_ranking_full.csv')">CSVダウンロード（全論文）</button>
+      </div>
+    </div>
+
+    <!-- Tab B: Author Citation Top-N -->
+    <div class="tab-panel" id="panel-authorCiteRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNAuthorCite">表示数</label>
+          <input type="number" id="topNAuthorCite" min="5" max="50" value="20" onchange="ChartRenderer.renderAuthorCiteRank()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderAuthorCiteRank()">描画</button>
+      </div>
+      <div class="chart-container" id="authorCiteRankContainer">
+        <canvas id="chartAuthorCiteRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('authorCiteRank', 'author_citation_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('authorCiteRank', 'author_citation_ranking_full.csv')">CSVダウンロード（全著者）</button>
+      </div>
+    </div>
+
+    <!-- Tab C: Institution Citation Top-N -->
+    <div class="tab-panel" id="panel-instCiteRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNInstCite">表示数</label>
+          <input type="number" id="topNInstCite" min="5" max="50" value="20" onchange="ChartRenderer.renderInstCiteRank()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderInstCiteRank()">描画</button>
+      </div>
+      <div class="chart-container" id="instCiteRankContainer">
+        <canvas id="chartInstCiteRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('instCiteRank', 'institution_citation_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('instCiteRank', 'institution_citation_ranking_full.csv')">CSVダウンロード（全機関）</button>
+      </div>
+    </div>
+
+    <!-- Tab D: Venue Citation Top-N -->
+    <div class="tab-panel" id="panel-venueCiteRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNVenueCite">表示数</label>
+          <input type="number" id="topNVenueCite" min="5" max="50" value="20" onchange="ChartRenderer.renderVenueCiteRank()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderVenueCiteRank()">描画</button>
+      </div>
+      <div class="chart-container" id="venueCiteRankContainer">
+        <canvas id="chartVenueCiteRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('venueCiteRank', 'venue_citation_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('venueCiteRank', 'venue_citation_ranking_full.csv')">CSVダウンロード（全ジャーナル）</button>
+      </div>
+    </div>
+
+    <!-- Tab E: Quantity x Quality Scatter -->
+    <div class="tab-panel" id="panel-qqScatter">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="qqMode">対象</label>
+          <select id="qqMode" onchange="ChartRenderer.renderQQScatter()">
+            <option value="author">著者</option>
+            <option value="institution">機関</option>
+          </select>
+        </div>
+        <div class="form-group" style="width:160px;">
+          <label for="qqMinPapers">最小論文数</label>
+          <input type="number" id="qqMinPapers" min="1" max="100" value="2" onchange="ChartRenderer.renderQQScatter()">
+        </div>
+        <div class="form-group" style="width:160px;">
+          <label for="qqTopN">表示上位（合計引用）</label>
+          <input type="number" id="qqTopN" min="10" max="500" value="100" onchange="ChartRenderer.renderQQScatter()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderQQScatter()">描画</button>
+      </div>
+      <div class="form-hint">X軸=論文件数（量）/ Y軸=平均被引用数（質）/ バブル=合計被引用数。右上ほど「多産かつ高引用」。マウスオーバーで著者・機関名表示。</div>
+      <div class="chart-container" style="height:600px;">
+        <canvas id="chartQQScatter"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('qqScatter', 'quality_quantity_scatter.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('qqScatter', 'quality_quantity_scatter_full.csv')">CSVダウンロード（全件）</button>
+      </div>
+    </div>
+
+    <!-- Tab F: h-index Top-N -->
+    <div class="tab-panel" id="panel-hIndex">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="hMode">対象</label>
+          <select id="hMode" onchange="ChartRenderer.renderHIndex()">
+            <option value="author">著者</option>
+            <option value="institution">機関</option>
+          </select>
+        </div>
+        <div class="form-group" style="width:150px;">
+          <label for="topNHIndex">表示数</label>
+          <input type="number" id="topNHIndex" min="5" max="50" value="20" onchange="ChartRenderer.renderHIndex()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderHIndex()">描画</button>
+      </div>
+      <div class="form-hint">h-index = 「h本以上の論文がそれぞれh回以上引用されている」最大の h。本コレクション内の論文・引用数のみで計算（OpenAlexの全著作h-indexとは異なります）。</div>
+      <div class="chart-container" id="hIndexContainer">
+        <canvas id="chartHIndex"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('hIndex', 'h_index_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('hIndex', 'h_index_ranking_full.csv')">CSVダウンロード（全件）</button>
+      </div>
+    </div>
   </div>
+
+  <!-- Institution Collaboration Network -->
+  <div class="card">
+    <div class="card-title"><span class="icon">⚙</span> 共同研究ネットワーク（機関）</div>
+
+    <div class="alert alert-info">
+      <strong>共同研究の集計:</strong>
+      1論文に複数機関が記載されている場合、それを「共同研究ペア」として集計します（例：A・B・Cの3機関 → A×B, A×C, B×C の3ペア）。各タブの「描画」ボタンで再計算されます。
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="UIController.switchTab('collabPairRank', this)">A. 共同研究ペア Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('egoNetwork', this)">B. エゴネットワーク</button>
+      <button class="tab-btn" onclick="UIController.switchTab('collabBreadth', this)">C. 共同研究の広さ</button>
+      <button class="tab-btn" onclick="UIController.switchTab('collabPairTrend', this)">D. ペア時系列</button>
+      <button class="tab-btn" onclick="UIController.switchTab('collabMatrix', this)">E. 共同研究マトリクス</button>
+    </div>
+
+    <!-- Tab A: Pair Top-N -->
+    <div class="tab-panel active" id="panel-collabPairRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNCollabPair">表示数</label>
+          <input type="number" id="topNCollabPair" min="5" max="50" value="20" onchange="ChartRenderer.renderCollabPairRank()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderCollabPairRank()">描画</button>
+      </div>
+      <div class="chart-container" id="collabPairRankContainer">
+        <canvas id="chartCollabPairRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('collabPairRank', 'collab_pair_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('collabPairRank', 'collab_pair_ranking_full.csv')">CSVダウンロード（全ペア）</button>
+      </div>
+    </div>
+
+    <!-- Tab B: Ego Network -->
+    <div class="tab-panel" id="panel-egoNetwork">
+      <div class="chart-controls">
+        <div class="form-group" style="flex:1; min-width:280px;">
+          <label for="egoInstSelect">中心機関</label>
+          <select id="egoInstSelect" onchange="ChartRenderer.renderEgoNetwork()">
+            <option value="">（検索を実行すると候補が表示されます）</option>
+          </select>
+        </div>
+        <div class="form-group" style="width:150px;">
+          <label for="topNEgo">表示数</label>
+          <input type="number" id="topNEgo" min="5" max="50" value="20" onchange="ChartRenderer.renderEgoNetwork()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderEgoNetwork()">描画</button>
+      </div>
+      <div class="form-hint">指定した1機関の共同研究先を、共著件数の多い順に並べます。中心機関の候補は「共同先機関数の多い順」で並んでいます。</div>
+      <div class="chart-container" id="egoNetworkContainer">
+        <canvas id="chartEgoNetwork"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('egoNetwork', 'ego_network.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('egoNetwork', 'ego_network_full.csv')">CSVダウンロード（全共同先）</button>
+      </div>
+    </div>
+
+    <!-- Tab C: Collaboration Breadth -->
+    <div class="tab-panel" id="panel-collabBreadth">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNCollabBreadth">表示数</label>
+          <input type="number" id="topNCollabBreadth" min="5" max="50" value="20" onchange="ChartRenderer.renderCollabBreadth()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderCollabBreadth()">描画</button>
+      </div>
+      <div class="form-hint">各機関の「異なる共同研究先の数」（ユニーク件数）。多いほど多様な機関と組んでいるハブ的存在。</div>
+      <div class="chart-container" id="collabBreadthContainer">
+        <canvas id="chartCollabBreadth"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('collabBreadth', 'collab_breadth.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('collabBreadth', 'collab_breadth_full.csv')">CSVダウンロード（全機関）</button>
+      </div>
+    </div>
+
+    <!-- Tab D: Pair Time Series -->
+    <div class="tab-panel" id="panel-collabPairTrend">
+      <div class="chart-controls">
+        <div class="form-group" style="width:180px;">
+          <label for="topNPairTrend">表示するペア数（上位）</label>
+          <input type="number" id="topNPairTrend" min="1" max="10" value="5" onchange="ChartRenderer.renderCollabPairTrend()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderCollabPairTrend()">描画</button>
+      </div>
+      <div class="form-hint">合計共著件数の多い上位ペアについて、年別の共著件数推移を折れ線で表示します。</div>
+      <div class="chart-container" style="height:520px;">
+        <canvas id="chartCollabPairTrend"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('collabPairTrend', 'collab_pair_trend.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('collabPairTrend', 'collab_pair_trend_full.csv')">CSVダウンロード（年×ペア）</button>
+      </div>
+    </div>
+
+    <!-- Tab E: Collaboration Matrix (heatmap) -->
+    <div class="tab-panel" id="panel-collabMatrix">
+      <div class="chart-controls">
+        <div class="form-group" style="width:180px;">
+          <label for="matrixN">対象機関数（上位）</label>
+          <input type="number" id="matrixN" min="5" max="30" value="15" onchange="ChartRenderer.renderCollabMatrix()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderCollabMatrix()">描画</button>
+      </div>
+      <div class="form-hint">対象機関は「共同研究の幅（ユニーク共同先数）」上位N。色が濃い＝共著件数が多い。スクロール可能。※このタブはPNG非対応（HTMLヒートマップのため）。CSVで全件取得できます。</div>
+      <div id="collabMatrixContainer" class="collab-matrix-wrapper" style="margin-top:12px; max-height:700px;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('collabMatrix', 'collab_matrix_full.csv')">CSVダウンロード（マトリクス）</button>
+      </div>
+    </div>
+  </div>
+  </div><!-- /#resultsSection -->
 
   <!-- Upload section (always visible) -->
   <div class="card" id="uploadSection">
@@ -824,20 +1172,14 @@ td a:hover { text-decoration: underline; }
 
 </div>
 
-<!-- ============================================================ -->
 <!-- FOOTER -->
-<!-- ============================================================ -->
 <footer class="app-footer">
   <div>&copy;2026 しばやま</div>
 </footer>
 
-<!-- ============================================================ -->
 <!-- JAVASCRIPT -->
-<!-- ============================================================ -->
 <script>
-// ============================================================
 // State Management
-// ============================================================
 const AppState = {
   papers: [],
   tableData: [],
@@ -850,12 +1192,11 @@ const AppState = {
   isSearching: false,
 };
 
-// ============================================================
 // OpenAlex API Module
-// ============================================================
 const OpenAlexAPI = {
   BASE_URL: 'https://api.openalex.org/works',
   INST_URL: 'https://api.openalex.org/institutions',
+  AUTHOR_URL: 'https://api.openalex.org/authors',
   RATE_LIMIT: 150,
   MAILTO: 'openalex-collector@example.com',
   MAX_RETRIES: 5,
@@ -882,13 +1223,38 @@ const OpenAlexAPI = {
     };
   },
 
+  async resolveAuthor(name, signal = null) {
+    const urlParams = new URLSearchParams({
+      search: name.trim(),
+      per_page: 5,
+      mailto: this.MAILTO,
+    });
+    const url = `${this.AUTHOR_URL}?${urlParams.toString()}`;
+    const resp = await fetch(url, { signal });
+    if (!resp.ok) throw new Error(`Author search failed: HTTP ${resp.status}`);
+    const data = await resp.json();
+    const results = data.results || [];
+    if (!results.length) return null;
+    const top = results[0];
+    return {
+      id: top.id,  // e.g., "https://openalex.org/A123..."
+      display_name: top.display_name,
+      works_count: top.works_count || 0,
+      cited_by_count: top.cited_by_count || 0,
+    };
+  },
+
   async searchOpenAlex(query, params = {}, cursor = '*', signal = null) {
     const urlParams = new URLSearchParams({
-      search: query,
       per_page: Math.min(params.perPage || 200, 200),
       cursor: cursor,
       mailto: this.MAILTO,
     });
+    // search パラメータはキーワードがある時だけ付与（空なら filter のみで検索）
+    const trimmedQuery = (query == null ? '' : String(query)).trim();
+    if (trimmedQuery) {
+      urlParams.set('search', trimmedQuery);
+    }
 
     if (params.sort && params.sort !== 'relevance') {
       urlParams.set('sort', params.sort);
@@ -911,10 +1277,22 @@ const OpenAlexAPI = {
     if (params.oaOnly) {
       filters.push('is_oa:true');
     }
+    if (params.hasAbstractOnly) {
+      filters.push('has_abstract:true');
+    }
+    if (params.languageOnly) {
+      filters.push(`language:${params.languageOnly}`);
+    }
     if (params.institutionIds && params.institutionIds.length > 0) {
       filters.push(`authorships.institutions.lineage:${params.institutionIds.join('|')}`);
     } else if (params.institutionId) {
       filters.push(`authorships.institutions.lineage:${params.institutionId}`);
+    }
+    if (params.authorIds && params.authorIds.length > 0) {
+      // Each author becomes its own AND clause (papers must include all listed authors)
+      params.authorIds.forEach(aid => {
+        filters.push(`authorships.author.id:${aid}`);
+      });
     }
     if (filters.length > 0) {
       urlParams.set('filter', filters.join(','));
@@ -1085,6 +1463,41 @@ const OpenAlexAPI = {
     return pairs.map(p => p[1]).join(' ');
   },
 
+  // タイトルの文字種カテゴリを返す。"latin", "cjk", "cyrillic" など、複数なら "latin+cjk" の形。
+  // OpenAlexの language フィールドは abstract 寄りに判定されるため、タイトルの script を
+  // 別途持っておくと「英語論文として登録されているが日本語タイトル」のような不一致が検出できる。
+  _detectScript(s) {
+    if (!s) return '';
+    const text = String(s);
+    const scripts = [];
+    if (/[A-Za-z]/.test(text)) scripts.push('latin');
+    if (/[぀-ゟ゠-ヿ一-鿿㐀-䶿가-힯]/.test(text)) scripts.push('cjk');
+    if (/[Ѐ-ӿ]/.test(text)) scripts.push('cyrillic');
+    if (/[؀-ۿ]/.test(text)) scripts.push('arabic');
+    if (/[฀-๿]/.test(text)) scripts.push('thai');
+    if (/[ऀ-ॿ]/.test(text)) scripts.push('devanagari');
+    if (/[֐-׿]/.test(text)) scripts.push('hebrew');
+    if (scripts.length === 0) return 'other';
+    return scripts.join('+');
+  },
+
+  // OpenAlex の title/abstract には JATS 由来の <i>, <b>, <sub>, <sup>, <jats:p>, <scp> 等の
+  // タグ残骸が含まれることがある。CSV/表示用には除去してテキストのみに正規化する。
+  _stripTags(s) {
+    if (s == null || s === '') return '';
+    return String(s)
+      .replace(/<[^>]+>/g, '')         // strip any XML/HTML tag
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\s+/g, ' ')             // collapse whitespace
+      .trim();
+  },
+
   transformPaper(raw) {
     const authorships = raw.authorships || [];
     const authors = authorships
@@ -1114,29 +1527,33 @@ const OpenAlexAPI = {
     });
     const institutions = [...instSet].join('; ');
 
+    const cleanTitle = this._stripTags(raw.title || '');
     return {
       paper_id: paperId,
-      title: raw.title || '',
-      abstract: abstract,
+      title: cleanTitle,
+      abstract: this._stripTags(abstract),
       year: raw.publication_year || null,
-      authors: authors,
-      institutions: institutions,
-      venue: venue,
+      authors: this._stripTags(authors),
+      institutions: this._stripTags(institutions),
+      venue: this._stripTags(venue),
       citation_count: raw.cited_by_count || 0,
       publication_date: raw.publication_date || '',
       doi: doi,
+      language: raw.language || '',          // OpenAlex の作品レベル言語コード（abstract寄り判定）
+      title_script: this._detectScript(cleanTitle),  // タイトル文字種（latin / cjk / latin+cjk 等）
     };
   }
 };
 
-// ============================================================
 // Search Controller
-// ============================================================
 const SearchController = {
   async startSearch() {
     const queryText = document.getElementById('searchQuery').value.trim();
-    if (!queryText) {
-      UIController.showToast('検索キーワードを入力してください。', 'error');
+    const hasInstFilter = !!document.getElementById('institutionFilter').value.trim();
+    const hasAuthFilter = !!document.getElementById('authorFilter').value.trim();
+
+    if (!queryText && !hasInstFilter && !hasAuthFilter) {
+      UIController.showToast('検索キーワード、所属機関、著者のいずれかを入力してください。', 'error');
       return;
     }
 
@@ -1147,7 +1564,10 @@ const SearchController = {
       return;
     }
 
-    const queries = queryText.split('\n').map(q => q.trim()).filter(q => q);
+    // キーワードが空でも機関/著者フィルタのみで検索できるよう、空クエリ1件として扱う
+    const queries = queryText
+      ? queryText.split('\n').map(q => q.trim()).filter(q => q)
+      : [''];
     const yearlyMode = document.getElementById('yearlyMode').checked;
     const maxResults = parseInt(document.getElementById('maxResults').value) || 200;
 
@@ -1158,6 +1578,8 @@ const SearchController = {
     const sortOrder = document.getElementById('sortOrder').value;
     const minCitations = parseInt(document.getElementById('minCitations').value) || 0;
     const oaOnly = document.getElementById('oaOnly').checked;
+    const hasAbstractOnly = document.getElementById('hasAbstractOnly').checked;
+    const englishOnly = document.getElementById('englishOnly').checked;
 
     const params = {
       yearFrom, yearTo,
@@ -1165,8 +1587,11 @@ const SearchController = {
       sort: sortOrder,
       minCitations,
       oaOnly,
+      hasAbstractOnly,
+      languageOnly: englishOnly ? 'en' : null,
       institutionId: null,
       institutionIds: null,
+      authorIds: null,
     };
 
     AppState.abortController = new AbortController();
@@ -1214,6 +1639,44 @@ const SearchController = {
         instStatus.classList.add('hidden');
       }
 
+      // Author resolution
+      const authFilterText = document.getElementById('authorFilter').value.trim();
+      const authStatus = document.getElementById('authorResolveStatus');
+      if (authFilterText) {
+        const authNames = authFilterText.split(';').map(s => s.trim()).filter(s => s);
+        authStatus.classList.remove('hidden');
+        authStatus.className = 'alert alert-info';
+        authStatus.textContent = `著者を検索中...（${authNames.length} 件）`;
+        UIController.updateProgress(0, '著者を検索中...');
+
+        const resolvedAuthorIds = [];
+        const resolvedAuthorNames = [];
+        const failedAuthorNames = [];
+
+        for (const name of authNames) {
+          const a = await OpenAlexAPI.resolveAuthor(name, signal);
+          if (a) {
+            resolvedAuthorIds.push(a.id);
+            resolvedAuthorNames.push(`${a.display_name} (引用 ${a.cited_by_count.toLocaleString()})`);
+          } else {
+            failedAuthorNames.push(name);
+          }
+        }
+
+        if (resolvedAuthorIds.length > 0) {
+          params.authorIds = resolvedAuthorIds;
+          let msg = `著者フィルタ (AND): ${resolvedAuthorNames.join(' & ')}`;
+          if (failedAuthorNames.length > 0) msg += `（未検出: ${failedAuthorNames.join(', ')}）`;
+          authStatus.className = 'alert alert-success';
+          authStatus.textContent = msg;
+        } else {
+          authStatus.className = 'alert alert-warning';
+          authStatus.textContent = '一致する著者が見つかりませんでした。著者フィルタなしで検索します。';
+        }
+      } else {
+        authStatus.classList.add('hidden');
+      }
+
       let rawPapers;
 
       if (yearlyMode && queries.length === 1) {
@@ -1257,14 +1720,25 @@ const SearchController = {
 
       UIController.updateProgress(100, '完了');
 
-      const tableData = rawPapers.map(p => OpenAlexAPI.transformPaper(p));
+      let tableData = rawPapers.map(p => OpenAlexAPI.transformPaper(p));
+
+      // OpenALEXの language:en は要約ベース判定のため、タイトルだけ多言語の論文が混入する。
+      // CJK統合漢字 / ひらがな / カタカナ / ハングル / キリル / ヘブライ / アラビア / タイ / デーヴァナーガリー を検出。
+      let droppedByLang = 0;
+      if (englishOnly) {
+        const NON_LATIN_RE = /[぀-ゟ゠-ヿ一-鿿㐀-䶿가-힯Ѐ-ӿ֐-׿؀-ۿ฀-๿ऀ-ॿ]/;
+        const before = tableData.length;
+        tableData = tableData.filter(d => !NON_LATIN_RE.test(d.title || ''));
+        droppedByLang = before - tableData.length;
+      }
+
       AppState.papers = rawPapers;
       AppState.tableData = tableData;
       AppState.currentPage = 0;
       AppState.sortColumn = 'year';
       AppState.sortDirection = 'desc';
 
-      this.renderResults(tableData, queries.length);
+      this.renderResults(tableData, queries.length, droppedByLang);
 
     } catch (e) {
       if (e.name === 'AbortError') {
@@ -1285,9 +1759,11 @@ const SearchController = {
     }
   },
 
-  renderResults(data, queryCount) {
+  renderResults(data, queryCount, droppedByLang = 0) {
     if (!data.length) {
-      UIController.showToast('該当する論文が見つかりませんでした。', 'error');
+      let emptyMsg = '該当する論文が見つかりませんでした。';
+      if (droppedByLang > 0) emptyMsg += `（CJK等タイトル ${droppedByLang} 件を除外しました）`;
+      UIController.showToast(emptyMsg, 'error');
       return;
     }
 
@@ -1309,11 +1785,13 @@ const SearchController = {
 
     let msg = `論文 ${data.length} 件を取得しました（要約あり: ${absCount} 件）。`;
     if (queryCount > 1) msg += `（${queryCount} クエリ統合、重複除去済み）`;
+    if (droppedByLang > 0) msg += ` 🌐 CJK等タイトル ${droppedByLang} 件を除外`;
     UIController.showToast(msg, 'success');
 
     TableRenderer.sortAndRender();
     ChartRenderer.renderTrendBar();
     ChartRenderer.renderTrendLine();
+    ChartRenderer.populateEgoSelect();
   },
 
   calculateCAGR(data) {
@@ -1354,9 +1832,7 @@ const SearchController = {
   }
 };
 
-// ============================================================
 // Table Renderer
-// ============================================================
 const TableRenderer = {
   sortAndRender() {
     const data = [...AppState.tableData];
@@ -1438,9 +1914,7 @@ const TableRenderer = {
   }
 };
 
-// ============================================================
 // Chart Renderer
-// ============================================================
 const ChartRenderer = {
   COLORS: ['#1a73e8', '#ea4335', '#34a853', '#fbbc04', '#9334e6'],
 
@@ -1459,6 +1933,32 @@ const ChartRenderer = {
       values.push(counts[y] || 0);
     }
     return { years, values };
+  },
+
+  // Shared aggregation helpers (used by both rendering and CSV export). Returns ALL entries,
+  // sorted by count descending. Caller can `.slice(0, topN)` for chart rendering.
+  getAuthorCounts() {
+    const counts = {};
+    AppState.tableData.forEach(d => {
+      if (!d.authors) return;
+      d.authors.split('; ').forEach(a => {
+        a = a.trim();
+        if (a) counts[a] = (counts[a] || 0) + 1;
+      });
+    });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  },
+
+  getInstCounts() {
+    const counts = {};
+    AppState.tableData.forEach(d => {
+      if (!d.institutions) return;
+      d.institutions.split('; ').forEach(inst => {
+        inst = inst.trim();
+        if (inst) counts[inst] = (counts[inst] || 0) + 1;
+      });
+    });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
   },
 
   destroyChart(key) {
@@ -1538,7 +2038,7 @@ const ChartRenderer = {
           borderColor: '#1a73e8',
           backgroundColor: 'rgba(26, 115, 232, 0.1)',
           fill: true,
-          tension: 0.2,
+          tension: 0,
           pointRadius: 4,
           pointBackgroundColor: '#1a73e8',
         }]
@@ -1628,7 +2128,7 @@ const ChartRenderer = {
         data: years.map(y => counts[y]),
         borderColor: this.COLORS[i % this.COLORS.length],
         backgroundColor: 'transparent',
-        tension: 0.2,
+        tension: 0,
         pointRadius: 4,
         pointBackgroundColor: this.COLORS[i % this.COLORS.length],
       };
@@ -1661,17 +2161,7 @@ const ChartRenderer = {
   renderAuthorRanking() {
     this.destroyChart('authorRank');
     const topN = parseInt(document.getElementById('topNAuthors').value) || 20;
-
-    const authorCounts = {};
-    AppState.tableData.forEach(d => {
-      if (!d.authors) return;
-      d.authors.split('; ').forEach(a => {
-        a = a.trim();
-        if (a) authorCounts[a] = (authorCounts[a] || 0) + 1;
-      });
-    });
-
-    const sorted = Object.entries(authorCounts).sort((a, b) => b[1] - a[1]).slice(0, topN);
+    const sorted = this.getAuthorCounts().slice(0, topN);
     if (!sorted.length) return;
 
     const labels = sorted.map(e => e[0]);
@@ -1711,23 +2201,13 @@ const ChartRenderer = {
       }
     });
 
-    document.getElementById('authorRankContainer').style.height = Math.max(400, sorted.length * 30 + 80) + 'px';
+    document.getElementById('authorRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
   },
 
   renderInstRanking() {
     this.destroyChart('instRank');
     const topN = parseInt(document.getElementById('topNInst').value) || 20;
-
-    const instCounts = {};
-    AppState.tableData.forEach(d => {
-      if (!d.institutions) return;
-      d.institutions.split('; ').forEach(inst => {
-        inst = inst.trim();
-        if (inst) instCounts[inst] = (instCounts[inst] || 0) + 1;
-      });
-    });
-
-    const sorted = Object.entries(instCounts).sort((a, b) => b[1] - a[1]).slice(0, topN);
+    const sorted = this.getInstCounts().slice(0, topN);
     if (!sorted.length) return;
 
     const labels = sorted.map(e => e[0]);
@@ -1767,41 +2247,832 @@ const ChartRenderer = {
       }
     });
 
-    document.getElementById('instRankContainer').style.height = Math.max(400, sorted.length * 30 + 80) + 'px';
+    document.getElementById('instRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // Citation stats helpers
+
+  // h-index: largest h such that h papers each have >= h citations
+  _computeHIndex(citations) {
+    const sorted = [...citations].sort((a, b) => b - a);
+    let h = 0;
+    for (let i = 0; i < sorted.length; i++) {
+      if (sorted[i] >= i + 1) h = i + 1; else break;
+    }
+    return h;
+  },
+
+  // Aggregates per-author stats. Each paper's citation count is credited fully to each
+  // listed author (standard convention; OpenAlex authorship-level fractional weighting is
+  // not used here for simplicity).
+  getAuthorCitationStats() {
+    const stats = {};
+    AppState.tableData.forEach(d => {
+      if (!d.authors) return;
+      const cite = Number(d.citation_count) || 0;
+      d.authors.split('; ').forEach(a => {
+        a = a.trim();
+        if (!a) return;
+        if (!stats[a]) stats[a] = { name: a, papers: 0, totalCitations: 0, citations: [] };
+        stats[a].papers++;
+        stats[a].totalCitations += cite;
+        stats[a].citations.push(cite);
+      });
+    });
+    Object.values(stats).forEach(s => {
+      s.hIndex = this._computeHIndex(s.citations);
+      s.avgCitations = s.papers > 0 ? s.totalCitations / s.papers : 0;
+    });
+    return Object.values(stats);
+  },
+
+  getInstCitationStats() {
+    const stats = {};
+    AppState.tableData.forEach(d => {
+      if (!d.institutions) return;
+      const cite = Number(d.citation_count) || 0;
+      d.institutions.split('; ').forEach(inst => {
+        inst = inst.trim();
+        if (!inst) return;
+        if (!stats[inst]) stats[inst] = { name: inst, papers: 0, totalCitations: 0, citations: [] };
+        stats[inst].papers++;
+        stats[inst].totalCitations += cite;
+        stats[inst].citations.push(cite);
+      });
+    });
+    Object.values(stats).forEach(s => {
+      s.hIndex = this._computeHIndex(s.citations);
+      s.avgCitations = s.papers > 0 ? s.totalCitations / s.papers : 0;
+    });
+    return Object.values(stats);
+  },
+
+  getVenueCitationStats() {
+    const stats = {};
+    AppState.tableData.forEach(d => {
+      const v = (d.venue || '').trim();
+      if (!v) return;
+      const cite = Number(d.citation_count) || 0;
+      if (!stats[v]) stats[v] = { name: v, papers: 0, totalCitations: 0, citations: [] };
+      stats[v].papers++;
+      stats[v].totalCitations += cite;
+      stats[v].citations.push(cite);
+    });
+    Object.values(stats).forEach(s => {
+      s.hIndex = this._computeHIndex(s.citations);
+      s.avgCitations = s.papers > 0 ? s.totalCitations / s.papers : 0;
+    });
+    return Object.values(stats);
+  },
+
+  _truncateLabel(s, max = 60) {
+    if (!s) return '';
+    return s.length > max ? s.substring(0, max - 1) + '…' : s;
+  },
+
+  // A. 被引用論文 Top-N (most-cited individual papers)
+  renderPaperCiteRank() {
+    this.destroyChart('paperCiteRank');
+    const topN = parseInt(document.getElementById('topNPaperCite').value) || 20;
+    const sorted = [...AppState.tableData]
+      .filter(d => Number(d.citation_count) > 0)
+      .sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0))
+      .slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(d => this._truncateLabel(d.title || '(no title)', 60));
+    const values = sorted.map(d => Number(d.citation_count) || 0);
+    const fullTitles = sorted.map(d => d.title || '');
+
+    const ctx = document.getElementById('chartPaperCiteRank').getContext('2d');
+    AppState.charts.paperCiteRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '被引用数',
+          data: values,
+          backgroundColor: 'rgba(13, 71, 161, 0.78)',
+          borderColor: '#0d47a1',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `被引用論文 Top ${topN}`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => {
+                const i = items[0].dataIndex;
+                return fullTitles[i];
+              },
+              label: (item) => `被引用数: ${item.raw.toLocaleString()}（${sorted[item.dataIndex].year || '-'}年, ${sorted[item.dataIndex].venue || '-'}）`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('paperCiteRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // B. 被引用著者 Top-N (sum of citations per author)
+  renderAuthorCiteRank() {
+    this.destroyChart('authorCiteRank');
+    const topN = parseInt(document.getElementById('topNAuthorCite').value) || 20;
+    const sorted = this.getAuthorCitationStats()
+      .sort((a, b) => b.totalCitations - a.totalCitations)
+      .slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(s => s.name);
+    const values = sorted.map(s => s.totalCitations);
+    const papers = sorted.map(s => s.papers);
+
+    const ctx = document.getElementById('chartAuthorCiteRank').getContext('2d');
+    AppState.charts.authorCiteRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '合計被引用数',
+          data: values,
+          backgroundColor: 'rgba(26, 115, 232, 0.78)',
+          borderColor: '#1565c0',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `被引用著者 Top ${topN}（合計被引用数）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              label: (item) => `合計引用: ${item.raw.toLocaleString()} / 論文数: ${papers[item.dataIndex]}`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '合計被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('authorCiteRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // C. 被引用機関 Top-N (sum of citations per institution)
+  renderInstCiteRank() {
+    this.destroyChart('instCiteRank');
+    const topN = parseInt(document.getElementById('topNInstCite').value) || 20;
+    const sorted = this.getInstCitationStats()
+      .sort((a, b) => b.totalCitations - a.totalCitations)
+      .slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(s => s.name);
+    const values = sorted.map(s => s.totalCitations);
+    const papers = sorted.map(s => s.papers);
+
+    const ctx = document.getElementById('chartInstCiteRank').getContext('2d');
+    AppState.charts.instCiteRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '合計被引用数',
+          data: values,
+          backgroundColor: 'rgba(21, 101, 192, 0.78)',
+          borderColor: '#0d47a1',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `被引用機関 Top ${topN}（合計被引用数）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              label: (item) => `合計引用: ${item.raw.toLocaleString()} / 論文数: ${papers[item.dataIndex]}`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '合計被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('instCiteRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // D. 被引用ジャーナル Top-N (sum of citations per venue)
+  renderVenueCiteRank() {
+    this.destroyChart('venueCiteRank');
+    const topN = parseInt(document.getElementById('topNVenueCite').value) || 20;
+    const sorted = this.getVenueCitationStats()
+      .sort((a, b) => b.totalCitations - a.totalCitations)
+      .slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(s => this._truncateLabel(s.name, 60));
+    const values = sorted.map(s => s.totalCitations);
+    const papers = sorted.map(s => s.papers);
+    const fullNames = sorted.map(s => s.name);
+
+    const ctx = document.getElementById('chartVenueCiteRank').getContext('2d');
+    AppState.charts.venueCiteRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '合計被引用数',
+          data: values,
+          backgroundColor: 'rgba(52, 168, 83, 0.78)',
+          borderColor: '#1e8e3e',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `被引用ジャーナル Top ${topN}（合計被引用数）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullNames[items[0].dataIndex],
+              label: (item) => `合計引用: ${item.raw.toLocaleString()} / 掲載論文数: ${papers[item.dataIndex]}`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '合計被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('venueCiteRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // E. Quality x Quantity Scatter (件数 × 平均被引用数)
+  renderQQScatter() {
+    this.destroyChart('qqScatter');
+    const mode = document.getElementById('qqMode').value;
+    const minPapers = parseInt(document.getElementById('qqMinPapers').value) || 1;
+    const topN = parseInt(document.getElementById('qqTopN').value) || 100;
+
+    const stats = mode === 'institution' ? this.getInstCitationStats() : this.getAuthorCitationStats();
+    const filtered = stats
+      .filter(s => s.papers >= minPapers)
+      .sort((a, b) => b.totalCitations - a.totalCitations)
+      .slice(0, topN);
+    if (!filtered.length) return;
+
+    // Bubble radius scaled by sqrt of total citations (so area ~ totalCitations)
+    const maxTotal = Math.max(...filtered.map(s => s.totalCitations), 1);
+    const data = filtered.map(s => ({
+      x: s.papers,
+      y: s.avgCitations,
+      r: 4 + 14 * Math.sqrt(s.totalCitations / maxTotal),
+      name: s.name,
+      total: s.totalCitations,
+      hIndex: s.hIndex,
+    }));
+
+    const ctx = document.getElementById('chartQQScatter').getContext('2d');
+    AppState.charts.qqScatter = new Chart(ctx, {
+      type: 'bubble',
+      data: {
+        datasets: [{
+          label: mode === 'institution' ? '機関' : '著者',
+          data,
+          backgroundColor: 'rgba(26, 115, 232, 0.45)',
+          borderColor: '#1565c0',
+          borderWidth: 1,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `件数 × 平均被引用数（${mode === 'institution' ? '機関' : '著者'}）— 上位${filtered.length}件 / バブル=合計引用`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              label: (item) => {
+                const d = item.raw;
+                return [
+                  d.name,
+                  `論文数: ${d.x}`,
+                  `平均被引用: ${d.y.toFixed(1)}`,
+                  `合計被引用: ${d.total.toLocaleString()}`,
+                  `h-index: ${d.hIndex}`,
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '論文件数（量）', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { title: { display: true, text: '平均被引用数（質）', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }
+        }
+      }
+    });
+  },
+
+  // F. h-index Top-N (per author or institution)
+  renderHIndex() {
+    this.destroyChart('hIndex');
+    const mode = document.getElementById('hMode').value;
+    const topN = parseInt(document.getElementById('topNHIndex').value) || 20;
+
+    const stats = mode === 'institution' ? this.getInstCitationStats() : this.getAuthorCitationStats();
+    const sorted = stats
+      .sort((a, b) => b.hIndex - a.hIndex || b.totalCitations - a.totalCitations)
+      .slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(s => this._truncateLabel(s.name, 60));
+    const values = sorted.map(s => s.hIndex);
+    const fullNames = sorted.map(s => s.name);
+    const totals = sorted.map(s => s.totalCitations);
+    const papers = sorted.map(s => s.papers);
+
+    const ctx = document.getElementById('chartHIndex').getContext('2d');
+    AppState.charts.hIndex = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'h-index',
+          data: values,
+          backgroundColor: 'rgba(147, 52, 230, 0.78)',
+          borderColor: '#6a1b9a',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `h-index Top ${topN}（${mode === 'institution' ? '機関' : '著者'}・本コレクション内）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullNames[items[0].dataIndex],
+              label: (item) => `h-index: ${item.raw} / 論文数: ${papers[item.dataIndex]} / 合計引用: ${totals[item.dataIndex].toLocaleString()}`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: 'h-index', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('hIndexContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // Institution collaboration helpers
+
+  // Returns Map<"instA||instB", count> with instA < instB lexicographically (canonical key)
+  getCollabPairs() {
+    const pairs = new Map();
+    AppState.tableData.forEach(d => {
+      if (!d.institutions) return;
+      const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+      if (insts.length < 2) return;
+      for (let i = 0; i < insts.length; i++) {
+        for (let j = i + 1; j < insts.length; j++) {
+          const [a, b] = insts[i] < insts[j] ? [insts[i], insts[j]] : [insts[j], insts[i]];
+          const key = `${a}||${b}`;
+          pairs.set(key, (pairs.get(key) || 0) + 1);
+        }
+      }
+    });
+    return pairs;
+  },
+
+  // Returns Map<inst, Map<partnerInst, count>>
+  getInstPartnerMap() {
+    const map = new Map();
+    AppState.tableData.forEach(d => {
+      if (!d.institutions) return;
+      const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+      if (insts.length < 2) return;
+      insts.forEach(inst => {
+        if (!map.has(inst)) map.set(inst, new Map());
+        const partners = map.get(inst);
+        insts.forEach(other => {
+          if (other !== inst) {
+            partners.set(other, (partners.get(other) || 0) + 1);
+          }
+        });
+      });
+    });
+    return map;
+  },
+
+  // Populate the ego-network select dropdown (called from renderResults)
+  populateEgoSelect() {
+    const sel = document.getElementById('egoInstSelect');
+    if (!sel) return;
+    const partnerMap = this.getInstPartnerMap();
+    if (!partnerMap.size) {
+      sel.innerHTML = '<option value="">（共同研究データがありません）</option>';
+      return;
+    }
+    // Sort by collaboration breadth (number of unique partners) desc
+    const sorted = [...partnerMap.entries()]
+      .map(([inst, partners]) => [inst, partners.size])
+      .sort((a, b) => b[1] - a[1]);
+    sel.innerHTML = sorted.map(([inst, breadth]) =>
+      `<option value="${inst.replace(/"/g, '&quot;')}">${this._truncateLabel(inst, 80)}（共同先 ${breadth}）</option>`
+    ).join('');
+  },
+
+  // A. 共同研究ペア Top-N (horizontal bar)
+  renderCollabPairRank() {
+    this.destroyChart('collabPairRank');
+    const topN = parseInt(document.getElementById('topNCollabPair').value) || 20;
+    const pairs = this.getCollabPairs();
+    const sorted = [...pairs.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(([k]) => this._truncateLabel(k.replace('||', ' × '), 80));
+    const values = sorted.map(([, c]) => c);
+    const fullLabels = sorted.map(([k]) => k.replace('||', ' × '));
+
+    const ctx = document.getElementById('chartCollabPairRank').getContext('2d');
+    AppState.charts.collabPairRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '共著論文数',
+          data: values,
+          backgroundColor: 'rgba(234, 67, 53, 0.75)',
+          borderColor: '#c5221f',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `共同研究ペア Top ${topN}`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullLabels[items[0].dataIndex],
+              label: (item) => `共著論文数: ${item.raw.toLocaleString()}`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '共著論文数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('collabPairRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // B. エゴネットワーク (top partners of selected institution)
+  renderEgoNetwork() {
+    this.destroyChart('egoNetwork');
+    const inst = document.getElementById('egoInstSelect').value;
+    if (!inst) return;
+    const topN = parseInt(document.getElementById('topNEgo').value) || 20;
+    const partnerMap = this.getInstPartnerMap();
+    const partners = partnerMap.get(inst);
+    if (!partners || !partners.size) return;
+
+    const sorted = [...partners.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN);
+    const labels = sorted.map(([n]) => this._truncateLabel(n, 70));
+    const values = sorted.map(([, c]) => c);
+    const fullNames = sorted.map(([n]) => n);
+
+    const ctx = document.getElementById('chartEgoNetwork').getContext('2d');
+    AppState.charts.egoNetwork = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '共著論文数',
+          data: values,
+          backgroundColor: 'rgba(251, 188, 4, 0.78)',
+          borderColor: '#e37400',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `${this._truncateLabel(inst, 60)} の共同研究先 Top ${Math.min(topN, sorted.length)}`,
+            font: { size: 15, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullNames[items[0].dataIndex],
+              label: (item) => `${inst} と ${item.raw.toLocaleString()} 件の共著`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '共著論文数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('egoNetworkContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // C. 共同研究の広さ (number of unique partners per institution)
+  renderCollabBreadth() {
+    this.destroyChart('collabBreadth');
+    const topN = parseInt(document.getElementById('topNCollabBreadth').value) || 20;
+    const partnerMap = this.getInstPartnerMap();
+    const sorted = [...partnerMap.entries()]
+      .map(([inst, partners]) => [inst, partners.size])
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, topN);
+    if (!sorted.length) return;
+
+    const labels = sorted.map(([n]) => this._truncateLabel(n, 70));
+    const values = sorted.map(([, c]) => c);
+    const fullNames = sorted.map(([n]) => n);
+
+    const ctx = document.getElementById('chartCollabBreadth').getContext('2d');
+    AppState.charts.collabBreadth = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '共同先機関数',
+          data: values,
+          backgroundColor: 'rgba(52, 168, 83, 0.78)',
+          borderColor: '#1e8e3e',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `共同研究の広さ Top ${topN}（ユニーク共同先機関数）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullNames[items[0].dataIndex],
+              label: (item) => `共同先機関数: ${item.raw.toLocaleString()}`,
+            }
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '共同先機関数（ユニーク）', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('collabBreadthContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+  },
+
+  // D. ペア時系列 (top pairs over years)
+  renderCollabPairTrend() {
+    this.destroyChart('collabPairTrend');
+    const topN = parseInt(document.getElementById('topNPairTrend').value) || 5;
+    const pairs = this.getCollabPairs();
+    const topPairs = [...pairs.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN);
+    if (!topPairs.length) return;
+    const topPairKeys = new Set(topPairs.map(([k]) => k));
+
+    // Build year × pair counts
+    const yearCounts = {};   // pairKey -> {year -> count}
+    AppState.tableData.forEach(d => {
+      if (!d.year || !d.institutions) return;
+      const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+      if (insts.length < 2) return;
+      for (let i = 0; i < insts.length; i++) {
+        for (let j = i + 1; j < insts.length; j++) {
+          const [a, b] = insts[i] < insts[j] ? [insts[i], insts[j]] : [insts[j], insts[i]];
+          const key = `${a}||${b}`;
+          if (!topPairKeys.has(key)) continue;
+          if (!yearCounts[key]) yearCounts[key] = {};
+          yearCounts[key][d.year] = (yearCounts[key][d.year] || 0) + 1;
+        }
+      }
+    });
+
+    const allYears = AppState.tableData.map(d => d.year).filter(y => y);
+    if (!allYears.length) return;
+    const minY = Math.min(...allYears);
+    const maxY = Math.max(...allYears);
+    const years = [];
+    for (let y = minY; y <= maxY; y++) years.push(y);
+
+    const datasets = topPairs.map(([key], i) => ({
+      label: this._truncateLabel(key.replace('||', ' × '), 60),
+      data: years.map(y => (yearCounts[key] && yearCounts[key][y]) || 0),
+      borderColor: this.COLORS[i % this.COLORS.length],
+      backgroundColor: 'transparent',
+      tension: 0,
+      pointRadius: 4,
+      pointBackgroundColor: this.COLORS[i % this.COLORS.length],
+    }));
+
+    const ctx = document.getElementById('chartCollabPairTrend').getContext('2d');
+    AppState.charts.collabPairTrend = new Chart(ctx, {
+      type: 'line',
+      data: { labels: years, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top', labels: { font: { size: 11 } } },
+          title: {
+            display: true,
+            text: `共同研究ペア Top ${topN} の年別推移`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          }
+        },
+        scales: {
+          x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
+          y: { title: { display: true, text: '共著論文数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } }
+        }
+      }
+    });
+  },
+
+  // E. 共同研究マトリクス (HTML heatmap, no Chart.js)
+  renderCollabMatrix() {
+    const N = parseInt(document.getElementById('matrixN').value) || 15;
+    const partnerMap = this.getInstPartnerMap();
+    const container = document.getElementById('collabMatrixContainer');
+    if (!partnerMap.size) {
+      container.innerHTML = '<div style="padding:24px;color:#5f6368;">共同研究データがありません。</div>';
+      return;
+    }
+
+    // Top-N institutions by unique partner count (collaboration breadth)
+    const ranking = [...partnerMap.entries()]
+      .map(([inst, partners]) => [inst, partners.size])
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, N);
+    const insts = ranking.map(([i]) => i);
+
+    // Find max value for color scale
+    let maxVal = 0;
+    insts.forEach(a => {
+      insts.forEach(b => {
+        if (a === b) return;
+        const v = (partnerMap.get(a) && partnerMap.get(a).get(b)) || 0;
+        if (v > maxVal) maxVal = v;
+      });
+    });
+
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+    let html = '<table class="collab-matrix"><thead><tr>';
+    html += '<th class="corner"></th>';
+    insts.forEach(c => {
+      html += `<th class="col-head" title="${esc(c)}"><span class="col-head-inner">${esc(this._truncateLabel(c, 40))}</span></th>`;
+    });
+    html += '</tr></thead><tbody>';
+
+    insts.forEach(rowInst => {
+      html += `<tr><th class="row-head" title="${esc(rowInst)}">${esc(this._truncateLabel(rowInst, 40))}</th>`;
+      insts.forEach(colInst => {
+        if (rowInst === colInst) {
+          html += '<td class="diag">—</td>';
+        } else {
+          const v = (partnerMap.get(rowInst) && partnerMap.get(rowInst).get(colInst)) || 0;
+          const intensity = maxVal > 0 ? v / maxVal : 0;
+          const bg = `rgba(26, 115, 232, ${(0.05 + intensity * 0.85).toFixed(3)})`;
+          const cls = v === 0 ? 'cell zero' : 'cell';
+          html += `<td class="${cls}" style="background:${bg}" title="${esc(rowInst)} × ${esc(colInst)}: ${v}">${v || ''}</td>`;
+        }
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
   }
 };
 
-// ============================================================
 // Exporter
-// ============================================================
 const Exporter = {
+  _csvEscape(v) {
+    let s = String(v == null ? '' : v);
+    if (s.includes(',') || s.includes('"') || s.includes('\n')) {
+      s = '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  },
+
+  // rows = array of arrays. First row = header. Adds UTF-8 BOM for Excel.
+  _downloadCSVText(rows, filename) {
+    if (!rows || rows.length <= 1) {
+      UIController.showToast('ダウンロードするデータがありません。', 'error');
+      return;
+    }
+    const csv = '﻿' + rows.map(r => r.map(v => this._csvEscape(v)).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+
   downloadCSV() {
     if (!AppState.tableData.length) {
       UIController.showToast('ダウンロードするデータがありません。', 'error');
       return;
     }
-
-    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi'];
-    const header = columns.join(',');
-    const rows = AppState.tableData.map(row =>
-      columns.map(col => {
-        let val = String(row[col] == null ? '' : row[col]);
-        if (val.includes(',') || val.includes('"') || val.includes('\n')) {
-          val = '"' + val.replace(/"/g, '""') + '"';
-        }
-        return val;
-      }).join(',')
-    );
-
-    const csv = '\uFEFF' + header + '\n' + rows.join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `openalex_papers_${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script'];
+    const _rows = [columns];
+    AppState.tableData.forEach(row => {
+      _rows.push(columns.map(col => row[col] == null ? '' : row[col]));
+    });
+    this._downloadCSVText(_rows, `openalex_papers_${new Date().toISOString().slice(0, 10)}.csv`);
   },
+
 
   downloadChartPNG(chartKey, filename) {
     const chart = AppState.charts[chartKey];
@@ -1814,12 +3085,242 @@ const Exporter = {
     a.href = url;
     a.download = filename;
     a.click();
+  },
+
+  // Per-chart underlying-data CSV. Author/Institution rankings export the FULL list
+  // (not just Top-N shown on screen) so the user can rebuild richer charts in Excel.
+  downloadChartCSV(chartKey, filename) {
+    if (!AppState.tableData.length) {
+      UIController.showToast('ダウンロードするデータがありません。', 'error');
+      return;
+    }
+    const rows = [];
+
+    if (chartKey === 'trendBar') {
+      const { years, values } = ChartRenderer.getYearCounts(AppState.tableData);
+      rows.push(['year', 'count']);
+      years.forEach((y, i) => rows.push([y, values[i]]));
+
+    } else if (chartKey === 'trendLine') {
+      const mode = document.getElementById('lineMode').value;
+      const selected = [];
+      document.querySelectorAll('.author-cb:checked').forEach(cb => selected.push(cb.value));
+
+      if (mode === 'author' && selected.length) {
+        // Wide format: year, author1, author2, ... (matches what's rendered in the chart)
+        const allYears = AppState.tableData.map(d => d.year).filter(y => y);
+        if (!allYears.length) {
+          UIController.showToast('ダウンロードするデータがありません。', 'error');
+          return;
+        }
+        const minY = Math.min(...allYears);
+        const maxY = Math.max(...allYears);
+        const yearList = [];
+        for (let y = minY; y <= maxY; y++) yearList.push(y);
+
+        rows.push(['year', ...selected]);
+        yearList.forEach(y => {
+          const row = [y];
+          selected.forEach(author => {
+            let c = 0;
+            AppState.tableData.forEach(d => {
+              if (d.year === y && d.authors && d.authors.split('; ').map(a => a.trim()).includes(author)) c++;
+            });
+            row.push(c);
+          });
+          rows.push(row);
+        });
+      } else {
+        const { years, values } = ChartRenderer.getYearCounts(AppState.tableData);
+        rows.push(['year', 'count']);
+        years.forEach((y, i) => rows.push([y, values[i]]));
+      }
+
+    } else if (chartKey === 'authorRank') {
+      const sorted = ChartRenderer.getAuthorCounts();   // full list, not Top-N
+      rows.push(['rank', 'author', 'count']);
+      sorted.forEach(([name, count], i) => rows.push([i + 1, name, count]));
+
+    } else if (chartKey === 'instRank') {
+      const sorted = ChartRenderer.getInstCounts();      // full list, not Top-N
+      rows.push(['rank', 'institution', 'count']);
+      sorted.forEach(([name, count], i) => rows.push([i + 1, name, count]));
+
+    // Citation rankings
+    } else if (chartKey === 'paperCiteRank') {
+      // Full list of papers sorted by citation_count desc (not just Top-N)
+      const sorted = [...AppState.tableData].sort((a, b) =>
+        (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
+      rows.push(['rank', 'title', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'doi']);
+      sorted.forEach((d, i) => rows.push([
+        i + 1,
+        d.title || '',
+        d.year || '',
+        d.authors || '',
+        d.institutions || '',
+        d.venue || '',
+        Number(d.citation_count) || 0,
+        d.doi || '',
+      ]));
+
+    } else if (chartKey === 'authorCiteRank') {
+      const sorted = ChartRenderer.getAuthorCitationStats()
+        .sort((a, b) => b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'author', 'paper_count', 'total_citations', 'avg_citations', 'h_index']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.name, s.papers, s.totalCitations, s.avgCitations.toFixed(2), s.hIndex
+      ]));
+
+    } else if (chartKey === 'instCiteRank') {
+      const sorted = ChartRenderer.getInstCitationStats()
+        .sort((a, b) => b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'institution', 'paper_count', 'total_citations', 'avg_citations', 'h_index']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.name, s.papers, s.totalCitations, s.avgCitations.toFixed(2), s.hIndex
+      ]));
+
+    } else if (chartKey === 'venueCiteRank') {
+      const sorted = ChartRenderer.getVenueCitationStats()
+        .sort((a, b) => b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'venue', 'paper_count', 'total_citations', 'avg_citations', 'h_index']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.name, s.papers, s.totalCitations, s.avgCitations.toFixed(2), s.hIndex
+      ]));
+
+    } else if (chartKey === 'qqScatter') {
+      const mode = document.getElementById('qqMode').value;
+      const minPapers = parseInt(document.getElementById('qqMinPapers').value) || 1;
+      const stats = mode === 'institution'
+        ? ChartRenderer.getInstCitationStats()
+        : ChartRenderer.getAuthorCitationStats();
+      // CSV exports ALL entities meeting the min_papers threshold (the on-screen Top-N is
+      // only a display cap to keep the scatter readable; CSV is for full re-analysis).
+      const sorted = stats
+        .filter(s => s.papers >= minPapers)
+        .sort((a, b) => b.totalCitations - a.totalCitations);
+      const nameCol = mode === 'institution' ? 'institution' : 'author';
+      rows.push([nameCol, 'paper_count', 'total_citations', 'avg_citations', 'h_index']);
+      sorted.forEach(s => rows.push([
+        s.name, s.papers, s.totalCitations, s.avgCitations.toFixed(2), s.hIndex
+      ]));
+
+    } else if (chartKey === 'hIndex') {
+      const mode = document.getElementById('hMode').value;
+      const stats = mode === 'institution'
+        ? ChartRenderer.getInstCitationStats()
+        : ChartRenderer.getAuthorCitationStats();
+      const sorted = stats.sort((a, b) => b.hIndex - a.hIndex || b.totalCitations - a.totalCitations);
+      const nameCol = mode === 'institution' ? 'institution' : 'author';
+      rows.push(['rank', nameCol, 'h_index', 'paper_count', 'total_citations', 'avg_citations']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.name, s.hIndex, s.papers, s.totalCitations, s.avgCitations.toFixed(2)
+      ]));
+
+    // Institution collaboration
+    } else if (chartKey === 'collabPairRank') {
+      const pairs = ChartRenderer.getCollabPairs();
+      const sorted = [...pairs.entries()].sort((a, b) => b[1] - a[1]);
+      rows.push(['rank', 'institution_a', 'institution_b', 'co_authored_papers']);
+      sorted.forEach(([key, count], i) => {
+        const [a, b] = key.split('||');
+        rows.push([i + 1, a, b, count]);
+      });
+
+    } else if (chartKey === 'egoNetwork') {
+      const inst = document.getElementById('egoInstSelect').value;
+      const partnerMap = ChartRenderer.getInstPartnerMap();
+      const partners = inst ? partnerMap.get(inst) : null;
+      if (!partners || !partners.size) {
+        UIController.showToast('中心機関が選択されていません、または共同先がありません。', 'error');
+        return;
+      }
+      const sorted = [...partners.entries()].sort((a, b) => b[1] - a[1]);
+      rows.push(['rank', 'center_institution', 'partner_institution', 'co_authored_papers']);
+      sorted.forEach(([partner, count], i) => rows.push([i + 1, inst, partner, count]));
+
+    } else if (chartKey === 'collabBreadth') {
+      const partnerMap = ChartRenderer.getInstPartnerMap();
+      const sorted = [...partnerMap.entries()]
+        .map(([inst, partners]) => {
+          const total = [...partners.values()].reduce((a, b) => a + b, 0);
+          return [inst, partners.size, total];
+        })
+        .sort((a, b) => b[1] - a[1]);
+      rows.push(['rank', 'institution', 'unique_partners', 'total_collaborations']);
+      sorted.forEach(([inst, breadth, total], i) => rows.push([i + 1, inst, breadth, total]));
+
+    } else if (chartKey === 'collabPairTrend') {
+      // Wide format: year × top-N pairs (matches the chart). Top-N follows the on-screen input.
+      const topN = parseInt(document.getElementById('topNPairTrend').value) || 5;
+      const pairs = ChartRenderer.getCollabPairs();
+      const topPairs = [...pairs.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN);
+      if (!topPairs.length) {
+        UIController.showToast('ダウンロードするデータがありません。', 'error');
+        return;
+      }
+      const topPairKeys = topPairs.map(([k]) => k);
+      const yearCounts = {};
+      AppState.tableData.forEach(d => {
+        if (!d.year || !d.institutions) return;
+        const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+        if (insts.length < 2) return;
+        for (let i = 0; i < insts.length; i++) {
+          for (let j = i + 1; j < insts.length; j++) {
+            const [a, b] = insts[i] < insts[j] ? [insts[i], insts[j]] : [insts[j], insts[i]];
+            const key = `${a}||${b}`;
+            if (!topPairKeys.includes(key)) continue;
+            if (!yearCounts[key]) yearCounts[key] = {};
+            yearCounts[key][d.year] = (yearCounts[key][d.year] || 0) + 1;
+          }
+        }
+      });
+      const allYears = AppState.tableData.map(d => d.year).filter(y => y);
+      const minY = Math.min(...allYears);
+      const maxY = Math.max(...allYears);
+      const years = [];
+      for (let y = minY; y <= maxY; y++) years.push(y);
+
+      rows.push(['year', ...topPairKeys.map(k => k.replace('||', ' × '))]);
+      years.forEach(y => {
+        const row = [y];
+        topPairKeys.forEach(k => {
+          row.push((yearCounts[k] && yearCounts[k][y]) || 0);
+        });
+        rows.push(row);
+      });
+
+    } else if (chartKey === 'collabMatrix') {
+      const N = parseInt(document.getElementById('matrixN').value) || 15;
+      const partnerMap = ChartRenderer.getInstPartnerMap();
+      if (!partnerMap.size) {
+        UIController.showToast('共同研究データがありません。', 'error');
+        return;
+      }
+      const ranking = [...partnerMap.entries()]
+        .map(([inst, partners]) => [inst, partners.size])
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, N);
+      const insts = ranking.map(([i]) => i);
+      // Wide-format matrix: header row = insts, each row labeled with inst
+      rows.push(['institution', ...insts]);
+      insts.forEach(rowInst => {
+        const row = [rowInst];
+        insts.forEach(colInst => {
+          if (rowInst === colInst) {
+            row.push('');
+          } else {
+            row.push((partnerMap.get(rowInst) && partnerMap.get(rowInst).get(colInst)) || 0);
+          }
+        });
+        rows.push(row);
+      });
+    }
+
+    this._downloadCSVText(rows, filename);
   }
 };
 
-// ============================================================
 // CSV Importer
-// ============================================================
 const Importer = {
   handleCSV(input) {
     const file = input.files[0];
@@ -1840,18 +3341,24 @@ const Importer = {
           return;
         }
 
-        const tableData = data.map(row => ({
-          paper_id: row.paper_id || '',
-          title: row.title || '',
-          abstract: row.abstract || '',
-          year: row.year ? parseInt(row.year) || null : null,
-          authors: row.authors || '',
-          institutions: row.institutions || '',
-          venue: row.venue || '',
-          citation_count: parseInt(row.citation_count) || 0,
-          publication_date: row.publication_date || '',
-          doi: row.doi || '',
-        }));
+        const tableData = data.map(row => {
+          const cleanTitle = OpenAlexAPI._stripTags(row.title || '');
+          return {
+            paper_id: row.paper_id || '',
+            title: cleanTitle,
+            abstract: OpenAlexAPI._stripTags(row.abstract || ''),
+            year: row.year ? parseInt(row.year) || null : null,
+            authors: OpenAlexAPI._stripTags(row.authors || ''),
+            institutions: OpenAlexAPI._stripTags(row.institutions || ''),
+            venue: OpenAlexAPI._stripTags(row.venue || ''),
+            citation_count: parseInt(row.citation_count) || 0,
+            publication_date: row.publication_date || '',
+            doi: row.doi || '',
+            // 旧バージョンのCSVには language / title_script 列が無いので、その場合は派生値で補完
+            language: row.language || '',
+            title_script: row.title_script || OpenAlexAPI._detectScript(cleanTitle),
+          };
+        });
 
         AppState.tableData = tableData;
         AppState.papers = [];
@@ -1925,9 +3432,7 @@ const Importer = {
   }
 };
 
-// ============================================================
 // UI Controller
-// ============================================================
 const UIController = {
   showProgress() {
     document.getElementById('progressSection').classList.add('active');
@@ -1944,8 +3449,10 @@ const UIController = {
   },
 
   switchTab(tabId, btn) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    // Scope to the parent card so multiple independent tab groups can coexist
+    const card = btn.closest('.card') || document;
+    card.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    card.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(`panel-${tabId}`).classList.add('active');
     btn.classList.add('active');
   },
