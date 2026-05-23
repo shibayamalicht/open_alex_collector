@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenALEX Collector v2.1</title>
+<title>OpenALEX Collector v3.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a73e8'/%3E%3Cstop offset='1' stop-color='%230d47a1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='12' fill='url(%23g)'/%3E%3Crect x='10' y='22' width='28' height='36' rx='2' fill='%23bbdefb' opacity='.6'/%3E%3Crect x='15' y='17' width='28' height='36' rx='2' fill='%23e3f2fd' opacity='.85'/%3E%3Crect x='20' y='12' width='28' height='36' rx='2' fill='%23ffffff'/%3E%3Crect x='24' y='18' width='16' height='2.5' rx='1' fill='%231565c0'/%3E%3Crect x='24' y='25' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='29' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='33' width='16' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='37' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='41' width='14' height='1.5' fill='%235f6368'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/vis-network@9/standalone/umd/vis-network.min.js"></script>
 <style>
 /* ============================================================
    CSS Design System — White & Blue Consulting Theme
@@ -585,6 +586,126 @@ td a:hover { text-decoration: underline; }
   font-weight: 400;
 }
 
+/* --- Modal --- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(32, 33, 36, 0.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.15s ease;
+}
+.modal-backdrop.open { display: flex; }
+.modal-window {
+  background: var(--bg);
+  width: min(720px, 92vw);
+  max-height: 85vh;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalSlideUp 0.18s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalSlideUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--primary-lighter);
+}
+.modal-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.45;
+  user-select: text;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 0 4px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.modal-close:hover { color: var(--text-primary); }
+.modal-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  font-size: 13px;
+  user-select: text;
+  -webkit-user-select: text;
+  line-height: 1.65;
+}
+.modal-body dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 14px;
+  margin: 0 0 14px 0;
+}
+.modal-body dt {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding-top: 1px;
+}
+.modal-body dd {
+  margin: 0;
+  word-break: break-word;
+}
+.modal-body h4 {
+  font-size: 13px;
+  margin: 14px 0 6px 0;
+  color: var(--primary-dark);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 4px;
+}
+.modal-body ul {
+  margin: 0 0 10px 0;
+  padding-left: 22px;
+}
+.modal-body li { margin-bottom: 4px; }
+.modal-body .copy-block {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  white-space: pre-wrap;
+  user-select: text;
+  margin: 6px 0 12px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.modal-body .copy-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  margin-left: 6px;
+}
+.modal-body .copy-btn:hover { border-color: var(--primary); color: var(--primary); }
+.modal-body a { color: var(--primary); }
+
+/* Chart bars: hover cursor cue for click-to-modal */
+.chart-container canvas { cursor: pointer; }
+
 /* --- Spinner --- */
 .spinner {
   display: inline-block;
@@ -624,7 +745,7 @@ td a:hover { text-decoration: underline; }
 
 <!-- HEADER -->
 <header class="app-header">
-  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v2.1</span></h1>
+  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v3.0</span></h1>
   <div class="tagline" style="font-size:15px;font-style:italic;opacity:0.95;margin-top:6px;letter-spacing:0.5px;">— すべての論文は、誰かの肩である —</div>
   <div class="subtitle" style="margin-top:6px;">OpenALEX APIを活用した学術論文収集・可視化ツール</div>
   <div class="badge">Powered by OpenAlex API</div>
@@ -1173,6 +1294,110 @@ td a:hover { text-decoration: underline; }
       </div>
     </div>
   </div>
+
+  <!-- Reference / Citation Network -->
+  <div class="card">
+    <div class="card-title"><span class="icon">⇄</span> 引用ネットワーク（リファレンス）</div>
+
+    <div class="alert alert-info">
+      <strong>引用文献分析:</strong>
+      <span>
+        各論文の<code>referenced_works</code>（引用している論文のID）を集計して、基礎文献の発見・共引用・書誌結合・内部引用ネットワークを可視化します。OpenAlex の引用カバレッジは出版社・分野により不均一なため、参考文献情報が空の論文も含まれる点にご注意ください。
+        <br>※ <strong>A. 引用文献 Top-N</strong> と <strong>B. 共引用ペア Top-N</strong> は描画時にOpenAlex APIへ追加問い合わせを行います（Top-Nのメタデータ取得のため）。
+      </span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="UIController.switchTab('refRank', this)">A. 引用文献 Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('coCitation', this)">B. 共引用ペア Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('bibCoupling', this)">C. 書誌結合 Top-N</button>
+      <button class="tab-btn" onclick="UIController.switchTab('citationNetwork', this)">D. 内部引用ネットワーク</button>
+    </div>
+
+    <!-- Tab A: Most-cited references (Top-N) -->
+    <div class="tab-panel active" id="panel-refRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNRefRank">表示数</label>
+          <input type="number" id="topNRefRank" min="5" max="50" value="20">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderRefRank()">描画（API取得）</button>
+        <div id="refRankStatus" style="font-size:12px;color:#5f6368;align-self:center;"></div>
+      </div>
+      <div class="form-hint">本コレクション内の論文が<strong>最も多く引用している外部論文</strong>のTop-N。基礎文献・古典の発見に有効。タイトル・年・誌名のメタデータをOpenAlexから追加取得します（数秒）。</div>
+      <div class="chart-container" id="refRankContainer">
+        <canvas id="chartRefRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('refRank', 'most_cited_references.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('refRank', 'most_cited_references_full.csv')">CSVダウンロード（全引用文献）</button>
+      </div>
+    </div>
+
+    <!-- Tab C: Co-citation pairs -->
+    <div class="tab-panel" id="panel-coCitation">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNCoCit">表示数</label>
+          <input type="number" id="topNCoCit" min="5" max="50" value="20">
+        </div>
+        <div class="form-group" style="width:180px;">
+          <label for="coCitMinCount">最小共引用数</label>
+          <input type="number" id="coCitMinCount" min="2" max="50" value="2">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderCoCitation()">描画（API取得）</button>
+        <div id="coCitationStatus" style="font-size:12px;color:#5f6368;align-self:center;"></div>
+      </div>
+      <div class="form-hint">「文献A と 文献B が同じ論文に同時に引用された」回数をペアごとに集計。同じ学派・流派に属する論文ペアを発見できます。Top-Nのメタデータ取得のためAPIアクセスが発生します。</div>
+      <div class="chart-container" id="coCitationContainer">
+        <canvas id="chartCoCitation"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('coCitation', 'co_citation_pairs.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('coCitation', 'co_citation_pairs_full.csv')">CSVダウンロード（全ペア）</button>
+      </div>
+    </div>
+
+    <!-- Tab D: Bibliographic coupling -->
+    <div class="tab-panel" id="panel-bibCoupling">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNBibCp">表示数</label>
+          <input type="number" id="topNBibCp" min="5" max="50" value="20">
+        </div>
+        <div class="form-group" style="width:180px;">
+          <label for="bibCpMinCommon">最小共通文献数</label>
+          <input type="number" id="bibCpMinCommon" min="1" max="50" value="2">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderBibCoupling()">描画</button>
+      </div>
+      <div class="form-hint">コレクション内の「論文A と 論文B が共通して引用している文献の数」。多いほど学術的に近い＝同じ研究コミュニティ・テーマである可能性が高い。</div>
+      <div class="chart-container" id="bibCouplingContainer">
+        <canvas id="chartBibCoupling"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('bibCoupling', 'bibliographic_coupling.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('bibCoupling', 'bibliographic_coupling_full.csv')">CSVダウンロード（全ペア）</button>
+      </div>
+    </div>
+
+    <!-- Tab E: Internal citation network -->
+    <div class="tab-panel" id="panel-citationNetwork">
+      <div class="chart-controls">
+        <div class="form-group" style="width:200px;">
+          <label for="netMinInDegree">最小被引用数（コレクション内）</label>
+          <input type="number" id="netMinInDegree" min="0" max="50" value="0">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="ChartRenderer.renderCitationNetwork()">描画</button>
+        <div id="citationNetworkStatus" style="font-size:12px;color:#5f6368;align-self:center;"></div>
+      </div>
+      <div class="form-hint">コレクション内の論文同士の引用関係をネットワーク可視化（vis-network力学レイアウト）。矢印元＝引用元、矢印先＝被引用論文。ノードの大きさ＝コレクション内被引用数。<strong>色＝出版年（古い=橙、新しい=青）</strong>。<strong>ノードをホバーで論文情報、クリックで詳細ポップアップ</strong>。マウスでドラッグ／ズーム可。</div>
+      <div id="citationNetworkContainer" style="height:700px; border:1px solid var(--border-light); border-radius:var(--radius-sm); margin-top:12px; background:#fafbfc;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('citationNetwork', 'internal_citation_edges_full.csv')">CSVダウンロード（エッジ全件）</button>
+      </div>
+    </div>
+  </div>
   </div><!-- /#resultsSection -->
 
   <!-- Upload section (always visible) -->
@@ -1549,6 +1774,9 @@ const OpenAlexAPI = {
     const institutions = [...instSet].join('; ');
 
     const cleanTitle = this._stripTags(raw.title || '');
+    // referenced_works: OpenAlex Work ID 配列（例: ["https://openalex.org/W123", ...]）。
+    // この論文が引用している論文のID。カバレッジは出版社・分野により不均一。
+    const referencedWorks = Array.isArray(raw.referenced_works) ? raw.referenced_works : [];
     return {
       paper_id: paperId,
       title: cleanTitle,
@@ -1560,8 +1788,10 @@ const OpenAlexAPI = {
       citation_count: raw.cited_by_count || 0,
       publication_date: raw.publication_date || '',
       doi: doi,
-      language: raw.language || '',          // OpenAlex の作品レベル言語コード（abstract寄り判定）
-      title_script: this._detectScript(cleanTitle),  // タイトル文字種（latin / cjk / latin+cjk 等）
+      language: raw.language || '',
+      title_script: this._detectScript(cleanTitle),
+      referenced_works: referencedWorks,
+      referenced_works_count: referencedWorks.length,
     };
   }
 };
@@ -2020,7 +2250,18 @@ const ChartRenderer = {
             text: `論文件数推移 (${years[0]}-${years[years.length - 1]})`,
             font: { size: 16, weight: '600' },
             color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              label: (item) => [`論文件数: ${item.raw}`, 'クリックで該当年の論文一覧'],
+            }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const year = years[els[0].index];
+          const matched = AppState.tableData.filter(d => d.year === year);
+          Modal.show(`${year}年の論文（${matched.length}件）`, Modal.buildPaperListContent(`${year}年`, matched));
         },
         scales: {
           x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
@@ -2076,7 +2317,18 @@ const ChartRenderer = {
             text: '論文件数推移（折れ線）',
             font: { size: 16, weight: '600' },
             color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              label: (item) => [`論文件数: ${item.raw}`, 'クリックで該当年の論文一覧'],
+            }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const year = years[els[0].index];
+          const matched = AppState.tableData.filter(d => d.year === year);
+          Modal.show(`${year}年の論文（${matched.length}件）`, Modal.buildPaperListContent(`${year}年`, matched));
         },
         scales: {
           x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
@@ -2171,7 +2423,21 @@ const ChartRenderer = {
             text: '著者別 論文件数推移',
             font: { size: 16, weight: '600' },
             color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              afterLabel: () => 'クリックで該当年の論文一覧',
+            }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const el = els[0];
+          const year = years[el.index];
+          const author = selected[el.datasetIndex];
+          const matched = AppState.tableData.filter(d =>
+            d.year === year && (d.authors || '').split('; ').map(s => s.trim()).includes(author));
+          Modal.show(`${author} - ${year}年（${matched.length}件）`, Modal.buildPaperListContent(`${author} / ${year}年`, matched));
         },
         scales: {
           x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
@@ -2215,7 +2481,18 @@ const ChartRenderer = {
             text: `著者ランキング Top ${topN}`,
             font: { size: 16, weight: '600' },
             color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              label: (item) => [`論文件数: ${item.raw}`, 'クリックで詳細表示'],
+            }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const name = labels[els[0].index];
+          const matched = AppState.tableData.filter(d => (d.authors || '').split('; ').map(s => s.trim()).includes(name));
+          Modal.show(`著者: ${name}`, Modal.buildEntityContent(name, '著者', matched));
         },
         scales: {
           x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2261,7 +2538,18 @@ const ChartRenderer = {
             text: `所属機関ランキング Top ${topN}`,
             font: { size: 16, weight: '600' },
             color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              label: (item) => [`論文件数: ${item.raw}`, 'クリックで詳細表示'],
+            }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const name = labels[els[0].index];
+          const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+          Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
         },
         scales: {
           x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2395,13 +2683,18 @@ const ChartRenderer = {
           },
           tooltip: {
             callbacks: {
-              title: (items) => {
-                const i = items[0].dataIndex;
-                return fullTitles[i];
-              },
-              label: (item) => `被引用数: ${item.raw.toLocaleString()}（${sorted[item.dataIndex].year || '-'}年, ${sorted[item.dataIndex].venue || '-'}）`,
+              title: (items) => fullTitles[items[0].dataIndex],
+              label: (item) => [
+                `被引用数: ${item.raw.toLocaleString()}（${sorted[item.dataIndex].year || '-'}年, ${sorted[item.dataIndex].venue || '-'}）`,
+                'クリックで詳細表示',
+              ],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const paper = sorted[els[0].index];
+          Modal.show(paper.title || paper.paper_id, Modal.buildCollectionPaperContent(paper));
         },
         scales: {
           x: { title: { display: true, text: '被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2453,9 +2746,15 @@ const ChartRenderer = {
           },
           tooltip: {
             callbacks: {
-              label: (item) => `合計引用: ${item.raw.toLocaleString()} / 論文数: ${papers[item.dataIndex]}`,
+              label: (item) => [`合計引用: ${item.raw.toLocaleString()} / 論文数: ${papers[item.dataIndex]}`, 'クリックで詳細表示'],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const name = sorted[els[0].index].name;
+          const matched = AppState.tableData.filter(d => (d.authors || '').split('; ').map(s => s.trim()).includes(name));
+          Modal.show(`著者: ${name}`, Modal.buildEntityContent(name, '著者', matched));
         },
         scales: {
           x: { title: { display: true, text: '合計被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2507,9 +2806,15 @@ const ChartRenderer = {
           },
           tooltip: {
             callbacks: {
-              label: (item) => `合計引用: ${item.raw.toLocaleString()} / 論文数: ${papers[item.dataIndex]}`,
+              label: (item) => [`合計引用: ${item.raw.toLocaleString()} / 論文数: ${papers[item.dataIndex]}`, 'クリックで詳細表示'],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const name = sorted[els[0].index].name;
+          const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+          Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
         },
         scales: {
           x: { title: { display: true, text: '合計被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2563,9 +2868,15 @@ const ChartRenderer = {
           tooltip: {
             callbacks: {
               title: (items) => fullNames[items[0].dataIndex],
-              label: (item) => `合計引用: ${item.raw.toLocaleString()} / 掲載論文数: ${papers[item.dataIndex]}`,
+              label: (item) => [`合計引用: ${item.raw.toLocaleString()} / 掲載論文数: ${papers[item.dataIndex]}`, 'クリックで詳細表示'],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const name = fullNames[els[0].index];
+          const matched = AppState.tableData.filter(d => (d.venue || '').trim() === name);
+          Modal.show(`ジャーナル: ${name}`, Modal.buildEntityContent(name, 'ジャーナル/誌', matched));
         },
         scales: {
           x: { title: { display: true, text: '合計被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2634,10 +2945,20 @@ const ChartRenderer = {
                   `平均被引用: ${d.y.toFixed(1)}`,
                   `合計被引用: ${d.total.toLocaleString()}`,
                   `h-index: ${d.hIndex}`,
+                  'クリックで詳細表示',
                 ];
               }
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const d = data[els[0].index];
+          const isInst = mode === 'institution';
+          const matched = AppState.tableData.filter(p =>
+            (isInst ? (p.institutions || '') : (p.authors || ''))
+              .split('; ').map(s => s.trim()).includes(d.name));
+          Modal.show(`${isInst ? '機関' : '著者'}: ${d.name}`, Modal.buildEntityContent(d.name, isInst ? '所属機関' : '著者', matched));
         },
         scales: {
           x: { title: { display: true, text: '論文件数（量）', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2694,9 +3015,18 @@ const ChartRenderer = {
           tooltip: {
             callbacks: {
               title: (items) => fullNames[items[0].dataIndex],
-              label: (item) => `h-index: ${item.raw} / 論文数: ${papers[item.dataIndex]} / 合計引用: ${totals[item.dataIndex].toLocaleString()}`,
+              label: (item) => [`h-index: ${item.raw} / 論文数: ${papers[item.dataIndex]} / 合計引用: ${totals[item.dataIndex].toLocaleString()}`, 'クリックで詳細表示'],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const name = fullNames[els[0].index];
+          const isInst = mode === 'institution';
+          const matched = AppState.tableData.filter(d =>
+            (isInst ? (d.institutions || '') : (d.authors || ''))
+              .split('; ').map(s => s.trim()).includes(name));
+          Modal.show(`${isInst ? '機関' : '著者'}: ${name}`, Modal.buildEntityContent(name, isInst ? '所属機関' : '著者', matched));
         },
         scales: {
           x: { title: { display: true, text: 'h-index', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } },
@@ -2806,9 +3136,19 @@ const ChartRenderer = {
           tooltip: {
             callbacks: {
               title: (items) => fullLabels[items[0].dataIndex],
-              label: (item) => `共著論文数: ${item.raw.toLocaleString()}`,
+              label: (item) => [`共著論文数: ${item.raw.toLocaleString()}`, 'クリックで詳細表示'],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const i = els[0].index;
+          const [a, b] = sorted[i][0].split('||');
+          const shared = AppState.tableData.filter(d => {
+            const insts = (d.institutions || '').split('; ').map(s => s.trim());
+            return insts.includes(a) && insts.includes(b);
+          });
+          Modal.show(`${a} × ${b}`, Modal.buildPairContent(a, '所属機関', b, '所属機関', shared, '共著論文'));
         },
         scales: {
           x: { title: { display: true, text: '共著論文数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2863,9 +3203,18 @@ const ChartRenderer = {
           tooltip: {
             callbacks: {
               title: (items) => fullNames[items[0].dataIndex],
-              label: (item) => `${inst} と ${item.raw.toLocaleString()} 件の共著`,
+              label: (item) => [`${inst} と ${item.raw.toLocaleString()} 件の共著`, 'クリックで詳細表示'],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const partner = fullNames[els[0].index];
+          const shared = AppState.tableData.filter(d => {
+            const insts = (d.institutions || '').split('; ').map(s => s.trim());
+            return insts.includes(inst) && insts.includes(partner);
+          });
+          Modal.show(`${inst} × ${partner}`, Modal.buildPairContent(inst, '所属機関', partner, '所属機関', shared, '共著論文'));
         },
         scales: {
           x: { title: { display: true, text: '共著論文数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2920,9 +3269,15 @@ const ChartRenderer = {
           tooltip: {
             callbacks: {
               title: (items) => fullNames[items[0].dataIndex],
-              label: (item) => `共同先機関数: ${item.raw.toLocaleString()}`,
+              label: (item) => [`共同先機関数: ${item.raw.toLocaleString()}`, 'クリックで詳細表示'],
             }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const name = fullNames[els[0].index];
+          const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+          Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
         },
         scales: {
           x: { title: { display: true, text: '共同先機関数（ユニーク）', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } },
@@ -2990,7 +3345,25 @@ const ChartRenderer = {
             text: `共同研究ペア Top ${topN} の年別推移`,
             font: { size: 16, weight: '600' },
             color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              afterLabel: () => 'クリックで該当年・ペアの共著論文一覧',
+            }
           }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const el = els[0];
+          const year = years[el.index];
+          const pairKey = topPairs[el.datasetIndex][0];
+          const [a, b] = pairKey.split('||');
+          const shared = AppState.tableData.filter(d => {
+            if (d.year !== year) return false;
+            const insts = (d.institutions || '').split('; ').map(s => s.trim());
+            return insts.includes(a) && insts.includes(b);
+          });
+          Modal.show(`${a} × ${b} - ${year}年（${shared.length}件）`, Modal.buildPaperListContent(`${a} × ${b} / ${year}年`, shared));
         },
         scales: {
           x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
@@ -2998,6 +3371,15 @@ const ChartRenderer = {
         }
       }
     });
+  },
+
+  // Open pair modal for two institutions (used by collabMatrix cell click)
+  showInstPairModal(nameA, nameB) {
+    const shared = AppState.tableData.filter(d => {
+      const insts = (d.institutions || '').split('; ').map(s => s.trim());
+      return insts.includes(nameA) && insts.includes(nameB);
+    });
+    Modal.show(`${nameA} × ${nameB}`, Modal.buildPairContent(nameA, '所属機関', nameB, '所属機関', shared, '共著論文'));
   },
 
   // E. 共同研究マトリクス (HTML heatmap, no Chart.js)
@@ -3036,9 +3418,9 @@ const ChartRenderer = {
     });
     html += '</tr></thead><tbody>';
 
-    insts.forEach(rowInst => {
-      html += `<tr><th class="row-head" title="${esc(rowInst)}">${esc(this._truncateLabel(rowInst, 40))}</th>`;
-      insts.forEach(colInst => {
+    insts.forEach((rowInst, ri) => {
+      html += `<tr><th class="row-head" title="${esc(rowInst)}" data-row-click="${ri}" style="cursor:pointer">${esc(this._truncateLabel(rowInst, 40))}</th>`;
+      insts.forEach((colInst, ci) => {
         if (rowInst === colInst) {
           html += '<td class="diag">—</td>';
         } else {
@@ -3046,7 +3428,8 @@ const ChartRenderer = {
           const intensity = maxVal > 0 ? v / maxVal : 0;
           const bg = `rgba(26, 115, 232, ${(0.05 + intensity * 0.85).toFixed(3)})`;
           const cls = v === 0 ? 'cell zero' : 'cell';
-          html += `<td class="${cls}" style="background:${bg}" title="${esc(rowInst)} × ${esc(colInst)}: ${v}">${v || ''}</td>`;
+          const clickable = v > 0 ? ` data-row="${ri}" data-col="${ci}" style="background:${bg};cursor:pointer"` : ` style="background:${bg}"`;
+          html += `<td class="${cls}"${clickable} title="${esc(rowInst)} × ${esc(colInst)}: ${v}${v > 0 ? '（クリックで詳細）' : ''}">${v || ''}</td>`;
         }
       });
       html += '</tr>';
@@ -3054,6 +3437,605 @@ const ChartRenderer = {
 
     html += '</tbody></table>';
     container.innerHTML = html;
+
+    // Delegated click: matrix cell → pair modal, row-head → institution modal
+    container.onclick = (e) => {
+      const cell = e.target.closest('td.cell');
+      if (cell && cell.dataset.row != null && cell.dataset.col != null) {
+        const rowInst = insts[Number(cell.dataset.row)];
+        const colInst = insts[Number(cell.dataset.col)];
+        this.showInstPairModal(rowInst, colInst);
+        return;
+      }
+      const rowHead = e.target.closest('th.row-head');
+      if (rowHead && rowHead.dataset.rowClick != null) {
+        const name = insts[Number(rowHead.dataset.rowClick)];
+        const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+        Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
+      }
+    };
+  },
+
+  // Reference / Citation helpers
+
+  // Returns Map<refId, count> of how many collection papers cite each external reference
+  getRefCounts() {
+    const counts = new Map();
+    AppState.tableData.forEach(d => {
+      const refs = d.referenced_works || [];
+      // dedupe within paper so a single paper citing same ref twice counts once
+      [...new Set(refs)].forEach(ref => {
+        counts.set(ref, (counts.get(ref) || 0) + 1);
+      });
+    });
+    return counts;
+  },
+
+  // Batch-fetch OpenAlex Work metadata by IDs (max 50 per request).
+  // ids: array of full URLs like "https://openalex.org/W123..." or short IDs "W123..."
+  // Returns Map<fullId, workObject>
+  async fetchWorksMeta(ids, onProgress = null) {
+    const meta = new Map();
+    const shortIds = ids.map(id => id.replace('https://openalex.org/', ''));
+    const CHUNK = 50;
+    for (let i = 0; i < shortIds.length; i += CHUNK) {
+      const chunk = shortIds.slice(i, i + CHUNK);
+      const idsParam = chunk.join('|');
+      const url = `${OpenAlexAPI.BASE_URL}?filter=ids.openalex:${idsParam}&per_page=${chunk.length}&mailto=${OpenAlexAPI.MAILTO}`;
+      try {
+        const resp = await fetch(url);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+        (data.results || []).forEach(w => {
+          if (w.id) meta.set(w.id, w);
+        });
+      } catch (e) {
+        // 部分失敗は許容、ログだけ残す
+        console.warn('fetchWorksMeta chunk failed:', e);
+      }
+      if (onProgress) onProgress(Math.min(i + chunk.length, shortIds.length), shortIds.length);
+      if (i + CHUNK < shortIds.length) await OpenAlexAPI.sleep(OpenAlexAPI.RATE_LIMIT);
+    }
+    return meta;
+  },
+
+  // Returns metadata summary from an OpenAlex work object for display/CSV
+  _summarizeWork(w) {
+    if (!w) return { title: '(metadata not found)', year: null, venue: '', authors: '', cited_by_count: 0, doi: '' };
+    const title = OpenAlexAPI._stripTags(w.title || '(no title)');
+    const year = w.publication_year || null;
+    const venue = OpenAlexAPI._stripTags(((w.primary_location || {}).source || {}).display_name || '');
+    const authors = (w.authorships || [])
+      .map(a => (a.author && a.author.display_name) || '')
+      .filter(n => n)
+      .join('; ');
+    const doi = (w.doi || '').replace('https://doi.org/', '');
+    return { title, year, venue, authors: OpenAlexAPI._stripTags(authors), cited_by_count: w.cited_by_count || 0, doi };
+  },
+
+  // A. 引用文献 Top-N (most-cited references across collection)
+  async renderRefRank() {
+    this.destroyChart('refRank');
+    const status = document.getElementById('refRankStatus');
+    const topN = parseInt(document.getElementById('topNRefRank').value) || 20;
+
+    const refCounts = this.getRefCounts();
+    if (!refCounts.size) {
+      status.textContent = '引用文献情報がありません（referenced_worksが空）';
+      return;
+    }
+
+    const sorted = [...refCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, topN);
+    const ids = sorted.map(([id]) => id);
+
+    status.textContent = `メタデータ取得中... 0/${ids.length}`;
+    const meta = await this.fetchWorksMeta(ids, (done, total) => {
+      status.textContent = `メタデータ取得中... ${done}/${total}`;
+    });
+    status.textContent = `取得完了（${meta.size}/${ids.length}件）`;
+
+    const enriched = sorted.map(([id, count]) => {
+      const w = meta.get(id);
+      const s = this._summarizeWork(w);
+      return { id, count, ...s };
+    });
+
+    const labels = enriched.map(e => this._truncateLabel(`${e.title}${e.year ? ' (' + e.year + ')' : ''}`, 80));
+    const values = enriched.map(e => e.count);
+    const fullTitles = enriched.map(e => e.title);
+    const years = enriched.map(e => e.year);
+    const venues = enriched.map(e => e.venue);
+
+    const ctx = document.getElementById('chartRefRank').getContext('2d');
+    AppState.charts.refRank = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'コレクション内での被引用数',
+          data: values,
+          backgroundColor: 'rgba(13, 71, 161, 0.78)',
+          borderColor: '#0d47a1',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `引用文献 Top ${topN}（コレクション内で最も引用された外部論文）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullTitles[items[0].dataIndex],
+              label: (item) => {
+                const i = item.dataIndex;
+                return [
+                  `コレクション内被引用: ${item.raw} 件`,
+                  `${years[i] || '-'}年, ${venues[i] || '-'}`,
+                  'クリックで詳細表示',
+                ];
+              },
+            }
+          }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const i = els[0].index;
+          const refId = enriched[i].id;
+          const work = meta.get(refId);
+          // List of collection papers that cite this reference
+          const citingPapers = AppState.tableData.filter(d =>
+            (d.referenced_works || []).includes(refId));
+          const citingHtml = citingPapers.length
+            ? `<ul>${citingPapers.map(p => `<li>${Modal.esc(p.title || p.paper_id)}${p.year ? ` (${p.year})` : ''}</li>`).join('')}</ul>`
+            : '<p style="color:#5f6368;">なし</p>';
+          const extra = `<h4>この文献を引用しているコレクション内論文（${citingPapers.length}件）</h4>${citingHtml}`;
+          Modal.show(enriched[i].title || refId, Modal.buildExternalWorkContent(work, extra));
+        },
+        scales: {
+          x: { title: { display: true, text: 'コレクション内被引用数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+        }
+      }
+    });
+    document.getElementById('refRankContainer').style.height = Math.max(400, sorted.length * 32 + 80) + 'px';
+    AppState._refRankCache = { entries: enriched };
+  },
+
+  // C. Co-citation pairs Top-N
+  async renderCoCitation() {
+    this.destroyChart('coCitation');
+    const status = document.getElementById('coCitationStatus');
+    const topN = parseInt(document.getElementById('topNCoCit').value) || 20;
+    const minCount = parseInt(document.getElementById('coCitMinCount').value) || 2;
+
+    // Build co-citation pairs
+    const pairs = new Map();
+    AppState.tableData.forEach(d => {
+      const refs = [...new Set(d.referenced_works || [])];
+      if (refs.length < 2) return;
+      for (let i = 0; i < refs.length; i++) {
+        for (let j = i + 1; j < refs.length; j++) {
+          const [a, b] = refs[i] < refs[j] ? [refs[i], refs[j]] : [refs[j], refs[i]];
+          const key = `${a}||${b}`;
+          pairs.set(key, (pairs.get(key) || 0) + 1);
+        }
+      }
+    });
+
+    if (!pairs.size) {
+      status.textContent = '共引用ペアがありません';
+      return;
+    }
+
+    const sorted = [...pairs.entries()]
+      .filter(([, c]) => c >= minCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, topN);
+    if (!sorted.length) {
+      status.textContent = `最小共引用数 ${minCount} 件以上のペアがありません`;
+      return;
+    }
+
+    // Unique refs to fetch
+    const refSet = new Set();
+    sorted.forEach(([key]) => { const [a, b] = key.split('||'); refSet.add(a); refSet.add(b); });
+    const ids = [...refSet];
+
+    status.textContent = `メタデータ取得中... 0/${ids.length}`;
+    const meta = await this.fetchWorksMeta(ids, (done, total) => {
+      status.textContent = `メタデータ取得中... ${done}/${total}`;
+    });
+    status.textContent = `取得完了（${meta.size}/${ids.length}件）`;
+
+    const labelFor = (id) => {
+      const w = meta.get(id);
+      const s = this._summarizeWork(w);
+      const yr = s.year ? ` (${s.year})` : '';
+      return this._truncateLabel(`${s.title}${yr}`, 38);
+    };
+
+    const labels = sorted.map(([key]) => {
+      const [a, b] = key.split('||');
+      return `${labelFor(a)} × ${labelFor(b)}`;
+    });
+    const values = sorted.map(([, c]) => c);
+    const fullLabels = sorted.map(([key]) => {
+      const [a, b] = key.split('||');
+      const wa = meta.get(a), wb = meta.get(b);
+      const sa = this._summarizeWork(wa), sb = this._summarizeWork(wb);
+      return [`${sa.title} (${sa.year || '-'})`, `${sb.title} (${sb.year || '-'})`].join('\n× ');
+    });
+
+    const ctx = document.getElementById('chartCoCitation').getContext('2d');
+    AppState.charts.coCitation = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '共引用回数',
+          data: values,
+          backgroundColor: 'rgba(147, 52, 230, 0.75)',
+          borderColor: '#6a1b9a',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `共引用ペア Top ${sorted.length}（最小 ${minCount} 件以上）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullLabels[items[0].dataIndex].split('\n'),
+              label: (item) => [`共引用回数: ${item.raw}`, 'クリックで詳細表示'],
+            }
+          }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const i = els[0].index;
+          const [a, b] = sorted[i][0].split('||');
+          const count = sorted[i][1];
+          const wa = meta.get(a), wb = meta.get(b);
+          const sa = this._summarizeWork(wa);
+          const sb = this._summarizeWork(wb);
+          // Find collection papers that cite both
+          const citingBoth = AppState.tableData.filter(d => {
+            const refs = d.referenced_works || [];
+            return refs.includes(a) && refs.includes(b);
+          });
+          const citingHtml = citingBoth.length
+            ? `<ul>${citingBoth.map(p => `<li>${Modal.esc(p.title || p.paper_id)}${p.year ? ` (${p.year})` : ''}</li>`).join('')}</ul>`
+            : '<p style="color:#5f6368;">なし</p>';
+          const aInsts = wa ? [...new Set((wa.authorships || []).flatMap(au => (au.institutions || []).map(i => i.display_name)).filter(n => n))].join('; ') : '';
+          const bInsts = wb ? [...new Set((wb.authorships || []).flatMap(au => (au.institutions || []).map(i => i.display_name)).filter(n => n))].join('; ') : '';
+          const summary = [
+            '【共引用ペア】',
+            `共引用回数: ${count}`,
+            '',
+            `【文献A】 ${sa.title} (${sa.year || '-'})`,
+            `著者: ${sa.authors || '-'}`,
+            `機関: ${aInsts || '-'}`,
+            `誌: ${sa.venue || '-'}`,
+            sa.doi ? `https://doi.org/${sa.doi}` : '',
+            '',
+            `【文献B】 ${sb.title} (${sb.year || '-'})`,
+            `著者: ${sb.authors || '-'}`,
+            `機関: ${bInsts || '-'}`,
+            `誌: ${sb.venue || '-'}`,
+            sb.doi ? `https://doi.org/${sb.doi}` : '',
+          ].filter(x => x !== undefined).join('\n');
+          const e = Modal.esc;
+          const content = `
+            <dl><dt>共引用回数</dt><dd>${count}</dd></dl>
+            <h4>文献 A</h4>
+            <dl>
+              <dt>タイトル</dt><dd>${e(sa.title)}</dd>
+              <dt>年 / 誌</dt><dd>${e(sa.year || '-')} / ${e(sa.venue || '-')}</dd>
+              <dt>著者</dt><dd>${e(sa.authors || '-')}</dd>
+              <dt>機関</dt><dd>${e(aInsts || '-')}</dd>
+              <dt>DOI</dt><dd>${sa.doi ? `<a href="https://doi.org/${e(sa.doi)}" target="_blank" rel="noopener">${e(sa.doi)}</a>` : '-'}</dd>
+            </dl>
+            <h4>文献 B</h4>
+            <dl>
+              <dt>タイトル</dt><dd>${e(sb.title)}</dd>
+              <dt>年 / 誌</dt><dd>${e(sb.year || '-')} / ${e(sb.venue || '-')}</dd>
+              <dt>著者</dt><dd>${e(sb.authors || '-')}</dd>
+              <dt>機関</dt><dd>${e(bInsts || '-')}</dd>
+              <dt>DOI</dt><dd>${sb.doi ? `<a href="https://doi.org/${e(sb.doi)}" target="_blank" rel="noopener">${e(sb.doi)}</a>` : '-'}</dd>
+            </dl>
+            <h4>両方を引用したコレクション内論文（${citingBoth.length}件）</h4>
+            ${citingHtml}
+            <h4>コピー用サマリ</h4>
+            ${Modal.copyBlock(summary)}
+          `;
+          Modal.show('共引用ペア詳細', content);
+        },
+        scales: {
+          x: { title: { display: true, text: '共引用回数（同じ論文で同時引用された回数）', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } },
+          y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+        }
+      }
+    });
+    document.getElementById('coCitationContainer').style.height = Math.max(400, sorted.length * 38 + 80) + 'px';
+    AppState._coCitationCache = { entries: sorted, meta };
+  },
+
+  // D. Bibliographic coupling Top-N (pairs of collection papers sharing most refs)
+  renderBibCoupling() {
+    this.destroyChart('bibCoupling');
+    const topN = parseInt(document.getElementById('topNBibCp').value) || 20;
+    const minCommon = parseInt(document.getElementById('bibCpMinCommon').value) || 2;
+
+    const papers = AppState.tableData
+      .map(d => ({
+        id: d.paper_id,
+        title: d.title,
+        year: d.year,
+        refs: new Set(d.referenced_works || []),
+      }))
+      .filter(p => p.refs.size > 0);
+
+    if (papers.length < 2) {
+      UIController.showToast('書誌結合分析には参考文献付き論文が2件以上必要です。', 'error');
+      return;
+    }
+
+    const pairs = [];
+    for (let i = 0; i < papers.length; i++) {
+      for (let j = i + 1; j < papers.length; j++) {
+        let common = 0;
+        const smaller = papers[i].refs.size <= papers[j].refs.size ? papers[i].refs : papers[j].refs;
+        const larger = papers[i].refs.size <= papers[j].refs.size ? papers[j].refs : papers[i].refs;
+        smaller.forEach(r => { if (larger.has(r)) common++; });
+        if (common >= minCommon) {
+          pairs.push({ a: papers[i], b: papers[j], common });
+        }
+      }
+    }
+    pairs.sort((p1, p2) => p2.common - p1.common);
+    const top = pairs.slice(0, topN);
+    if (!top.length) {
+      UIController.showToast(`最小共通文献数 ${minCommon} 件以上の論文ペアがありません。`, 'error');
+      return;
+    }
+
+    const labels = top.map(p => {
+      const ta = this._truncateLabel(p.a.title, 36);
+      const tb = this._truncateLabel(p.b.title, 36);
+      return `${ta} × ${tb}`;
+    });
+    const values = top.map(p => p.common);
+    const fullLabels = top.map(p => [
+      `${p.a.title} (${p.a.year || '-'})`,
+      `${p.b.title} (${p.b.year || '-'})`,
+    ]);
+
+    const ctx = document.getElementById('chartBibCoupling').getContext('2d');
+    AppState.charts.bibCoupling = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: '共通引用文献数',
+          data: values,
+          backgroundColor: 'rgba(52, 168, 83, 0.78)',
+          borderColor: '#1e8e3e',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: `書誌結合 Top ${top.length}（共通参考文献が多い論文ペア）`,
+            font: { size: 16, weight: '600' },
+            color: '#202124',
+          },
+          tooltip: {
+            callbacks: {
+              title: (items) => fullLabels[items[0].dataIndex],
+              label: (item) => [`共通参考文献: ${item.raw} 件`, 'クリックで詳細表示'],
+            }
+          }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const i = els[0].index;
+          const pair = top[i];
+          const pa = AppState.tableData.find(d => d.paper_id === pair.a.id);
+          const pb = AppState.tableData.find(d => d.paper_id === pair.b.id);
+          // Common references (just IDs — could enrich but expensive)
+          const aRefs = new Set(pair.a.refs);
+          const commonRefs = [...pair.b.refs].filter(r => aRefs.has(r));
+          const commonHtml = commonRefs.length
+            ? `<ul>${commonRefs.slice(0, 50).map(r => {
+                const short = r.replace('https://openalex.org/', '');
+                return `<li><a href="${Modal.esc(r)}" target="_blank" rel="noopener">${Modal.esc(short)}</a></li>`;
+              }).join('')}${commonRefs.length > 50 ? `<li>… 他 ${commonRefs.length - 50} 件</li>` : ''}</ul>`
+            : '<p style="color:#5f6368;">なし</p>';
+          const e = Modal.esc;
+          const summary = [
+            '【書誌結合ペア】',
+            `共通参考文献数: ${pair.common}`,
+            '',
+            `【論文A】 ${pa ? pa.title : pair.a.title}`,
+            pa ? `著者: ${pa.authors || '-'}` : '',
+            pa ? `機関: ${pa.institutions || '-'}` : '',
+            pa ? `誌: ${pa.venue || '-'} (${pa.year || '-'})` : '',
+            pa && pa.doi ? `https://doi.org/${pa.doi}` : '',
+            '',
+            `【論文B】 ${pb ? pb.title : pair.b.title}`,
+            pb ? `著者: ${pb.authors || '-'}` : '',
+            pb ? `機関: ${pb.institutions || '-'}` : '',
+            pb ? `誌: ${pb.venue || '-'} (${pb.year || '-'})` : '',
+            pb && pb.doi ? `https://doi.org/${pb.doi}` : '',
+          ].filter(x => x).join('\n');
+          const content = `
+            <dl><dt>共通参考文献</dt><dd>${pair.common} 件</dd></dl>
+            <h4>論文 A</h4>
+            ${pa ? Modal.buildCollectionPaperContent(pa).replace(/<h4>コピー用サマリ<\/h4>[\s\S]*$/, '') : `<p>${e(pair.a.title)} (ID: ${e(pair.a.id)})</p>`}
+            <h4>論文 B</h4>
+            ${pb ? Modal.buildCollectionPaperContent(pb).replace(/<h4>コピー用サマリ<\/h4>[\s\S]*$/, '') : `<p>${e(pair.b.title)} (ID: ${e(pair.b.id)})</p>`}
+            <h4>共通参考文献（最大50件表示、全件はCSV出力で取得可能）</h4>
+            ${commonHtml}
+            <h4>コピー用サマリ</h4>
+            ${Modal.copyBlock(summary)}
+          `;
+          Modal.show('書誌結合ペア詳細', content);
+        },
+        scales: {
+          x: { title: { display: true, text: '共通参考文献数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } },
+          y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+        }
+      }
+    });
+    document.getElementById('bibCouplingContainer').style.height = Math.max(400, top.length * 38 + 80) + 'px';
+    AppState._bibCouplingCache = { allPairs: pairs };
+  },
+
+  // E. Internal citation network (vis-network)
+  // Year-gradient color: older = warm (orange), newer = cool (blue)
+  _colorForYear(year, minYear, maxYear) {
+    if (!year) return { background: '#9aa0a6', border: '#5f6368' };
+    const range = Math.max(1, maxYear - minYear);
+    const t = (year - minYear) / range;  // 0 (old) .. 1 (new)
+    // Hue: 24 (orange) → 210 (blue)
+    const hue = Math.round(24 + (210 - 24) * t);
+    const bg = `hsl(${hue}, 70%, 55%)`;
+    const border = `hsl(${hue}, 70%, 38%)`;
+    return { background: bg, border };
+  },
+
+  renderCitationNetwork() {
+    const status = document.getElementById('citationNetworkStatus');
+    const minInDegree = parseInt(document.getElementById('netMinInDegree').value) || 0;
+
+    if (typeof vis === 'undefined' || !vis.Network) {
+      status.textContent = 'vis-network ライブラリがロードされていません';
+      return;
+    }
+
+    // Build paper-id → paper map
+    const byId = new Map();
+    AppState.tableData.forEach(d => byId.set(d.paper_id, d));
+
+    // Edges: for each paper, check which of its referenced_works are in collection
+    const edges = [];
+    const inDegree = new Map();
+    const outAdj = new Map();   // from -> Set(to)
+    const inAdj = new Map();    // to -> Set(from)
+    AppState.tableData.forEach(d => {
+      (d.referenced_works || []).forEach(ref => {
+        const refShort = ref.replace('https://openalex.org/', '');
+        if (byId.has(refShort) && refShort !== d.paper_id) {
+          edges.push({ from: d.paper_id, to: refShort });
+          inDegree.set(refShort, (inDegree.get(refShort) || 0) + 1);
+          if (!outAdj.has(d.paper_id)) outAdj.set(d.paper_id, new Set());
+          outAdj.get(d.paper_id).add(refShort);
+          if (!inAdj.has(refShort)) inAdj.set(refShort, new Set());
+          inAdj.get(refShort).add(d.paper_id);
+        }
+      });
+    });
+
+    // Filter nodes by minimum in-degree (if requested) AND keep nodes that appear in edges
+    const nodeIds = new Set();
+    edges.forEach(e => { nodeIds.add(e.from); nodeIds.add(e.to); });
+    const visibleIds = new Set();
+    nodeIds.forEach(id => {
+      const deg = inDegree.get(id) || 0;
+      if (deg >= minInDegree) visibleIds.add(id);
+    });
+
+    const visibleEdges = edges.filter(e => visibleIds.has(e.from) && visibleIds.has(e.to));
+    if (!visibleEdges.length) {
+      status.textContent = '内部引用エッジがありません（閾値が高すぎる可能性）';
+      document.getElementById('citationNetworkContainer').innerHTML = '<div style="padding:24px;color:#5f6368;">エッジがありません</div>';
+      return;
+    }
+
+    // Year range for color gradient
+    const years = [...visibleIds].map(id => byId.get(id).year).filter(y => y);
+    const minYear = years.length ? Math.min(...years) : 2000;
+    const maxYear = years.length ? Math.max(...years) : 2026;
+
+    const nodes = [...visibleIds].map(id => {
+      const p = byId.get(id);
+      const deg = inDegree.get(id) || 0;
+      const color = this._colorForYear(p.year, minYear, maxYear);
+      return {
+        id,
+        // ラベル非表示。詳細はホバー（title）とクリック（modal）で見せる。
+        label: '',
+        title: `${p.title || id}\n${p.year || '-'} | ${p.venue || '-'}\n著者: ${(p.authors || '').split('; ').slice(0, 4).join('; ')}${(p.authors || '').split('; ').length > 4 ? ' …' : ''}\nコレクション内被引用: ${deg}\nクリックで詳細`,
+        value: 1 + deg,
+        color,
+      };
+    });
+
+    const container = document.getElementById('citationNetworkContainer');
+    container.innerHTML = '';
+    const data = {
+      nodes: new vis.DataSet(nodes),
+      edges: new vis.DataSet(visibleEdges.map(e => ({ ...e, arrows: 'to', color: { color: '#9aa0a6', opacity: 0.55 }, smooth: { type: 'continuous' } }))),
+    };
+    const options = {
+      physics: {
+        enabled: true,   // always-on per user feedback (OFF was too hard to read)
+        stabilization: { iterations: 200 },
+        barnesHut: { gravitationalConstant: -3000, springLength: 120 },
+      },
+      interaction: { hover: true, dragNodes: true, dragView: true, zoomView: true, tooltipDelay: 120 },
+      nodes: { shape: 'dot', scaling: { min: 8, max: 40 }, borderWidth: 1.5 },
+      edges: { arrows: { to: { scaleFactor: 0.6 } } },
+    };
+    AppState._citationNetwork = new vis.Network(container, data, options);
+
+    // Click handler: open modal with paper details + citation in/out within collection
+    AppState._citationNetwork.on('click', (params) => {
+      if (!params.nodes || !params.nodes.length) return;
+      const nodeId = params.nodes[0];
+      const paper = byId.get(nodeId);
+      if (!paper) return;
+      const outRefs = [...(outAdj.get(nodeId) || [])].map(id => byId.get(id)).filter(Boolean);
+      const inRefs = [...(inAdj.get(nodeId) || [])].map(id => byId.get(id)).filter(Boolean);
+      const renderList = (arr) => arr.length
+        ? `<ul>${arr.map(p => `<li>${Modal.esc(p.title || p.paper_id)}${p.year ? ` (${p.year})` : ''} — <a href="https://openalex.org/${Modal.esc(p.paper_id)}" target="_blank" rel="noopener">${Modal.esc(p.paper_id)}</a></li>`).join('')}</ul>`
+        : '<p style="color:#5f6368;">なし</p>';
+      const extra = `
+        <h4>この論文が引用している（コレクション内、${outRefs.length}件）</h4>
+        ${renderList(outRefs)}
+        <h4>この論文を引用している（コレクション内、${inRefs.length}件）</h4>
+        ${renderList(inRefs)}`;
+      const content = Modal.buildCollectionPaperContent(paper) + extra;
+      Modal.show(paper.title || paper.paper_id, content);
+    });
+
+    status.textContent = `${nodes.length} ノード / ${visibleEdges.length} エッジ（色＝年: ${minYear}–${maxYear}）`;
+    AppState._citationNetworkCache = { nodes, edges: visibleEdges, inDegree };
   }
 };
 
@@ -3088,10 +4070,16 @@ const Exporter = {
       UIController.showToast('ダウンロードするデータがありません。', 'error');
       return;
     }
-    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script'];
+    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script', 'referenced_works_count', 'referenced_works'];
     const _rows = [columns];
     AppState.tableData.forEach(row => {
-      _rows.push(columns.map(col => row[col] == null ? '' : row[col]));
+      _rows.push(columns.map(col => {
+        if (col === 'referenced_works') {
+          // 配列をセミコロン区切りでフラット化（CSVラウンドトリップ用）
+          return Array.isArray(row[col]) ? row[col].join('; ') : '';
+        }
+        return row[col] == null ? '' : row[col];
+      }));
     });
     this._downloadCSVText(_rows, `openalex_papers_${new Date().toISOString().slice(0, 10)}.csv`);
   },
@@ -3337,6 +4325,95 @@ const Exporter = {
         });
         rows.push(row);
       });
+
+    // Reference / Citation Network exports
+
+    } else if (chartKey === 'refRank') {
+      // Full list of references sorted by collection-internal citation count.
+      // Includes metadata for whatever was fetched (only Top-N had metadata, rest get just IDs).
+      const refCounts = ChartRenderer.getRefCounts();
+      const sorted = [...refCounts.entries()].sort((a, b) => b[1] - a[1]);
+      const cached = (AppState._refRankCache && AppState._refRankCache.entries) || [];
+      const metaById = new Map(cached.map(e => [e.id, e]));
+      rows.push(['rank', 'openalex_id', 'collection_citation_count', 'title', 'year', 'venue', 'authors', 'global_cited_by_count', 'doi']);
+      sorted.forEach(([id, count], i) => {
+        const m = metaById.get(id);
+        if (m) {
+          rows.push([i + 1, id, count, m.title, m.year || '', m.venue, m.authors, m.cited_by_count, m.doi]);
+        } else {
+          rows.push([i + 1, id, count, '', '', '', '', '', '']);
+        }
+      });
+
+    } else if (chartKey === 'coCitation') {
+      // Full list of co-citation pairs (count >= 2 by default).
+      const pairs = new Map();
+      AppState.tableData.forEach(d => {
+        const refs = [...new Set(d.referenced_works || [])];
+        if (refs.length < 2) return;
+        for (let i = 0; i < refs.length; i++) {
+          for (let j = i + 1; j < refs.length; j++) {
+            const [a, b] = refs[i] < refs[j] ? [refs[i], refs[j]] : [refs[j], refs[i]];
+            const key = `${a}||${b}`;
+            pairs.set(key, (pairs.get(key) || 0) + 1);
+          }
+        }
+      });
+      const sorted = [...pairs.entries()].sort((a, b) => b[1] - a[1]);
+      const cached = AppState._coCitationCache;
+      const meta = (cached && cached.meta) || new Map();
+      rows.push(['rank', 'ref_a_id', 'ref_a_title', 'ref_a_year', 'ref_b_id', 'ref_b_title', 'ref_b_year', 'co_citation_count']);
+      sorted.forEach(([key, count], i) => {
+        const [a, b] = key.split('||');
+        const wa = meta.get(a), wb = meta.get(b);
+        const sa = ChartRenderer._summarizeWork(wa);
+        const sb = ChartRenderer._summarizeWork(wb);
+        rows.push([i + 1, a, sa.title, sa.year || '', b, sb.title, sb.year || '', count]);
+      });
+
+    } else if (chartKey === 'bibCoupling') {
+      // Full list of all collection paper pairs with >= minCommon shared references.
+      const minCommon = parseInt(document.getElementById('bibCpMinCommon').value) || 2;
+      const papers = AppState.tableData
+        .map(d => ({ id: d.paper_id, title: d.title, year: d.year, doi: d.doi, refs: new Set(d.referenced_works || []) }))
+        .filter(p => p.refs.size > 0);
+      const pairs = [];
+      for (let i = 0; i < papers.length; i++) {
+        for (let j = i + 1; j < papers.length; j++) {
+          let common = 0;
+          const smaller = papers[i].refs.size <= papers[j].refs.size ? papers[i].refs : papers[j].refs;
+          const larger = papers[i].refs.size <= papers[j].refs.size ? papers[j].refs : papers[i].refs;
+          smaller.forEach(r => { if (larger.has(r)) common++; });
+          if (common >= minCommon) pairs.push({ a: papers[i], b: papers[j], common });
+        }
+      }
+      pairs.sort((p1, p2) => p2.common - p1.common);
+      rows.push(['rank', 'paper_a_id', 'paper_a_title', 'paper_a_year', 'paper_b_id', 'paper_b_title', 'paper_b_year', 'common_references']);
+      pairs.forEach((p, i) => rows.push([
+        i + 1, p.a.id, p.a.title, p.a.year || '', p.b.id, p.b.title, p.b.year || '', p.common
+      ]));
+
+    } else if (chartKey === 'citationNetwork') {
+      // Edge list of internal citations within the collection (paper → referenced paper).
+      const byId = new Map();
+      AppState.tableData.forEach(d => byId.set(d.paper_id, d));
+      const inDegree = new Map();
+      const edges = [];
+      AppState.tableData.forEach(d => {
+        (d.referenced_works || []).forEach(ref => {
+          const refShort = ref.replace('https://openalex.org/', '');
+          if (byId.has(refShort) && refShort !== d.paper_id) {
+            edges.push({ from: d.paper_id, to: refShort });
+            inDegree.set(refShort, (inDegree.get(refShort) || 0) + 1);
+          }
+        });
+      });
+      rows.push(['from_paper_id', 'from_paper_title', 'to_paper_id', 'to_paper_title', 'to_in_degree_in_collection']);
+      edges.forEach(e => {
+        const fromP = byId.get(e.from);
+        const toP = byId.get(e.to);
+        rows.push([e.from, fromP ? fromP.title : '', e.to, toP ? toP.title : '', inDegree.get(e.to) || 0]);
+      });
     }
 
     this._downloadCSVText(rows, filename);
@@ -3366,6 +4443,11 @@ const Importer = {
 
         const tableData = data.map(row => {
           const cleanTitle = OpenAlexAPI._stripTags(row.title || '');
+          // referenced_works はCSVではセミコロン区切り。空文字なら空配列。
+          const refsRaw = row.referenced_works || '';
+          const refs = refsRaw
+            ? refsRaw.split(';').map(s => s.trim()).filter(s => s)
+            : [];
           return {
             paper_id: row.paper_id || '',
             title: cleanTitle,
@@ -3377,9 +4459,11 @@ const Importer = {
             citation_count: parseInt(row.citation_count) || 0,
             publication_date: row.publication_date || '',
             doi: row.doi || '',
-            // 旧バージョンのCSVには language / title_script 列が無いので、その場合は派生値で補完
+            // 旧バージョンのCSVには language / title_script / referenced_works 列が無いので補完
             language: row.language || '',
             title_script: row.title_script || OpenAlexAPI._detectScript(cleanTitle),
+            referenced_works: refs,
+            referenced_works_count: parseInt(row.referenced_works_count) || refs.length,
           };
         });
 
@@ -3518,6 +4602,321 @@ const UIController = {
         input.step = '50';
       }
     });
+  }
+};
+
+// Modal: click-to-popup for chart bars and network nodes.
+// Content is plain HTML; text is selectable for copy-paste.
+const Modal = {
+  _initialized: false,
+
+  _ensure() {
+    if (this._initialized) return;
+    let el = document.getElementById('modalContainer');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'modalContainer';
+      el.className = 'modal-backdrop';
+      el.innerHTML = `
+        <div class="modal-window" role="dialog" aria-modal="true">
+          <div class="modal-header">
+            <div class="modal-title"></div>
+            <button class="modal-close" type="button" aria-label="閉じる">×</button>
+          </div>
+          <div class="modal-body"></div>
+        </div>`;
+      document.body.appendChild(el);
+      el.addEventListener('click', (e) => { if (e.target === el) Modal.hide(); });
+      el.querySelector('.modal-close').addEventListener('click', () => Modal.hide());
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') Modal.hide(); });
+    }
+    this._initialized = true;
+  },
+
+  show(title, bodyHtml) {
+    this._ensure();
+    const el = document.getElementById('modalContainer');
+    el.querySelector('.modal-title').textContent = title;
+    el.querySelector('.modal-body').innerHTML = bodyHtml;
+    el.classList.add('open');
+  },
+
+  hide() {
+    const el = document.getElementById('modalContainer');
+    if (el) el.classList.remove('open');
+  },
+
+  // Escape HTML for safe injection
+  esc(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  },
+
+  // Build a copy-friendly block. id is used so the inline onclick can find it.
+  copyBlock(text, id) {
+    const blockId = id || `cb-${Math.random().toString(36).slice(2, 9)}`;
+    return `<div class="copy-block" id="${blockId}">${this.esc(text)}</div>
+      <button class="copy-btn" onclick="Modal.copyById('${blockId}', this)">📋 コピー</button>`;
+  },
+
+  copyById(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const text = el.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      if (btn) {
+        const original = btn.textContent;
+        btn.textContent = '✓ コピーしました';
+        setTimeout(() => { btn.textContent = original; }, 1500);
+      }
+    }).catch(() => {
+      // Fallback: select the text so user can Cmd+C
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    });
+  },
+
+  // Render a collection paper as modal content. Includes copyable summary block.
+  buildCollectionPaperContent(paper) {
+    const e = this.esc;
+    const yr = paper.year ? `${paper.year}` : '-';
+    const cite = (paper.citation_count || 0).toLocaleString();
+    const doiLink = paper.doi
+      ? `<a href="https://doi.org/${e(paper.doi)}" target="_blank" rel="noopener">${e(paper.doi)}</a>`
+      : '-';
+    const oaLink = paper.paper_id
+      ? `<a href="https://openalex.org/${e(paper.paper_id)}" target="_blank" rel="noopener">${e(paper.paper_id)}</a>`
+      : '-';
+    const abs = paper.abstract && paper.abstract.length > 600
+      ? paper.abstract.slice(0, 600) + '…'
+      : (paper.abstract || '(要約なし)');
+
+    const summaryText = [
+      paper.title || '',
+      paper.authors || '',
+      paper.institutions || '',
+      `${paper.venue || ''} (${yr})`,
+      paper.doi ? `https://doi.org/${paper.doi}` : '',
+      `被引用数: ${cite}`,
+    ].filter(s => s).join('\n');
+
+    return `
+      <dl>
+        <dt>年</dt><dd>${e(yr)}</dd>
+        <dt>誌</dt><dd>${e(paper.venue || '-')}</dd>
+        <dt>被引用数</dt><dd>${cite}</dd>
+        <dt>DOI</dt><dd>${doiLink}</dd>
+        <dt>OpenAlex</dt><dd>${oaLink}</dd>
+        <dt>言語</dt><dd>${e(paper.language || '-')} / タイトル文字種: ${e(paper.title_script || '-')}</dd>
+        <dt>引用文献数</dt><dd>${(paper.referenced_works_count != null ? paper.referenced_works_count : (paper.referenced_works || []).length)}</dd>
+      </dl>
+      <h4>著者</h4>
+      <div>${e(paper.authors || '-')}</div>
+      <h4>所属機関</h4>
+      <div>${e(paper.institutions || '-')}</div>
+      <h4>要約</h4>
+      <div>${e(abs)}</div>
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summaryText)}
+    `;
+  },
+
+  // Render entity (author / institution / venue) summary with their papers in collection.
+  // entityType: '著者' | '所属機関' | 'ジャーナル/誌'
+  buildEntityContent(name, entityType, papers, opts) {
+    const e = this.esc;
+    opts = opts || {};
+    const total = papers.length;
+    const totalCite = papers.reduce((s, p) => s + (Number(p.citation_count) || 0), 0);
+    const avg = total > 0 ? (totalCite / total).toFixed(1) : '-';
+
+    // h-index in collection
+    const sortedCites = papers.map(p => Number(p.citation_count) || 0).sort((a, b) => b - a);
+    let h = 0;
+    for (let i = 0; i < sortedCites.length; i++) {
+      if (sortedCites[i] >= i + 1) h = i + 1; else break;
+    }
+
+    // Year range
+    const years = papers.map(p => p.year).filter(y => y);
+    const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '-';
+
+    // Top papers by citation
+    const topPapers = [...papers].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0)).slice(0, 15);
+    const paperListHtml = topPapers.length
+      ? `<ul>${topPapers.map(p => `<li>${e(p.title || p.paper_id)}${p.year ? ` (${p.year})` : ''} — 被引用 ${(p.citation_count || 0).toLocaleString()}${p.doi ? ` — <a href="https://doi.org/${e(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</li>`).join('')}${papers.length > 15 ? `<li>… 他 ${papers.length - 15} 件</li>` : ''}</ul>`
+      : '<p style="color:#5f6368;">該当論文なし</p>';
+
+    // Top co-authors / collaborators (for author/institution)
+    let extraSections = '';
+    if (entityType === '所属機関') {
+      const partnerCounts = {};
+      papers.forEach(p => {
+        (p.institutions || '').split('; ').forEach(inst => {
+          inst = inst.trim();
+          if (inst && inst !== name) partnerCounts[inst] = (partnerCounts[inst] || 0) + 1;
+        });
+      });
+      const topPartners = Object.entries(partnerCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      extraSections += `<h4>共同研究先 Top 10（コレクション内）</h4>` + (topPartners.length
+        ? `<ul>${topPartners.map(([n, c]) => `<li>${e(n)} — ${c} 件</li>`).join('')}</ul>`
+        : '<p style="color:#5f6368;">なし</p>');
+    } else if (entityType === '著者') {
+      const coCounts = {};
+      papers.forEach(p => {
+        (p.authors || '').split('; ').forEach(a => {
+          a = a.trim();
+          if (a && a !== name) coCounts[a] = (coCounts[a] || 0) + 1;
+        });
+      });
+      const topCo = Object.entries(coCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      extraSections += `<h4>共著者 Top 10（コレクション内）</h4>` + (topCo.length
+        ? `<ul>${topCo.map(([n, c]) => `<li>${e(n)} — ${c} 件共著</li>`).join('')}</ul>`
+        : '<p style="color:#5f6368;">なし</p>');
+    }
+
+    const summaryText = [
+      `${entityType}: ${name}`,
+      `コレクション内 論文数: ${total}`,
+      `コレクション内 合計被引用数: ${totalCite.toLocaleString()}`,
+      `平均被引用: ${avg}`,
+      `h-index（コレクション内）: ${h}`,
+      `期間: ${yearRange}`,
+    ].join('\n');
+
+    return `
+      <dl>
+        <dt>${e(entityType)}</dt><dd>${e(name)}</dd>
+        <dt>コレクション内 論文数</dt><dd>${total}</dd>
+        <dt>合計被引用数</dt><dd>${totalCite.toLocaleString()}</dd>
+        <dt>平均被引用</dt><dd>${avg}</dd>
+        <dt>h-index</dt><dd>${h}（コレクション内のみ）</dd>
+        <dt>期間</dt><dd>${e(yearRange)}</dd>
+        ${opts.extraDl || ''}
+      </dl>
+      ${extraSections}
+      <h4>論文 Top 15（被引用数順）</h4>
+      ${paperListHtml}
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summaryText)}
+    `;
+  },
+
+  // Render a pair of entities (institutions/authors) with their shared papers.
+  // typeA/typeB: '所属機関' | '著者' etc. metricLabel: '共著論文' | etc.
+  buildPairContent(nameA, typeA, nameB, typeB, sharedPapers, metricLabel) {
+    const e = this.esc;
+    metricLabel = metricLabel || '共有論文';
+    const count = sharedPapers.length;
+    const totalCite = sharedPapers.reduce((s, p) => s + (Number(p.citation_count) || 0), 0);
+    const years = sharedPapers.map(p => p.year).filter(y => y);
+    const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '-';
+
+    const sorted = [...sharedPapers].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
+    const listHtml = sorted.length
+      ? `<ul>${sorted.slice(0, 30).map(p => `<li>${e(p.title || p.paper_id)}${p.year ? ` (${p.year})` : ''} — 被引用 ${(p.citation_count || 0).toLocaleString()}${p.doi ? ` — <a href="https://doi.org/${e(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</li>`).join('')}${sorted.length > 30 ? `<li>… 他 ${sorted.length - 30} 件</li>` : ''}</ul>`
+      : '<p style="color:#5f6368;">該当論文なし</p>';
+
+    const summaryText = [
+      `${typeA}: ${nameA}`,
+      `${typeB}: ${nameB}`,
+      `${metricLabel}: ${count}`,
+      `合計被引用: ${totalCite.toLocaleString()}`,
+      `期間: ${yearRange}`,
+    ].join('\n');
+
+    return `
+      <dl>
+        <dt>${e(typeA)} A</dt><dd>${e(nameA)}</dd>
+        <dt>${e(typeB)} B</dt><dd>${e(nameB)}</dd>
+        <dt>${e(metricLabel)}</dt><dd>${count}</dd>
+        <dt>合計被引用</dt><dd>${totalCite.toLocaleString()}</dd>
+        <dt>期間</dt><dd>${e(yearRange)}</dd>
+      </dl>
+      <h4>${e(metricLabel)} 一覧（被引用数順、最大30件）</h4>
+      ${listHtml}
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summaryText)}
+    `;
+  },
+
+  // Render a list of papers (year click, etc.) as modal content
+  buildPaperListContent(title, papers) {
+    const e = this.esc;
+    const sorted = [...papers].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
+    const totalCite = sorted.reduce((s, p) => s + (Number(p.citation_count) || 0), 0);
+    const listHtml = sorted.length
+      ? `<ul>${sorted.slice(0, 50).map(p => `<li>${e(p.title || p.paper_id)} — ${e(p.authors ? p.authors.split('; ').slice(0, 3).join('; ') + ((p.authors.split('; ').length > 3) ? ' …' : '') : '')} — 被引用 ${(p.citation_count || 0).toLocaleString()}${p.doi ? ` — <a href="https://doi.org/${e(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</li>`).join('')}${sorted.length > 50 ? `<li>… 他 ${sorted.length - 50} 件</li>` : ''}</ul>`
+      : '<p style="color:#5f6368;">該当論文なし</p>';
+    const summary = [
+      title,
+      `論文数: ${sorted.length}`,
+      `合計被引用: ${totalCite.toLocaleString()}`,
+    ].join('\n');
+    return `
+      <dl>
+        <dt>論文数</dt><dd>${sorted.length}</dd>
+        <dt>合計被引用</dt><dd>${totalCite.toLocaleString()}</dd>
+      </dl>
+      <h4>論文一覧（被引用数順、最大50件）</h4>
+      ${listHtml}
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summary)}
+    `;
+  },
+
+  // Render an external (referenced) work's metadata as modal content.
+  buildExternalWorkContent(work, extra) {
+    const e = this.esc;
+    if (!work) {
+      return `<p>メタデータが見つかりませんでした。</p>${extra ? `<h4>追加情報</h4><div>${extra}</div>` : ''}`;
+    }
+    const s = ChartRenderer._summarizeWork(work);
+    const yr = s.year ? `${s.year}` : '-';
+    const inst = ((work.authorships || [])
+      .flatMap(a => (a.institutions || []).map(i => i.display_name))
+      .filter(n => n));
+    const instStr = [...new Set(inst)].join('; ') || '-';
+    const doiLink = s.doi
+      ? `<a href="https://doi.org/${e(s.doi)}" target="_blank" rel="noopener">${e(s.doi)}</a>`
+      : '-';
+    const oaId = (work.id || '').replace('https://openalex.org/', '');
+    const oaLink = oaId
+      ? `<a href="${e(work.id)}" target="_blank" rel="noopener">${e(oaId)}</a>`
+      : '-';
+
+    const summaryText = [
+      s.title,
+      s.authors,
+      instStr,
+      `${s.venue} (${yr})`,
+      s.doi ? `https://doi.org/${s.doi}` : '',
+      `OpenAlex被引用数（全体）: ${s.cited_by_count}`,
+    ].filter(x => x).join('\n');
+
+    return `
+      <dl>
+        <dt>年</dt><dd>${e(yr)}</dd>
+        <dt>誌</dt><dd>${e(s.venue || '-')}</dd>
+        <dt>OpenAlex被引用数</dt><dd>${s.cited_by_count.toLocaleString()}（全体／コレクション外含む）</dd>
+        <dt>DOI</dt><dd>${doiLink}</dd>
+        <dt>OpenAlex</dt><dd>${oaLink}</dd>
+      </dl>
+      <h4>著者</h4>
+      <div>${e(s.authors || '-')}</div>
+      <h4>所属機関</h4>
+      <div>${e(instStr)}</div>
+      ${extra ? `<h4>コレクション内での関係</h4><div>${extra}</div>` : ''}
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summaryText)}
+    `;
   }
 };
 
