@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenALEX Collector v3.0</title>
+<title>OpenALEX Collector v4.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a73e8'/%3E%3Cstop offset='1' stop-color='%230d47a1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='12' fill='url(%23g)'/%3E%3Crect x='10' y='22' width='28' height='36' rx='2' fill='%23bbdefb' opacity='.6'/%3E%3Crect x='15' y='17' width='28' height='36' rx='2' fill='%23e3f2fd' opacity='.85'/%3E%3Crect x='20' y='12' width='28' height='36' rx='2' fill='%23ffffff'/%3E%3Crect x='24' y='18' width='16' height='2.5' rx='1' fill='%231565c0'/%3E%3Crect x='24' y='25' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='29' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='33' width='16' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='37' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='41' width='14' height='1.5' fill='%235f6368'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/vis-network@9/standalone/umd/vis-network.min.js"></script>
@@ -515,6 +515,37 @@ td a:hover { text-decoration: underline; }
   .tab-btn { padding: 8px 12px; font-size: 13px; }
 }
 
+
+/* --- Funding Intelligence --- */
+.funding-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-size: 11px;
+  font-weight: 500;
+  margin: 2px 4px 2px 0;
+}
+.funding-badge.external {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.funding-empty {
+  padding: 20px;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+.funding-status {
+  font-size: 12px;
+  color: var(--text-secondary);
+  align-self: center;
+  min-height: 18px;
+}
+
 /* Collaboration matrix heatmap */
 .collab-matrix-wrapper {
   overflow: auto;
@@ -584,6 +615,68 @@ td a:hover { text-decoration: underline; }
 .collab-matrix td.cell.zero {
   color: var(--text-tertiary);
   font-weight: 400;
+}
+
+
+/* --- Topic / Matrix / Network Utilities --- */
+.formula-box {
+  margin: 12px 0 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(26,115,232,0.18);
+  background: #f8fbff;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+.formula-box code {
+  background: rgba(26,115,232,0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.matrix-tab-note {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+.network-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+.network-toolbar .form-group {
+  min-width: 145px;
+  margin-bottom: 0;
+}
+.network-toolbar .form-group.wide {
+  min-width: 220px;
+}
+.network-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin: 6px 0 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.network-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.network-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.network-container {
+  height: 720px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: #fafbfc;
 }
 
 /* --- Modal --- */
@@ -745,9 +838,9 @@ td a:hover { text-decoration: underline; }
 
 <!-- HEADER -->
 <header class="app-header">
-  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v3.0</span></h1>
+  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v4.0</span></h1>
   <div class="tagline" style="font-size:15px;font-style:italic;opacity:0.95;margin-top:6px;letter-spacing:0.5px;">— すべての論文は、誰かの肩である —</div>
-  <div class="subtitle" style="margin-top:6px;">OpenALEX APIを活用した学術論文収集・可視化ツール</div>
+  <div class="subtitle" style="margin-top:6px;">OpenALEX APIを活用した学術論文・資金情報分析ツール</div>
   <div class="badge">Powered by OpenAlex API</div>
 </header>
 
@@ -1295,6 +1388,445 @@ td a:hover { text-decoration: underline; }
     </div>
   </div>
 
+
+  <!-- Funding Intelligence -->
+  <div class="card">
+    <div class="card-title"><span class="icon">¥</span> 資金分析（Funding Intelligence）</div>
+
+    <div class="alert alert-info">
+      <strong>資金情報の集計:</strong>
+      <span>
+        OpenAlex に含まれる <code>grants</code> / <code>funders</code> / <code>awards</code> 相当の情報を中心に、資金提供機関・助成番号・年次推移・機関との関係を可視化します。
+        Crossref と NIH RePORTER は<strong>登録不要の公開API</strong>として、必要な範囲だけ手動で補完できます。APIキー入力欄はありません。
+      </span>
+    </div>
+
+    <div class="metrics-row" id="fundingMetricsRow">
+      <div class="metric-card">
+        <div class="metric-value" id="metricFundingCoverage">-</div>
+        <div class="metric-label">資金情報あり</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricFunderCount">-</div>
+        <div class="metric-label">資金提供機関</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricAwardCount">-</div>
+        <div class="metric-label">助成番号 / Award</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value" id="metricFundingExternal">-</div>
+        <div class="metric-label">外部補完済み</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="UIController.switchTab('funderRank', this)">A. 資金源ランキング</button>
+      <button class="tab-btn" onclick="UIController.switchTab('funderTrend', this)">B. 資金源×年</button>
+      <button class="tab-btn" onclick="UIController.switchTab('awardRank', this)">C. 助成番号ランキング</button>
+      <button class="tab-btn" onclick="UIController.switchTab('funderInst', this)">D. 資金源×機関</button>
+      <button class="tab-btn" onclick="UIController.switchTab('funderInstMatrix', this)">E. 資金源×機関マトリクス</button>
+      <button class="tab-btn" onclick="UIController.switchTab('externalFunding', this)">F. 外部補完</button>
+    </div>
+
+    <!-- Tab A: Funder Ranking -->
+    <div class="tab-panel active" id="panel-funderRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNFunderRank">表示数</label>
+          <input type="number" id="topNFunderRank" min="5" max="50" value="20" onchange="FundingRenderer.renderFunderRank()">
+        </div>
+        <div class="form-group" style="width:180px;">
+          <label for="funderRankMetric">並び替え指標</label>
+          <select id="funderRankMetric" onchange="FundingRenderer.renderFunderRank()">
+            <option value="papers">論文件数</option>
+            <option value="citations">合計被引用数</option>
+            <option value="avgCitations">平均被引用数</option>
+            <option value="awards">助成番号数</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.renderFunderRank()">描画</button>
+      </div>
+      <div class="form-hint">OpenAlex由来の資金提供機関に、Crossref / NIH RePORTER で補完した情報も統合して集計します。複数資金源がある論文は各資金源にフルカウントします。</div>
+      <div class="chart-container" id="funderRankContainer">
+        <canvas id="chartFunderRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('funderRank', 'funder_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('funderRank', 'funder_ranking_full.csv')">CSVダウンロード（全資金源）</button>
+      </div>
+    </div>
+
+    <!-- Tab B: Funder x Year -->
+    <div class="tab-panel" id="panel-funderTrend">
+      <div class="chart-controls">
+        <div class="form-group" style="width:180px;">
+          <label for="topNFunderTrend">表示する資金源数</label>
+          <input type="number" id="topNFunderTrend" min="1" max="10" value="5" onchange="FundingRenderer.renderFunderTrend()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.renderFunderTrend()">描画</button>
+      </div>
+      <div class="form-hint">論文数の多い資金源について、年別の支援論文件数を折れ線で表示します。クリックすると、その資金源×年の論文一覧を確認できます。</div>
+      <div class="chart-container" style="height:520px;">
+        <canvas id="chartFunderTrend"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('funderTrend', 'funder_trend.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('funderTrend', 'funder_trend_full.csv')">CSVダウンロード（年×資金源）</button>
+      </div>
+    </div>
+
+    <!-- Tab C: Award Ranking -->
+    <div class="tab-panel" id="panel-awardRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNAwardRank">表示数</label>
+          <input type="number" id="topNAwardRank" min="5" max="50" value="20" onchange="FundingRenderer.renderAwardRank()">
+        </div>
+        <div class="form-group" style="width:180px;">
+          <label for="awardRankMetric">並び替え指標</label>
+          <select id="awardRankMetric" onchange="FundingRenderer.renderAwardRank()">
+            <option value="papers">論文件数</option>
+            <option value="citations">合計被引用数</option>
+            <option value="avgCitations">平均被引用数</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.renderAwardRank()">描画</button>
+      </div>
+      <div class="form-hint">助成番号・Award ID単位で、コレクション内の成果論文を集計します。KAKENHI番号、NIH grant number などがOpenAlexやCrossrefに入っている場合に有効です。</div>
+      <div class="chart-container" id="awardRankContainer">
+        <canvas id="chartAwardRank"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('awardRank', 'award_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('awardRank', 'award_ranking_full.csv')">CSVダウンロード（全助成番号）</button>
+      </div>
+    </div>
+
+    <!-- Tab D: Funder x Institution -->
+    <div class="tab-panel" id="panel-funderInst">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNFunderInst">表示数</label>
+          <input type="number" id="topNFunderInst" min="5" max="50" value="20" onchange="FundingRenderer.renderFunderInst()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.renderFunderInst()">描画</button>
+      </div>
+      <div class="form-hint">資金提供機関と所属機関の組み合わせを集計します。「どの資金が、どの研究機関の論文群に現れているか」を把握できます。</div>
+      <div class="chart-container" id="funderInstContainer">
+        <canvas id="chartFunderInst"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('funderInst', 'funder_institution_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('funderInst', 'funder_institution_full.csv')">CSVダウンロード（全ペア）</button>
+      </div>
+    </div>
+
+
+    <!-- Tab E: Funder x Institution Matrix -->
+    <div class="tab-panel" id="panel-funderInstMatrix">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="funderInstMatrixRows">対象資金源数</label>
+          <input type="number" id="funderInstMatrixRows" min="5" max="25" value="12" onchange="FundingRenderer.renderFunderInstMatrix()">
+        </div>
+        <div class="form-group" style="width:160px;">
+          <label for="funderInstMatrixCols">対象機関数</label>
+          <input type="number" id="funderInstMatrixCols" min="5" max="25" value="12" onchange="FundingRenderer.renderFunderInstMatrix()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.renderFunderInstMatrix()">描画</button>
+      </div>
+      <div class="matrix-tab-note">上位資金源 × 上位機関のマトリクスです。色が濃いほど、その資金源と機関の組み合わせで現れる論文数が多いことを示します。セルをクリックすると該当論文一覧が開きます。</div>
+      <div id="funderInstMatrixContainer" class="collab-matrix-wrapper" style="margin-top:12px; max-height:700px;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('funderInstMatrix', 'funder_institution_matrix.csv')">CSVダウンロード（マトリクス）</button>
+      </div>
+    </div>
+
+    <!-- Tab F: External enrichment -->
+    <div class="tab-panel" id="panel-externalFunding">
+      <div class="alert alert-warning">
+        <strong>外部補完:</strong>
+        <span>
+          登録不要で利用できる Crossref REST API と NIH RePORTER API だけを使います。大量一括取得ではなく、DOIまたは助成番号がある論文を上限件数まで順番に補完します。外部API側の制限やCORS設定により取得できない場合があります。
+        </span>
+      </div>
+      <div class="chart-controls">
+        <div class="form-group" style="width:180px;">
+          <label for="externalFundingLimit">補完上限</label>
+          <input type="number" id="externalFundingLimit" min="10" max="500" value="100" step="10">
+          <div class="form-hint">ブラウザ直実行のため、小さめの値から確認することを推奨します。</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.enrichCrossrefFunding()">CrossrefでDOI補完</button>
+        <button class="btn btn-secondary btn-sm" onclick="FundingRenderer.enrichNIHFunding()">NIH RePORTERで助成番号補完</button>
+        <button class="btn btn-secondary btn-sm" onclick="FundingRenderer.renderExternalFundingTable()">集計を更新</button>
+        <div id="fundingExternalStatus" class="funding-status"></div>
+      </div>
+      <div class="form-hint">CrossrefはDOIメタデータ中のfunder / awardを補完します。NIH RePORTERはOpenAlex/Crossrefに含まれるNIH型の助成番号からプロジェクト名・機関・年度・金額を補完します。</div>
+      <div class="table-wrapper" style="max-height:420px; overflow-y:auto; margin-top:12px;">
+        <table id="fundingExternalTable">
+          <thead>
+            <tr>
+              <th>論文</th>
+              <th>DOI</th>
+              <th>Crossref資金源</th>
+              <th>Crossref助成番号</th>
+              <th>NIHプロジェクト</th>
+              <th>NIH金額</th>
+            </tr>
+          </thead>
+          <tbody id="fundingExternalTableBody"></tbody>
+        </table>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('externalFunding', 'external_funding_enrichment.csv')">CSVダウンロード（外部補完結果）</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Topic Intelligence -->
+  <div class="card">
+    <div class="card-title"><span class="icon">#</span> Topic分析（Topic Intelligence）</div>
+
+    <div class="alert alert-info">
+      <strong>Topic分析:</strong>
+      <span>
+        OpenAlex の <code>primary_topic</code> / <code>topics</code> をもとに、研究テーマの規模・年次推移・新興トピック・機関や資金源との関係を分析します。
+        組み合わせ分析に有効な箇所は、棒グラフに加えてマトリクス（ヒートマップ）でも表示できます。
+      </span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="UIController.switchTab('topicRank', this)">A. Topicランキング</button>
+      <button class="tab-btn" onclick="UIController.switchTab('topicTrend', this)">B. Topic×年</button>
+      <button class="tab-btn" onclick="UIController.switchTab('emergingTopic', this)">C. 新興Topic候補</button>
+      <button class="tab-btn" onclick="UIController.switchTab('topicInstitution', this)">D. Topic×機関</button>
+      <button class="tab-btn" onclick="UIController.switchTab('topicFunder', this)">E. Topic×資金源</button>
+      <button class="tab-btn" onclick="UIController.switchTab('topicYearMatrix', this)">F. Topic×年マトリクス</button>
+      <button class="tab-btn" onclick="UIController.switchTab('topicInstMatrix', this)">G. Topic×機関マトリクス</button>
+      <button class="tab-btn" onclick="UIController.switchTab('topicFunderMatrix', this)">H. Topic×資金源マトリクス</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-topicRank">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNTopicRank">表示数</label>
+          <input type="number" id="topNTopicRank" min="5" max="50" value="20" onchange="TopicRenderer.renderTopicRank()">
+        </div>
+        <div class="form-group" style="width:180px;">
+          <label for="topicRankMetric">並び替え指標</label>
+          <select id="topicRankMetric" onchange="TopicRenderer.renderTopicRank()">
+            <option value="papers">論文件数</option>
+            <option value="citations">合計被引用数</option>
+            <option value="avgCitations">平均被引用数</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderTopicRank()">描画</button>
+      </div>
+      <div class="form-hint">コレクション内で出現した研究トピックの規模・影響度を比較します。クリックでそのTopicの論文一覧を確認できます。</div>
+      <div class="chart-container" id="topicRankContainer"><canvas id="chartTopicRank"></canvas></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('topicRank', 'topic_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('topicRank', 'topic_ranking_full.csv')">CSVダウンロード（全Topic）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-topicTrend">
+      <div class="chart-controls">
+        <div class="form-group" style="width:180px;">
+          <label for="topNTopicTrend">表示するTopic数</label>
+          <input type="number" id="topNTopicTrend" min="1" max="10" value="5" onchange="TopicRenderer.renderTopicTrend()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderTopicTrend()">描画</button>
+      </div>
+      <div class="form-hint">論文件数の多いTopicについて、年別推移を折れ線で表示します。クリックで該当年×Topicの論文一覧を確認できます。</div>
+      <div class="chart-container" id="topicTrendContainer" style="height:520px;"><canvas id="chartTopicTrend"></canvas></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('topicTrend', 'topic_trend.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('topicTrend', 'topic_trend_full.csv')">CSVダウンロード（年×Topic）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-emergingTopic">
+      <div class="formula-box" id="topicScoreDefinition">スコア定義を表示します。</div>
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNEmergingTopic">表示数</label>
+          <input type="number" id="topNEmergingTopic" min="5" max="50" value="20" onchange="TopicRenderer.renderEmergingTopics()">
+        </div>
+        <div class="form-group" style="width:155px;">
+          <label for="topicScoreWeightRecent">重み：直近件数</label>
+          <input type="number" id="topicScoreWeightRecent" min="-10" max="10" step="0.1" value="1" onchange="TopicRenderer.renderEmergingTopics()">
+        </div>
+        <div class="form-group" style="width:155px;">
+          <label for="topicScoreWeightDelta">重み：増分</label>
+          <input type="number" id="topicScoreWeightDelta" min="-10" max="10" step="0.1" value="1" onchange="TopicRenderer.renderEmergingTopics()">
+        </div>
+        <div class="form-group" style="width:170px;">
+          <label for="topicScoreWeightCitation">重み：平均被引用</label>
+          <input type="number" id="topicScoreWeightCitation" min="-10" max="10" step="0.1" value="1" onchange="TopicRenderer.renderEmergingTopics()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderEmergingTopics()">描画</button>
+      </div>
+      <div class="form-hint">新しさを「直近3年の量」「直前3年からの増分」「直近3年の平均被引用数」で簡易評価します。各要素の重みは上の入力欄で調整できます。</div>
+      <div class="chart-container" id="emergingTopicContainer"><canvas id="chartEmergingTopic"></canvas></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('emergingTopic', 'emerging_topics.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('emergingTopic', 'emerging_topics_full.csv')">CSVダウンロード（全Topic）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-topicInstitution">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNTopicInstitution">表示数</label>
+          <input type="number" id="topNTopicInstitution" min="5" max="50" value="20" onchange="TopicRenderer.renderTopicInstitution()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderTopicInstitution()">描画</button>
+      </div>
+      <div class="form-hint">「どの機関が、どのTopicに強いか」を把握するためのペア分析です。</div>
+      <div class="chart-container" id="topicInstitutionContainer"><canvas id="chartTopicInstitution"></canvas></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('topicInstitution', 'topic_institution_pairs.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('topicInstitution', 'topic_institution_pairs_full.csv')">CSVダウンロード（全ペア）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-topicFunder">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNTopicFunder">表示数</label>
+          <input type="number" id="topNTopicFunder" min="5" max="50" value="20" onchange="TopicRenderer.renderTopicFunder()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderTopicFunder()">描画</button>
+      </div>
+      <div class="form-hint">Topicごとに、どの資金源が現れているかを比較します。資金のテーマ偏在を見る入口です。</div>
+      <div class="chart-container" id="topicFunderContainer"><canvas id="chartTopicFunder"></canvas></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('topicFunder', 'topic_funder_pairs.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('topicFunder', 'topic_funder_pairs_full.csv')">CSVダウンロード（全ペア）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-topicYearMatrix">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="matrixTopicN">対象Topic数</label>
+          <input type="number" id="matrixTopicN" min="5" max="25" value="12" onchange="TopicRenderer.renderTopicYearMatrix()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderTopicYearMatrix()">描画</button>
+      </div>
+      <div class="matrix-tab-note">上位Topic × 年のマトリクスです。色が濃いほど件数が多く、セルをクリックすると該当論文一覧が開きます。</div>
+      <div id="topicYearMatrixContainer" class="collab-matrix-wrapper" style="margin-top:12px; max-height:700px;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('topicYearMatrix', 'topic_year_matrix.csv')">CSVダウンロード（マトリクス）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-topicInstMatrix">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="matrixTopicInstRows">対象Topic数</label>
+          <input type="number" id="matrixTopicInstRows" min="5" max="20" value="10" onchange="TopicRenderer.renderTopicInstMatrix()">
+        </div>
+        <div class="form-group" style="width:160px;">
+          <label for="matrixTopicInstCols">対象機関数</label>
+          <input type="number" id="matrixTopicInstCols" min="5" max="20" value="10" onchange="TopicRenderer.renderTopicInstMatrix()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderTopicInstMatrix()">描画</button>
+      </div>
+      <div class="matrix-tab-note">上位Topic × 上位機関のマトリクスです。色が濃いほど件数が多く、セルをクリックすると該当論文一覧が開きます。</div>
+      <div id="topicInstMatrixContainer" class="collab-matrix-wrapper" style="margin-top:12px; max-height:700px;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('topicInstMatrix', 'topic_institution_matrix.csv')">CSVダウンロード（マトリクス）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-topicFunderMatrix">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="matrixTopicFunderRows">対象Topic数</label>
+          <input type="number" id="matrixTopicFunderRows" min="5" max="20" value="10" onchange="TopicRenderer.renderTopicFunderMatrix()">
+        </div>
+        <div class="form-group" style="width:160px;">
+          <label for="matrixTopicFunderCols">対象資金源数</label>
+          <input type="number" id="matrixTopicFunderCols" min="5" max="20" value="10" onchange="TopicRenderer.renderTopicFunderMatrix()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderTopicFunderMatrix()">描画</button>
+      </div>
+      <div class="matrix-tab-note">上位Topic × 上位資金源のマトリクスです。色が濃いほど件数が多く、セルをクリックすると該当論文一覧が開きます。</div>
+      <div id="topicFunderMatrixContainer" class="collab-matrix-wrapper" style="margin-top:12px; max-height:700px;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('topicFunderMatrix', 'topic_funder_matrix.csv')">CSVダウンロード（マトリクス）</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collaboration / Author Network Graphs -->
+  <div class="card">
+    <div class="card-title"><span class="icon">N</span> ネットワーク図（共同研究・共著）</div>
+
+    <div class="alert alert-info">
+      <strong>ネットワーク分析:</strong>
+      <span>
+        機関どうしの共同研究ネットワーク、および著者どうしの共著ネットワークを描画します。
+        年範囲・Topic・資金源・最小論文数などでフィルタし、ノードの色は媒介中心性・次数・重み付き次数・論文数・平均被引用数などに切り替えられます。
+      </span>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="UIController.switchTab('institutionNetwork', this)">A. 機関ネットワーク</button>
+      <button class="tab-btn" onclick="UIController.switchTab('authorNetworkGraph', this)">B. 著者ネットワーク</button>
+    </div>
+
+    <div class="tab-panel active" id="panel-institutionNetwork">
+      <div class="network-toolbar">
+        <div class="form-group"><label for="instNetTopN">ノード数</label><input type="number" id="instNetTopN" min="5" max="100" value="40"></div>
+        <div class="form-group"><label for="instNetMinEdge">最小エッジ重み</label><input type="number" id="instNetMinEdge" min="1" max="50" value="2"></div>
+        <div class="form-group"><label for="instNetMinPapers">最小論文数</label><input type="number" id="instNetMinPapers" min="1" max="100" value="1"></div>
+        <div class="form-group"><label for="instNetMinAvgCite">最小平均被引用</label><input type="number" id="instNetMinAvgCite" min="0" max="10000" step="0.1" value="0"></div>
+        <div class="form-group"><label for="instNetYearFrom">開始年</label><input type="number" id="instNetYearFrom" min="1900" max="2100" placeholder="任意"></div>
+        <div class="form-group"><label for="instNetYearTo">終了年</label><input type="number" id="instNetYearTo" min="1900" max="2100" placeholder="任意"></div>
+        <div class="form-group wide"><label for="instNetTopicFilter">Topicフィルタ</label><input type="text" id="instNetTopicFilter" placeholder="例: Battery / Quantum"></div>
+        <div class="form-group wide"><label for="instNetFunderFilter">資金源フィルタ</label><input type="text" id="instNetFunderFilter" placeholder="例: JST / NIH / JSPS"></div>
+        <div class="form-group"><label for="instNetSizeMetric">ノードサイズ</label><select id="instNetSizeMetric"><option value="paperCount">論文数</option><option value="weightedDegree">重み付き次数</option><option value="degree">次数</option><option value="avgCitations">平均被引用数</option><option value="betweenness">媒介中心性</option></select></div>
+        <div class="form-group"><label for="instNetColorMetric">ノード色</label><select id="instNetColorMetric"><option value="betweenness">媒介中心性</option><option value="degree">次数</option><option value="weightedDegree">重み付き次数</option><option value="paperCount">論文数</option><option value="avgCitations">平均被引用数</option></select></div>
+        <button class="btn btn-primary btn-sm" onclick="NetworkRenderer.renderInstitutionNetwork()">描画</button>
+      </div>
+      <div class="network-legend"><span><i class="network-swatch" style="background:#1a73e8"></i>低い値</span><span><i class="network-swatch" style="background:#d93025"></i>高い値</span><span>ノードサイズは選択指標に比例</span></div>
+      <div id="instNetworkStatus" class="funding-status"></div>
+      <div id="institutionNetworkContainer" class="network-container"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('institutionNetworkNodes', 'institution_network_nodes.csv')">CSVダウンロード（ノード）</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('institutionNetworkEdges', 'institution_network_edges.csv')">CSVダウンロード（エッジ）</button>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-authorNetworkGraph">
+      <div class="network-toolbar">
+        <div class="form-group"><label for="authorNetTopN">ノード数</label><input type="number" id="authorNetTopN" min="5" max="100" value="40"></div>
+        <div class="form-group"><label for="authorNetMinEdge">最小エッジ重み</label><input type="number" id="authorNetMinEdge" min="1" max="50" value="2"></div>
+        <div class="form-group"><label for="authorNetMinPapers">最小論文数</label><input type="number" id="authorNetMinPapers" min="1" max="100" value="1"></div>
+        <div class="form-group"><label for="authorNetMinAvgCite">最小平均被引用</label><input type="number" id="authorNetMinAvgCite" min="0" max="10000" step="0.1" value="0"></div>
+        <div class="form-group"><label for="authorNetYearFrom">開始年</label><input type="number" id="authorNetYearFrom" min="1900" max="2100" placeholder="任意"></div>
+        <div class="form-group"><label for="authorNetYearTo">終了年</label><input type="number" id="authorNetYearTo" min="1900" max="2100" placeholder="任意"></div>
+        <div class="form-group wide"><label for="authorNetTopicFilter">Topicフィルタ</label><input type="text" id="authorNetTopicFilter" placeholder="例: Battery / Quantum"></div>
+        <div class="form-group wide"><label for="authorNetFunderFilter">資金源フィルタ</label><input type="text" id="authorNetFunderFilter" placeholder="例: JST / NIH / JSPS"></div>
+        <div class="form-group"><label for="authorNetSizeMetric">ノードサイズ</label><select id="authorNetSizeMetric"><option value="paperCount">論文数</option><option value="weightedDegree">重み付き次数</option><option value="degree">次数</option><option value="avgCitations">平均被引用数</option><option value="betweenness">媒介中心性</option></select></div>
+        <div class="form-group"><label for="authorNetColorMetric">ノード色</label><select id="authorNetColorMetric"><option value="betweenness">媒介中心性</option><option value="degree">次数</option><option value="weightedDegree">重み付き次数</option><option value="paperCount">論文数</option><option value="avgCitations">平均被引用数</option></select></div>
+        <button class="btn btn-primary btn-sm" onclick="NetworkRenderer.renderAuthorNetwork()">描画</button>
+      </div>
+      <div class="network-legend"><span><i class="network-swatch" style="background:#1a73e8"></i>低い値</span><span><i class="network-swatch" style="background:#d93025"></i>高い値</span><span>ノードサイズは選択指標に比例</span></div>
+      <div id="authorNetworkStatus" class="funding-status"></div>
+      <div id="authorNetworkContainer" class="network-container"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('authorNetworkNodes', 'author_network_nodes.csv')">CSVダウンロード（ノード）</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('authorNetworkEdges', 'author_network_edges.csv')">CSVダウンロード（エッジ）</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Reference / Citation Network -->
   <div class="card">
     <div class="card-title"><span class="icon">⇄</span> 引用ネットワーク（リファレンス）</div>
@@ -1428,6 +1960,7 @@ const AppState = {
   pageSize: 50,
   abortController: null,
   isSearching: false,
+  networks: {},
 };
 
 // OpenAlex API Module
@@ -1744,6 +2277,146 @@ const OpenAlexAPI = {
       .trim();
   },
 
+
+  _normalizeOpenAlexId(id) {
+    if (!id) return '';
+    return String(id).replace('https://openalex.org/', '').trim();
+  },
+
+  _uniq(arr) {
+    return [...new Set((arr || []).map(v => String(v || '').trim()).filter(v => v))];
+  },
+
+  _extractTopics(raw) {
+    const topics = [];
+    const pushTopic = (t) => {
+      if (!t) return;
+      const name = t.display_name || t.name || t.topic || '';
+      if (name) topics.push(this._stripTags(name));
+    };
+    if (raw.primary_topic) pushTopic(raw.primary_topic);
+    (raw.topics || []).forEach(pushTopic);
+    const unique = this._uniq(topics);
+    return {
+      primary_topic: unique[0] || '',
+      topics: unique,
+    };
+  },
+
+  _extractFunding(raw) {
+    const funderMap = new Map();
+    const awardMap = new Map();
+
+    const clean = (v) => this._stripTags(v || '');
+    const cleanId = (v) => {
+      if (!v) return '';
+      return String(v).trim();
+    };
+
+    const addFunder = (name, id = '', source = 'OpenAlex', opts = {}) => {
+      name = clean(name);
+      id = cleanId(id);
+      if (!name && !id) return null;
+      const key = (id || name).toLowerCase();
+      if (!funderMap.has(key)) {
+        funderMap.set(key, {
+          id,
+          name: name || id,
+          doi: cleanId(opts.doi || ''),
+          ror: cleanId(opts.ror || ''),
+          sources: new Set(),
+          award_ids: new Set(),
+        });
+      }
+      const f = funderMap.get(key);
+      if (name && (!f.name || f.name === f.id)) f.name = name;
+      if (id && !f.id) f.id = id;
+      if (opts.doi && !f.doi) f.doi = cleanId(opts.doi);
+      if (opts.ror && !f.ror) f.ror = cleanId(opts.ror);
+      f.sources.add(source);
+      if (opts.award_id) f.award_ids.add(clean(opts.award_id));
+      return f;
+    };
+
+    const addAward = (awardId, funderName = '', funderId = '', source = 'OpenAlex', opts = {}) => {
+      awardId = clean(awardId);
+      const displayName = clean(opts.display_name || awardId);
+      if (!awardId && !displayName) return null;
+      const key = (awardId || displayName).toLowerCase();
+      if (!awardMap.has(key)) {
+        awardMap.set(key, {
+          id: cleanId(opts.id || ''),
+          award_id: awardId || displayName,
+          display_name: displayName || awardId,
+          funder_name: clean(funderName),
+          funder_id: cleanId(funderId),
+          amount: opts.amount == null ? '' : opts.amount,
+          currency: clean(opts.currency || ''),
+          start_year: opts.start_year || '',
+          end_year: opts.end_year || '',
+          sources: new Set(),
+        });
+      }
+      const a = awardMap.get(key);
+      if (funderName && !a.funder_name) a.funder_name = clean(funderName);
+      if (funderId && !a.funder_id) a.funder_id = cleanId(funderId);
+      if (opts.amount != null && a.amount === '') a.amount = opts.amount;
+      if (opts.currency && !a.currency) a.currency = clean(opts.currency);
+      if (opts.start_year && !a.start_year) a.start_year = opts.start_year;
+      if (opts.end_year && !a.end_year) a.end_year = opts.end_year;
+      a.sources.add(source);
+      const f = addFunder(funderName, funderId, source, { award_id: a.award_id, doi: opts.funder_doi, ror: opts.funder_ror });
+      if (f) f.award_ids.add(a.award_id);
+      return a;
+    };
+
+    // OpenAlex Work objects historically expose funding as `grants`; newer funding graph
+    // may also expose funders/awards-like objects depending on the API response shape.
+    (raw.grants || []).forEach(g => {
+      const funderObj = (g && typeof g.funder === 'object') ? g.funder : {};
+      const funderId = typeof g.funder === 'string' ? g.funder : (g.funder_id || funderObj.id || g.funder_openalex_id || '');
+      const funderName = g.funder_display_name || g.funder_name || funderObj.display_name || g.name || '';
+      const awardId = g.award_id || g.funder_award_id || g.grant_id || g.award || '';
+      addFunder(funderName, funderId, 'OpenAlex', { award_id: awardId, doi: g.funder_doi, ror: g.funder_ror });
+      if (awardId) addAward(awardId, funderName, funderId, 'OpenAlex', { id: g.id || '', display_name: awardId, funder_doi: g.funder_doi, funder_ror: g.funder_ror });
+    });
+
+    (raw.funders || []).forEach(f => {
+      if (!f) return;
+      addFunder(f.display_name || f.name || f.funder_name || '', f.id || f.openalex_id || '', 'OpenAlex', { doi: f.doi, ror: f.ror });
+    });
+
+    (raw.awards || []).forEach(a => {
+      if (!a) return;
+      const funderObj = a.funder || {};
+      const funderName = a.funder_name || funderObj.display_name || a.funder_display_name || '';
+      const funderId = a.funder_id || funderObj.id || '';
+      const awardId = a.funder_award_id || a.award_id || a.display_name || a.id || '';
+      addAward(awardId, funderName, funderId, 'OpenAlex', {
+        id: a.id || '',
+        display_name: a.display_name || awardId,
+        amount: a.amount,
+        currency: a.currency,
+        start_year: a.start_year,
+        end_year: a.end_year,
+        funder_doi: a.funder_doi || funderObj.doi,
+        funder_ror: a.funder_ror || funderObj.ror,
+      });
+    });
+
+    const funders = [...funderMap.values()].map(f => ({
+      ...f,
+      sources: [...f.sources],
+      award_ids: [...f.award_ids],
+    }));
+    const awards = [...awardMap.values()].map(a => ({
+      ...a,
+      sources: [...a.sources],
+    }));
+    const sources = this._uniq([...funders.flatMap(f => f.sources), ...awards.flatMap(a => a.sources)]);
+    return { funders, awards, funding_sources: sources };
+  },
+
   transformPaper(raw) {
     const authorships = raw.authorships || [];
     const authors = authorships
@@ -1777,6 +2450,12 @@ const OpenAlexAPI = {
     // referenced_works: OpenAlex Work ID 配列（例: ["https://openalex.org/W123", ...]）。
     // この論文が引用している論文のID。カバレッジは出版社・分野により不均一。
     const referencedWorks = Array.isArray(raw.referenced_works) ? raw.referenced_works : [];
+    const topicInfo = this._extractTopics(raw);
+    const fundingInfo = this._extractFunding(raw);
+    const funderNames = this._uniq(fundingInfo.funders.map(f => f.name));
+    const funderIds = this._uniq(fundingInfo.funders.map(f => f.id));
+    const awardIds = this._uniq(fundingInfo.awards.map(a => a.award_id || a.display_name || a.id));
+
     return {
       paper_id: paperId,
       title: cleanTitle,
@@ -1792,6 +2471,23 @@ const OpenAlexAPI = {
       title_script: this._detectScript(cleanTitle),
       referenced_works: referencedWorks,
       referenced_works_count: referencedWorks.length,
+      primary_topic: topicInfo.primary_topic,
+      topics: topicInfo.topics,
+      funders: fundingInfo.funders,
+      awards: fundingInfo.awards,
+      funder_names: funderNames.join('; '),
+      funder_ids: funderIds.join('; '),
+      award_ids: awardIds.join('; '),
+      funding_sources: fundingInfo.funding_sources,
+      crossref_funders: [],
+      crossref_awards: [],
+      nih_projects: [],
+      nih_project_nums: [],
+      nih_award_amounts: [],
+      nih_fiscal_years: [],
+      nih_orgs: [],
+      nih_pis: [],
+      nih_project_titles: [],
     };
   }
 };
@@ -2045,6 +2741,9 @@ const SearchController = {
     ChartRenderer.renderTrendBar();
     ChartRenderer.renderTrendLine();
     ChartRenderer.populateEgoSelect();
+    FundingRenderer.renderAll();
+    if (typeof TopicRenderer !== 'undefined') TopicRenderer.renderAll();
+    if (typeof NetworkRenderer !== 'undefined') NetworkRenderer.resetContainers();
   },
 
   calculateCAGR(data) {
@@ -4039,7 +4738,1288 @@ const ChartRenderer = {
   }
 };
 
+
+// Funding external APIs that do not require registration or API keys.
+const FundingAPI = {
+  CROSSREF_WORKS_URL: 'https://api.crossref.org/works',
+  NIH_PROJECT_SEARCH_URL: 'https://api.reporter.nih.gov/v2/projects/search',
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
+
+  async fetchCrossrefWork(doi, signal = null) {
+    const cleanDoi = String(doi || '').replace(/^https?:\/\/(dx\.)?doi\.org\//i, '').trim();
+    if (!cleanDoi) return null;
+    const url = `${this.CROSSREF_WORKS_URL}/${encodeURIComponent(cleanDoi)}?mailto=${encodeURIComponent(OpenAlexAPI.MAILTO)}`;
+    const resp = await fetch(url, { signal });
+    if (resp.status === 404) return null;
+    if (!resp.ok) throw new Error(`Crossref HTTP ${resp.status}`);
+    const data = await resp.json();
+    return data.message || null;
+  },
+
+  async fetchNIHProjects(projectNums, signal = null) {
+    const nums = [...new Set((projectNums || []).map(n => String(n || '').trim()).filter(Boolean))];
+    if (!nums.length) return [];
+    const body = {
+      criteria: { project_nums: nums },
+      include_fields: [
+        'ProjectNum', 'CoreProjectNum', 'ProjectTitle', 'FiscalYear', 'AwardAmount',
+        'OrgName', 'OrgCountry', 'Organization', 'PrincipalInvestigators', 'ContactPiName',
+        'ProjectStartDate', 'ProjectEndDate', 'AgencyIcAdmin', 'AgencyIcFundings'
+      ],
+      offset: 0,
+      limit: 500,
+      sort_field: 'fiscal_year',
+      sort_order: 'desc'
+    };
+    const resp = await fetch(this.NIH_PROJECT_SEARCH_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal,
+    });
+    if (!resp.ok) throw new Error(`NIH RePORTER HTTP ${resp.status}`);
+    const data = await resp.json();
+    return data.results || [];
+  }
+};
+
+const FundingRenderer = {
+  _splitSemi(value) {
+    if (Array.isArray(value)) return value.map(v => String(v || '').trim()).filter(Boolean);
+    return String(value || '').split(';').map(s => s.trim()).filter(Boolean);
+  },
+
+  _uniq(arr) {
+    return [...new Set((arr || []).map(v => String(v || '').trim()).filter(Boolean))];
+  },
+
+  _safeName(name) {
+    return OpenAlexAPI._stripTags(name || '').trim();
+  },
+
+  _paperFunders(paper) {
+    const funders = [];
+    (paper.funders || []).forEach(f => {
+      const name = this._safeName(f.name || f.display_name || f.funder_name || '');
+      if (!name) return;
+      funders.push({
+        name,
+        id: f.id || f.funder_id || '',
+        sources: Array.isArray(f.sources) ? f.sources : (f.source ? [f.source] : ['OpenAlex']),
+        award_ids: Array.isArray(f.award_ids) ? f.award_ids : [],
+      });
+    });
+    // CSV読み込みなどで funders 配列が無い場合の後方互換。
+    if (!funders.length && paper.funder_names) {
+      const ids = this._splitSemi(paper.funder_ids);
+      this._splitSemi(paper.funder_names).forEach((name, i) => {
+        funders.push({ name, id: ids[i] || '', sources: this._splitSemi(paper.funding_sources || 'CSV'), award_ids: [] });
+      });
+    }
+    this._splitSemi(paper.crossref_funders).forEach(name => {
+      funders.push({ name, id: '', sources: ['Crossref'], award_ids: this._splitSemi(paper.crossref_awards) });
+    });
+    if (this._splitSemi(paper.nih_project_nums).length || (paper.nih_projects || []).length) {
+      funders.push({ name: 'National Institutes of Health', id: 'https://openalex.org/F4320332161', sources: ['NIH RePORTER'], award_ids: this._splitSemi(paper.nih_project_nums) });
+    }
+    const seen = new Set();
+    return funders.filter(f => {
+      const key = (f.id || f.name).toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  },
+
+  _paperAwards(paper) {
+    const awards = [];
+    (paper.awards || []).forEach(a => {
+      const awardId = this._safeName(a.award_id || a.display_name || a.id || '');
+      if (!awardId) return;
+      awards.push({
+        award_id: awardId,
+        display_name: a.display_name || awardId,
+        funder_name: this._safeName(a.funder_name || ''),
+        funder_id: a.funder_id || '',
+        amount: a.amount == null ? '' : a.amount,
+        currency: a.currency || '',
+        start_year: a.start_year || '',
+        end_year: a.end_year || '',
+        sources: Array.isArray(a.sources) ? a.sources : (a.source ? [a.source] : ['OpenAlex']),
+      });
+    });
+    if (!awards.length && paper.award_ids) {
+      const fallbackFunder = this._splitSemi(paper.funder_names)[0] || '';
+      this._splitSemi(paper.award_ids).forEach(id => awards.push({ award_id: id, display_name: id, funder_name: fallbackFunder, sources: this._splitSemi(paper.funding_sources || 'CSV') }));
+    }
+    this._splitSemi(paper.crossref_awards).forEach(id => awards.push({ award_id: id, display_name: id, funder_name: this._splitSemi(paper.crossref_funders)[0] || '', sources: ['Crossref'] }));
+    this._splitSemi(paper.nih_project_nums).forEach(id => awards.push({ award_id: id, display_name: id, funder_name: 'National Institutes of Health', funder_id: 'https://openalex.org/F4320332161', sources: ['NIH RePORTER'] }));
+    const seen = new Set();
+    return awards.filter(a => {
+      const key = a.award_id.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  },
+
+  _hasFunding(paper) {
+    return this._paperFunders(paper).length > 0 || this._paperAwards(paper).length > 0 ||
+      this._splitSemi(paper.crossref_funders).length > 0 || this._splitSemi(paper.nih_project_nums).length > 0;
+  },
+
+  _addFunderToPaper(paper, name, id = '', source = 'External', awardId = '') {
+    name = this._safeName(name);
+    if (!name && !id) return;
+    paper.funders = Array.isArray(paper.funders) ? paper.funders : [];
+    const key = (id || name).toLowerCase();
+    let f = paper.funders.find(x => ((x.id || x.name || '').toLowerCase()) === key);
+    if (!f) {
+      f = { id, name: name || id, sources: [], award_ids: [] };
+      paper.funders.push(f);
+    }
+    f.name = f.name || name || id;
+    f.id = f.id || id || '';
+    f.sources = Array.isArray(f.sources) ? f.sources : [];
+    if (!f.sources.includes(source)) f.sources.push(source);
+    f.award_ids = Array.isArray(f.award_ids) ? f.award_ids : [];
+    if (awardId && !f.award_ids.includes(awardId)) f.award_ids.push(awardId);
+  },
+
+  _addAwardToPaper(paper, awardId, funderName = '', funderId = '', source = 'External', opts = {}) {
+    awardId = this._safeName(awardId);
+    if (!awardId) return;
+    paper.awards = Array.isArray(paper.awards) ? paper.awards : [];
+    let a = paper.awards.find(x => String(x.award_id || x.display_name || x.id || '').toLowerCase() === awardId.toLowerCase());
+    if (!a) {
+      a = { award_id: awardId, display_name: awardId, funder_name: this._safeName(funderName), funder_id: funderId || '', sources: [] };
+      paper.awards.push(a);
+    }
+    if (funderName && !a.funder_name) a.funder_name = this._safeName(funderName);
+    if (funderId && !a.funder_id) a.funder_id = funderId;
+    if (opts.amount != null && (a.amount == null || a.amount === '')) a.amount = opts.amount;
+    if (opts.currency && !a.currency) a.currency = opts.currency;
+    if (opts.start_year && !a.start_year) a.start_year = opts.start_year;
+    if (opts.end_year && !a.end_year) a.end_year = opts.end_year;
+    a.sources = Array.isArray(a.sources) ? a.sources : [];
+    if (!a.sources.includes(source)) a.sources.push(source);
+    this._addFunderToPaper(paper, funderName, funderId, source, awardId);
+  },
+
+  _syncFundingFields(paper) {
+    const funders = this._paperFunders(paper);
+    const awards = this._paperAwards(paper);
+    paper.funder_names = this._uniq(funders.map(f => f.name)).join('; ');
+    paper.funder_ids = this._uniq(funders.map(f => f.id)).join('; ');
+    paper.award_ids = this._uniq(awards.map(a => a.award_id)).join('; ');
+    const sources = this._uniq([
+      ...funders.flatMap(f => f.sources || []),
+      ...awards.flatMap(a => a.sources || []),
+      ...this._splitSemi(paper.funding_sources),
+      ...((paper.crossref_funders || []).length ? ['Crossref'] : []),
+      ...((paper.nih_projects || []).length ? ['NIH RePORTER'] : []),
+    ]);
+    paper.funding_sources = sources;
+  },
+
+  getFunderStats() {
+    const map = new Map();
+    AppState.tableData.forEach(p => {
+      const cite = Number(p.citation_count) || 0;
+      this._paperFunders(p).forEach(f => {
+        const key = (f.id || f.name).toLowerCase();
+        if (!map.has(key)) {
+          map.set(key, { name: f.name, id: f.id || '', papers: [], paperIds: new Set(), totalCitations: 0, awards: new Set(), years: {}, sources: new Set() });
+        }
+        const st = map.get(key);
+        if (!st.paperIds.has(p.paper_id || p.title)) {
+          st.paperIds.add(p.paper_id || p.title);
+          st.papers.push(p);
+          st.totalCitations += cite;
+          if (p.year) st.years[p.year] = (st.years[p.year] || 0) + 1;
+        }
+        (f.award_ids || []).forEach(a => st.awards.add(a));
+        (f.sources || []).forEach(src => st.sources.add(src));
+      });
+      this._paperAwards(p).forEach(a => {
+        if (!a.funder_name) return;
+        let key = (a.funder_id || a.funder_name).toLowerCase();
+        if (!map.has(key) && a.funder_name) {
+          const byName = [...map.keys()].find(k => (map.get(k).name || '').toLowerCase() === a.funder_name.toLowerCase());
+          if (byName) key = byName;
+        }
+        if (!map.has(key)) {
+          map.set(key, { name: a.funder_name, id: a.funder_id || '', papers: [], paperIds: new Set(), totalCitations: 0, awards: new Set(), years: {}, sources: new Set() });
+        }
+        const st = map.get(key);
+        if (!st.paperIds.has(p.paper_id || p.title)) {
+          st.paperIds.add(p.paper_id || p.title);
+          st.papers.push(p);
+          st.totalCitations += cite;
+          if (p.year) st.years[p.year] = (st.years[p.year] || 0) + 1;
+        }
+        st.awards.add(a.award_id);
+        (a.sources || []).forEach(src => st.sources.add(src));
+      });
+    });
+    return [...map.values()].map(st => ({
+      ...st,
+      paperCount: st.papers.length,
+      awardCount: st.awards.size,
+      avgCitations: st.papers.length ? st.totalCitations / st.papers.length : 0,
+      sourcesList: [...st.sources],
+      awardsList: [...st.awards],
+    }));
+  },
+
+  getAwardStats() {
+    const map = new Map();
+    AppState.tableData.forEach(p => {
+      const cite = Number(p.citation_count) || 0;
+      this._paperAwards(p).forEach(a => {
+        const key = a.award_id.toLowerCase();
+        if (!map.has(key)) {
+          map.set(key, { award_id: a.award_id, display_name: a.display_name || a.award_id, funder_name: a.funder_name || '', funder_id: a.funder_id || '', papers: [], paperIds: new Set(), totalCitations: 0, sources: new Set(), amount: a.amount || '', currency: a.currency || '', start_year: a.start_year || '', end_year: a.end_year || '' });
+        }
+        const st = map.get(key);
+        if (!st.paperIds.has(p.paper_id || p.title)) {
+          st.paperIds.add(p.paper_id || p.title);
+          st.papers.push(p);
+          st.totalCitations += cite;
+        }
+        if (a.funder_name && !st.funder_name) st.funder_name = a.funder_name;
+        (a.sources || []).forEach(src => st.sources.add(src));
+      });
+    });
+    return [...map.values()].map(st => ({
+      ...st,
+      paperCount: st.papers.length,
+      avgCitations: st.papers.length ? st.totalCitations / st.papers.length : 0,
+      sourcesList: [...st.sources],
+    }));
+  },
+
+  getFunderInstitutionStats() {
+    const map = new Map();
+    AppState.tableData.forEach(p => {
+      const funders = this._paperFunders(p);
+      const institutions = this._splitSemi(p.institutions);
+      if (!funders.length || !institutions.length) return;
+      const cite = Number(p.citation_count) || 0;
+      funders.forEach(f => {
+        institutions.forEach(inst => {
+          const key = `${(f.id || f.name).toLowerCase()}||${inst}`;
+          if (!map.has(key)) map.set(key, { funder: f.name, funder_id: f.id || '', institution: inst, papers: [], paperIds: new Set(), totalCitations: 0 });
+          const st = map.get(key);
+          if (!st.paperIds.has(p.paper_id || p.title)) {
+            st.paperIds.add(p.paper_id || p.title);
+            st.papers.push(p);
+            st.totalCitations += cite;
+          }
+        });
+      });
+    });
+    return [...map.values()].map(st => ({ ...st, paperCount: st.papers.length, avgCitations: st.papers.length ? st.totalCitations / st.papers.length : 0 }));
+  },
+
+  renderAll() {
+    this.renderMetrics();
+    this.renderFunderRank();
+    this.renderAwardRank();
+    this.renderFunderInst();
+    if (document.getElementById('funderInstMatrixContainer')) this.renderFunderInstMatrix();
+    this.renderExternalFundingTable();
+  },
+
+  renderMetrics() {
+    const data = AppState.tableData || [];
+    if (!data.length) return;
+    const funded = data.filter(p => this._hasFunding(p));
+    const funders = this.getFunderStats();
+    const awards = this.getAwardStats();
+    const external = data.filter(p => this._splitSemi(p.crossref_funders).length || this._splitSemi(p.nih_project_nums).length || (p.nih_projects || []).length).length;
+    document.getElementById('metricFundingCoverage').textContent = `${funded.length.toLocaleString()} / ${data.length.toLocaleString()}`;
+    document.getElementById('metricFunderCount').textContent = funders.length.toLocaleString();
+    document.getElementById('metricAwardCount').textContent = awards.length.toLocaleString();
+    document.getElementById('metricFundingExternal').textContent = external.toLocaleString();
+  },
+
+  _showEmpty(containerId, message) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.style.height = 'auto';
+    const canvas = container.querySelector('canvas');
+    if (canvas) canvas.style.display = 'none';
+    const existing = container.querySelector('.funding-empty');
+    if (existing) existing.remove();
+    const div = document.createElement('div');
+    div.className = 'funding-empty';
+    div.textContent = message;
+    container.appendChild(div);
+  },
+
+  _showCanvas(containerId, canvasId, heightPx) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const empty = container.querySelector('.funding-empty');
+    if (empty) empty.remove();
+    const canvas = document.getElementById(canvasId);
+    if (canvas) canvas.style.display = 'block';
+    if (heightPx) container.style.height = heightPx + 'px';
+  },
+
+  renderFunderRank() {
+    ChartRenderer.destroyChart('funderRank');
+    const topN = parseInt(document.getElementById('topNFunderRank').value) || 20;
+    const metric = document.getElementById('funderRankMetric').value || 'papers';
+    const valueOf = (s) => metric === 'citations' ? s.totalCitations : metric === 'avgCitations' ? s.avgCitations : metric === 'awards' ? s.awardCount : s.paperCount;
+    const sorted = this.getFunderStats().sort((a, b) => valueOf(b) - valueOf(a)).slice(0, topN);
+    if (!sorted.length) {
+      this._showEmpty('funderRankContainer', 'このコレクションには資金提供機関情報が見つかりません。Crossref補完も試せます。');
+      return;
+    }
+    this._showCanvas('funderRankContainer', 'chartFunderRank', Math.max(400, sorted.length * 34 + 90));
+    const labels = sorted.map(s => ChartRenderer._truncateLabel(s.name, 52));
+    const values = sorted.map(s => Number(valueOf(s).toFixed ? valueOf(s).toFixed(2) : valueOf(s)));
+    const metricLabel = metric === 'citations' ? '合計被引用数' : metric === 'avgCitations' ? '平均被引用数' : metric === 'awards' ? '助成番号数' : '論文件数';
+    const ctx = document.getElementById('chartFunderRank').getContext('2d');
+    AppState.charts.funderRank = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: metricLabel, data: values, backgroundColor: 'rgba(26, 115, 232, 0.78)', borderColor: '#1565c0', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: `資金源ランキング Top ${topN}（${metricLabel}）`, font: { size: 16, weight: '600' }, color: '#202124' },
+          tooltip: { callbacks: { title: items => sorted[items[0].dataIndex].name, label: item => [`${metricLabel}: ${item.raw.toLocaleString()}`, `論文件数: ${sorted[item.dataIndex].paperCount}`, `助成番号数: ${sorted[item.dataIndex].awardCount}`, 'クリックで詳細表示'] } }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const st = sorted[els[0].index];
+          Modal.show(`資金源: ${st.name}`, Modal.buildFunderContent(st));
+        },
+        scales: { x: { title: { display: true, text: metricLabel, color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
+  renderFunderTrend() {
+    ChartRenderer.destroyChart('funderTrend');
+    const topN = parseInt(document.getElementById('topNFunderTrend').value) || 5;
+    const funders = this.getFunderStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, topN);
+    if (!funders.length) {
+      UIController.showToast('資金源の年次推移を描画できるデータがありません。', 'error');
+      return;
+    }
+    const years = AppState.tableData.map(p => p.year).filter(Boolean);
+    if (!years.length) return;
+    const minY = Math.min(...years), maxY = Math.max(...years);
+    const yearList = [];
+    for (let y = minY; y <= maxY; y++) yearList.push(y);
+    const datasets = funders.map((f, i) => ({
+      label: f.name,
+      data: yearList.map(y => f.years[y] || 0),
+      borderColor: ChartRenderer.COLORS[i % ChartRenderer.COLORS.length],
+      backgroundColor: 'transparent',
+      tension: 0,
+      pointRadius: 4,
+      pointBackgroundColor: ChartRenderer.COLORS[i % ChartRenderer.COLORS.length],
+    }));
+    const ctx = document.getElementById('chartFunderTrend').getContext('2d');
+    AppState.charts.funderTrend = new Chart(ctx, {
+      type: 'line', data: { labels: yearList, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: `資金源別 論文件数推移（上位${topN}）`, font: { size: 16, weight: '600' }, color: '#202124' },
+          tooltip: { callbacks: { afterLabel: () => 'クリックで該当論文一覧' } }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const el = els[0];
+          const year = yearList[el.index];
+          const funder = funders[el.datasetIndex];
+          const matched = funder.papers.filter(p => p.year === year);
+          Modal.show(`${funder.name} - ${year}年（${matched.length}件）`, Modal.buildPaperListContent(`${funder.name} / ${year}年`, matched));
+        },
+        scales: { x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } }, y: { title: { display: true, text: '支援論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } } }
+      }
+    });
+  },
+
+  renderAwardRank() {
+    ChartRenderer.destroyChart('awardRank');
+    const topN = parseInt(document.getElementById('topNAwardRank').value) || 20;
+    const metric = document.getElementById('awardRankMetric').value || 'papers';
+    const valueOf = (s) => metric === 'citations' ? s.totalCitations : metric === 'avgCitations' ? s.avgCitations : s.paperCount;
+    const sorted = this.getAwardStats().sort((a, b) => valueOf(b) - valueOf(a)).slice(0, topN);
+    if (!sorted.length) {
+      this._showEmpty('awardRankContainer', '助成番号 / Award ID が見つかりません。Crossref補完を実行すると増える場合があります。');
+      return;
+    }
+    this._showCanvas('awardRankContainer', 'chartAwardRank', Math.max(400, sorted.length * 34 + 90));
+    const labels = sorted.map(s => ChartRenderer._truncateLabel(s.award_id, 54));
+    const values = sorted.map(s => Number(valueOf(s).toFixed ? valueOf(s).toFixed(2) : valueOf(s)));
+    const metricLabel = metric === 'citations' ? '合計被引用数' : metric === 'avgCitations' ? '平均被引用数' : '論文件数';
+    const ctx = document.getElementById('chartAwardRank').getContext('2d');
+    AppState.charts.awardRank = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: metricLabel, data: values, backgroundColor: 'rgba(13, 71, 161, 0.78)', borderColor: '#0d47a1', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: `助成番号ランキング Top ${topN}（${metricLabel}）`, font: { size: 16, weight: '600' }, color: '#202124' },
+          tooltip: { callbacks: { title: items => sorted[items[0].dataIndex].award_id, label: item => [`${metricLabel}: ${item.raw.toLocaleString()}`, `資金源: ${sorted[item.dataIndex].funder_name || '-'}`, 'クリックで詳細表示'] } }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const st = sorted[els[0].index];
+          Modal.show(`助成番号: ${st.award_id}`, Modal.buildAwardContent(st));
+        },
+        scales: { x: { title: { display: true, text: metricLabel, color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
+  renderFunderInst() {
+    ChartRenderer.destroyChart('funderInst');
+    const topN = parseInt(document.getElementById('topNFunderInst').value) || 20;
+    const sorted = this.getFunderInstitutionStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, topN);
+    if (!sorted.length) {
+      this._showEmpty('funderInstContainer', '資金源と所属機関を結び付けて集計できるデータがありません。');
+      return;
+    }
+    this._showCanvas('funderInstContainer', 'chartFunderInst', Math.max(400, sorted.length * 38 + 90));
+    const labels = sorted.map(s => ChartRenderer._truncateLabel(`${s.funder} × ${s.institution}`, 70));
+    const values = sorted.map(s => s.paperCount);
+    const ctx = document.getElementById('chartFunderInst').getContext('2d');
+    AppState.charts.funderInst = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: '論文件数', data: values, backgroundColor: 'rgba(21, 101, 192, 0.75)', borderColor: '#0d47a1', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: `資金源×機関 Top ${topN}`, font: { size: 16, weight: '600' }, color: '#202124' },
+          tooltip: { callbacks: { title: items => `${sorted[items[0].dataIndex].funder} × ${sorted[items[0].dataIndex].institution}`, label: item => [`論文件数: ${item.raw}`, `合計被引用: ${sorted[item.dataIndex].totalCitations.toLocaleString()}`, 'クリックで詳細表示'] } }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const st = sorted[els[0].index];
+          Modal.show(`${st.funder} × ${st.institution}`, Modal.buildFunderInstitutionContent(st));
+        },
+        scales: { x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
+  _makeFundingMatrixHtml(rowNames, colNames, valueGetter, cellFactory) {
+    let maxVal = 0;
+    rowNames.forEach(r => colNames.forEach(c => { const v = valueGetter(r, c) || 0; if (v > maxVal) maxVal = v; }));
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    let html = '<table class="collab-matrix"><thead><tr><th class="corner"></th>';
+    colNames.forEach(c => { html += `<th class="col-head" title="${esc(c)}"><span class="col-head-inner">${esc(c)}</span></th>`; });
+    html += '</tr></thead><tbody>';
+    rowNames.forEach(r => {
+      html += `<tr><th class="row-head" title="${esc(r)}">${esc(r)}</th>`;
+      colNames.forEach(c => {
+        const v = valueGetter(r, c) || 0;
+        const alpha = maxVal > 0 ? Math.max(0.08, v / maxVal) : 0;
+        const bg = v > 0 ? `rgba(26,115,232,${alpha.toFixed(3)})` : '#ffffff';
+        const color = v > 0 ? '#0b57d0' : '#9aa0a6';
+        html += cellFactory(r, c, v, bg, color);
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+  },
+
+  renderFunderInstMatrix() {
+    const container = document.getElementById('funderInstMatrixContainer');
+    if (!container) return;
+    const rowN = parseInt(document.getElementById('funderInstMatrixRows').value) || 12;
+    const colN = parseInt(document.getElementById('funderInstMatrixCols').value) || 12;
+    const pairStats = this.getFunderInstitutionStats();
+    if (!pairStats.length) {
+      container.innerHTML = '<div class="funding-empty">資金源×機関のマトリクス対象データがありません。</div>';
+      return;
+    }
+    const funderNames = this.getFunderStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, rowN).map(s => s.name);
+    const instCounts = new Map();
+    pairStats.forEach(s => instCounts.set(s.institution, (instCounts.get(s.institution) || 0) + s.paperCount));
+    const instNames = [...instCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, colN).map(([name]) => name);
+    const map = new Map(pairStats.map(s => [`${s.funder}||${s.institution}`, s]));
+    container.innerHTML = this._makeFundingMatrixHtml(funderNames, instNames, (funder, inst) => (map.get(`${funder}||${inst}`)?.paperCount) || 0, (funder, inst, v, bg, color) => `<td class="cell ${v ? '' : 'zero'}" data-funder="${Modal.esc(funder)}" data-inst="${Modal.esc(inst)}" style="background:${bg};color:${color};cursor:pointer;">${v || ''}</td>`);
+    container.querySelectorAll('td[data-funder]').forEach(td => td.addEventListener('click', () => {
+      const funder = td.getAttribute('data-funder');
+      const inst = td.getAttribute('data-inst');
+      const stats = map.get(`${funder}||${inst}`);
+      const papers = stats ? stats.papers : AppState.tableData.filter(p => this._paperFunders(p).map(f => f.name).includes(funder) && this._splitSemi(p.institutions).includes(inst));
+      Modal.show(`${funder} × ${inst}`, stats ? Modal.buildFunderInstitutionContent(stats) : Modal.buildPairContent(funder, '資金源', inst, '所属機関', papers, '関連論文'));
+    }));
+  },
+
+  renderExternalFundingTable() {
+    const tbody = document.getElementById('fundingExternalTableBody');
+    if (!tbody) return;
+    const rows = AppState.tableData
+      .filter(p => this._splitSemi(p.crossref_funders).length || this._splitSemi(p.crossref_awards).length || this._splitSemi(p.nih_project_nums).length || (p.nih_projects || []).length)
+      .slice(0, 200);
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="6" style="color:#5f6368;text-align:center;padding:20px;">外部補完結果はまだありません。CrossrefまたはNIH RePORTER補完を実行してください。</td></tr>`;
+      return;
+    }
+    const e = TableRenderer.escapeHtml;
+    tbody.innerHTML = rows.map(p => {
+      const title = (p.title || '').length > 80 ? (p.title || '').slice(0, 80) + '…' : (p.title || '');
+      const doi = p.doi ? `<a href="https://doi.org/${e(p.doi)}" target="_blank" rel="noopener">${e(p.doi)}</a>` : '';
+      const amount = this._splitSemi(p.nih_award_amounts).map(v => Number(v).toLocaleString()).join('; ');
+      return `<tr>
+        <td class="title-cell" title="${e(p.title || '')}">${e(title)}</td>
+        <td>${doi}</td>
+        <td>${e(this._splitSemi(p.crossref_funders).join('; '))}</td>
+        <td>${e(this._splitSemi(p.crossref_awards).join('; '))}</td>
+        <td>${e(this._splitSemi(p.nih_project_nums).join('; '))}</td>
+        <td style="text-align:right">${e(amount)}</td>
+      </tr>`;
+    }).join('');
+  },
+
+  _extractNIHCandidatesFromPaper(paper) {
+    const raw = [
+      ...this._splitSemi(paper.award_ids),
+      ...(paper.awards || []).map(a => a.award_id || a.display_name || ''),
+      ...this._splitSemi(paper.crossref_awards),
+    ].join(' ');
+    const candidates = [];
+    const re = /\b(?:[1-9])?(?:R|U|P|K|F|T|DP|RC|S|Z|X)[A-Z0-9]{1,4}\d{5,8}(?:[- ]?\d{1,2}[A-Z0-9]*)?\b/gi;
+    let m;
+    while ((m = re.exec(raw)) !== null) candidates.push(m[0].replace(/\s+/g, '').toUpperCase());
+    return this._uniq(candidates);
+  },
+
+  _coreNIH(num) {
+    const s = String(num || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    // Remove leading application type when present, e.g. 5R01DK10281505 -> R01DK10281505.
+    const noLead = /^[1-9][A-Z]/.test(s) ? s.slice(1) : s;
+    // Remove support year suffix if it looks like final two digits after the six-digit serial.
+    return noLead.replace(/(\d{6})\d{2}[A-Z0-9]*$/, '$1');
+  },
+
+  async enrichCrossrefFunding() {
+    if (!AppState.tableData.length) {
+      UIController.showToast('先に論文データを取得またはCSV読み込みしてください。', 'error');
+      return;
+    }
+    const limit = parseInt(document.getElementById('externalFundingLimit').value) || 100;
+    const targets = AppState.tableData.filter(p => p.doi).slice(0, limit);
+    if (!targets.length) {
+      UIController.showToast('DOIを持つ論文がありません。', 'error');
+      return;
+    }
+    const status = document.getElementById('fundingExternalStatus');
+    let enriched = 0, funderHits = 0, errors = 0;
+    UIController.showProgress();
+    try {
+      for (let i = 0; i < targets.length; i++) {
+        const p = targets[i];
+        UIController.updateProgress(((i + 1) / targets.length) * 100, `Crossref補完中: ${i + 1} / ${targets.length}`);
+        if (status) status.textContent = `Crossref補完中: ${i + 1} / ${targets.length}`;
+        try {
+          const msg = await FundingAPI.fetchCrossrefWork(p.doi);
+          enriched++;
+          const funders = (msg && msg.funder) || [];
+          if (funders.length) {
+            p.crossref_funders = Array.isArray(p.crossref_funders) ? p.crossref_funders : [];
+            p.crossref_awards = Array.isArray(p.crossref_awards) ? p.crossref_awards : [];
+            funders.forEach(f => {
+              const name = this._safeName(f.name || f['funder-name'] || '');
+              const doi = f.DOI || f.doi || '';
+              if (name && !p.crossref_funders.includes(name)) p.crossref_funders.push(name);
+              this._addFunderToPaper(p, name, doi ? `https://doi.org/${doi}` : '', 'Crossref');
+              (f.award || f.awards || []).forEach(a => {
+                const award = this._safeName(a);
+                if (!award) return;
+                if (!p.crossref_awards.includes(award)) p.crossref_awards.push(award);
+                this._addAwardToPaper(p, award, name, doi ? `https://doi.org/${doi}` : '', 'Crossref');
+              });
+            });
+            funderHits++;
+          }
+          this._syncFundingFields(p);
+        } catch (e) {
+          errors++;
+        }
+        await FundingAPI.sleep(250);
+      }
+      this.renderMetrics();
+      this.renderFunderRank();
+      this.renderAwardRank();
+      this.renderFunderInst();
+      if (document.getElementById('funderInstMatrixContainer')) this.renderFunderInstMatrix();
+      this.renderExternalFundingTable();
+      UIController.showToast(`Crossref補完が完了しました（照会 ${enriched} 件、資金情報あり ${funderHits} 件、エラー ${errors} 件）。`, 'success');
+      if (status) status.textContent = `Crossref補完完了: 照会 ${enriched} 件 / 資金情報あり ${funderHits} 件 / エラー ${errors} 件`;
+    } finally {
+      UIController.hideProgress();
+    }
+  },
+
+  _pick(obj, keys, fallback = '') {
+    for (const k of keys) {
+      if (obj && obj[k] != null && obj[k] !== '') return obj[k];
+    }
+    return fallback;
+  },
+
+  _projectSummaryFromNIH(row) {
+    const org = this._pick(row, ['org_name', 'OrgName', 'organization_name', 'OrganizationName']);
+    const orgObj = this._pick(row, ['organization', 'Organization'], null);
+    const orgName = org || (orgObj && (orgObj.org_name || orgObj.name || orgObj.OrgName)) || '';
+    const pisRaw = this._pick(row, ['principal_investigators', 'PrincipalInvestigators', 'contact_pi_name', 'ContactPiName'], []);
+    let pis = '';
+    if (Array.isArray(pisRaw)) {
+      pis = pisRaw.map(pi => pi.full_name || pi.name || pi.FullName || pi.ProfileName || '').filter(Boolean).join('; ');
+    } else {
+      pis = String(pisRaw || '');
+    }
+    return {
+      project_num: this._pick(row, ['project_num', 'ProjectNum', 'projectNumber', 'ProjectNumber']),
+      core_project_num: this._pick(row, ['core_project_num', 'CoreProjectNum', 'coreProjectNum']),
+      title: this._pick(row, ['project_title', 'ProjectTitle', 'title', 'Title']),
+      fiscal_year: this._pick(row, ['fiscal_year', 'FiscalYear']),
+      award_amount: this._pick(row, ['award_amount', 'AwardAmount', 'total_cost', 'TotalCost']),
+      org_name: orgName,
+      pis,
+      start_date: this._pick(row, ['project_start_date', 'ProjectStartDate']),
+      end_date: this._pick(row, ['project_end_date', 'ProjectEndDate']),
+    };
+  },
+
+  async enrichNIHFunding() {
+    if (!AppState.tableData.length) {
+      UIController.showToast('先に論文データを取得またはCSV読み込みしてください。', 'error');
+      return;
+    }
+    const limit = parseInt(document.getElementById('externalFundingLimit').value) || 100;
+    const paperToCandidates = new Map();
+    const allCandidates = [];
+    AppState.tableData.forEach(p => {
+      const c = this._extractNIHCandidatesFromPaper(p);
+      if (c.length) {
+        paperToCandidates.set(p, c);
+        allCandidates.push(...c);
+      }
+    });
+    const unique = this._uniq(allCandidates).slice(0, limit);
+    if (!unique.length) {
+      UIController.showToast('NIH型の助成番号候補が見つかりません。先にCrossref補完を実行すると増える場合があります。', 'error');
+      return;
+    }
+    const status = document.getElementById('fundingExternalStatus');
+    UIController.showProgress();
+    let queried = 0, matchedProjects = 0, errors = 0;
+    const projectByCore = new Map();
+    try {
+      for (let i = 0; i < unique.length; i++) {
+        const num = unique[i];
+        UIController.updateProgress(((i + 1) / unique.length) * 100, `NIH RePORTER補完中: ${i + 1} / ${unique.length}`);
+        if (status) status.textContent = `NIH RePORTER補完中: ${i + 1} / ${unique.length}`;
+        try {
+          const rows = await FundingAPI.fetchNIHProjects([num]);
+          queried++;
+          rows.forEach(r => {
+            const summary = this._projectSummaryFromNIH(r);
+            const keys = this._uniq([num, summary.project_num, summary.core_project_num, this._coreNIH(num), this._coreNIH(summary.project_num), this._coreNIH(summary.core_project_num)]);
+            keys.forEach(k => {
+              if (!k) return;
+              if (!projectByCore.has(k)) projectByCore.set(k, []);
+              projectByCore.get(k).push(summary);
+            });
+          });
+          if (rows.length) matchedProjects += rows.length;
+        } catch (e) {
+          errors++;
+        }
+        // NIH recommends about one request per second for quality of service.
+        await FundingAPI.sleep(1000);
+      }
+
+      let papersUpdated = 0;
+      paperToCandidates.forEach((candidates, paper) => {
+        const projects = [];
+        candidates.forEach(c => {
+          const keys = this._uniq([c, this._coreNIH(c)]);
+          keys.forEach(k => (projectByCore.get(k) || []).forEach(pr => projects.push(pr)));
+        });
+        const seen = new Set();
+        const uniqueProjects = projects.filter(pr => {
+          const key = `${pr.project_num || pr.core_project_num || ''}|${pr.fiscal_year || ''}|${pr.award_amount || ''}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        if (!uniqueProjects.length) return;
+        paper.nih_projects = Array.isArray(paper.nih_projects) ? paper.nih_projects : [];
+        uniqueProjects.forEach(pr => {
+          paper.nih_projects.push(pr);
+          this._addFunderToPaper(paper, 'National Institutes of Health', 'https://openalex.org/F4320332161', 'NIH RePORTER', pr.project_num || pr.core_project_num || '');
+          if (pr.project_num || pr.core_project_num) {
+            this._addAwardToPaper(paper, pr.project_num || pr.core_project_num, 'National Institutes of Health', 'https://openalex.org/F4320332161', 'NIH RePORTER', { amount: pr.award_amount, currency: 'USD' });
+          }
+        });
+        paper.nih_project_nums = this._uniq([...(paper.nih_project_nums || []), ...uniqueProjects.map(p => p.project_num || p.core_project_num).filter(Boolean)]);
+        paper.nih_award_amounts = this._uniq([...(paper.nih_award_amounts || []), ...uniqueProjects.map(p => p.award_amount).filter(v => v != null && v !== '').map(String)]);
+        paper.nih_fiscal_years = this._uniq([...(paper.nih_fiscal_years || []), ...uniqueProjects.map(p => p.fiscal_year).filter(Boolean).map(String)]);
+        paper.nih_orgs = this._uniq([...(paper.nih_orgs || []), ...uniqueProjects.map(p => p.org_name).filter(Boolean)]);
+        paper.nih_pis = this._uniq([...(paper.nih_pis || []), ...uniqueProjects.map(p => p.pis).filter(Boolean)]);
+        paper.nih_project_titles = this._uniq([...(paper.nih_project_titles || []), ...uniqueProjects.map(p => p.title).filter(Boolean)]);
+        this._syncFundingFields(paper);
+        papersUpdated++;
+      });
+
+      this.renderMetrics();
+      this.renderFunderRank();
+      this.renderAwardRank();
+      this.renderFunderInst();
+      if (document.getElementById('funderInstMatrixContainer')) this.renderFunderInstMatrix();
+      this.renderExternalFundingTable();
+      UIController.showToast(`NIH RePORTER補完が完了しました（助成番号 ${queried} 件照会、プロジェクト ${matchedProjects} 件、更新論文 ${papersUpdated} 件、エラー ${errors} 件）。`, 'success');
+      if (status) status.textContent = `NIH補完完了: 照会 ${queried} 件 / プロジェクト ${matchedProjects} 件 / 更新論文 ${papersUpdated} 件 / エラー ${errors} 件`;
+    } finally {
+      UIController.hideProgress();
+    }
+  }
+};
+
 // Exporter
+
+const TopicRenderer = {
+  _splitSemi(value) {
+    if (Array.isArray(value)) return value.map(v => String(v || '').trim()).filter(Boolean);
+    return String(value || '').split(';').map(s => s.trim()).filter(Boolean);
+  },
+
+  _uniq(arr) {
+    return [...new Set((arr || []).map(v => OpenAlexAPI._stripTags(String(v || '').trim())).filter(Boolean))];
+  },
+
+  _paperTopics(paper) {
+    const topics = [];
+    if (paper.primary_topic) topics.push(paper.primary_topic);
+    if (Array.isArray(paper.topics)) topics.push(...paper.topics);
+    else if (paper.topics) topics.push(...this._splitSemi(paper.topics));
+    return this._uniq(topics);
+  },
+
+  _scoreWeights() {
+    const gv = (id, fallback) => {
+      const el = document.getElementById(id);
+      const v = el ? parseFloat(el.value) : NaN;
+      return Number.isFinite(v) ? v : fallback;
+    };
+    return {
+      recent: gv('topicScoreWeightRecent', 1),
+      delta: gv('topicScoreWeightDelta', 1),
+      citation: gv('topicScoreWeightCitation', 1),
+    };
+  },
+
+  getTopicStats() {
+    const map = new Map();
+    AppState.tableData.forEach(p => {
+      const topics = this._paperTopics(p);
+      if (!topics.length) return;
+      const cite = Number(p.citation_count) || 0;
+      const insts = this._uniq(this._splitSemi(p.institutions));
+      const funders = this._uniq(FundingRenderer._paperFunders(p).map(f => f.name));
+      topics.forEach(topic => {
+        if (!map.has(topic)) {
+          map.set(topic, {
+            name: topic,
+            papers: [],
+            paperIds: new Set(),
+            totalCitations: 0,
+            years: {},
+            instCounts: new Map(),
+            funderCounts: new Map(),
+          });
+        }
+        const st = map.get(topic);
+        const pid = p.paper_id || p.title;
+        if (!st.paperIds.has(pid)) {
+          st.paperIds.add(pid);
+          st.papers.push(p);
+          st.totalCitations += cite;
+          if (p.year) st.years[p.year] = (st.years[p.year] || 0) + 1;
+        }
+        insts.forEach(inst => st.instCounts.set(inst, (st.instCounts.get(inst) || 0) + 1));
+        funders.forEach(f => st.funderCounts.set(f, (st.funderCounts.get(f) || 0) + 1));
+      });
+    });
+    return [...map.values()].map(st => ({
+      ...st,
+      paperCount: st.papers.length,
+      avgCitations: st.papers.length ? st.totalCitations / st.papers.length : 0,
+      instPairs: [...st.instCounts.entries()].sort((a, b) => b[1] - a[1]),
+      funderPairs: [...st.funderCounts.entries()].sort((a, b) => b[1] - a[1]),
+    }));
+  },
+
+  getTopicInstitutionStats() {
+    const rows = [];
+    this.getTopicStats().forEach(st => {
+      st.instPairs.forEach(([inst, count]) => {
+        const papers = st.papers.filter(p => this._splitSemi(p.institutions).includes(inst));
+        const totalCitations = papers.reduce((s, p) => s + (Number(p.citation_count) || 0), 0);
+        rows.push({ topic: st.name, institution: inst, paperCount: count, totalCitations, avgCitations: count ? totalCitations / count : 0, papers });
+      });
+    });
+    return rows;
+  },
+
+  getTopicFunderStats() {
+    const rows = [];
+    this.getTopicStats().forEach(st => {
+      st.funderPairs.forEach(([funder, count]) => {
+        const papers = st.papers.filter(p => FundingRenderer._paperFunders(p).map(f => f.name).includes(funder));
+        const totalCitations = papers.reduce((s, p) => s + (Number(p.citation_count) || 0), 0);
+        rows.push({ topic: st.name, funder, paperCount: count, totalCitations, avgCitations: count ? totalCitations / count : 0, papers });
+      });
+    });
+    return rows;
+  },
+
+  getEmergingTopicStats() {
+    const topicStats = this.getTopicStats();
+    const years = AppState.tableData.map(p => p.year).filter(Boolean);
+    if (!years.length) return [];
+    const maxYear = Math.max(...years);
+    const recentYears = [maxYear - 2, maxYear - 1, maxYear];
+    const prevYears = [maxYear - 5, maxYear - 4, maxYear - 3];
+    const w = this._scoreWeights();
+    return topicStats.map(st => {
+      const recentPapers = st.papers.filter(p => recentYears.includes(p.year));
+      const prevPapers = st.papers.filter(p => prevYears.includes(p.year));
+      const recentCount = recentPapers.length;
+      const prevCount = prevPapers.length;
+      const delta = recentCount - prevCount;
+      const recentAvgCitations = recentCount ? recentPapers.reduce((s, p) => s + (Number(p.citation_count) || 0), 0) / recentCount : 0;
+      const score = w.recent * recentCount + w.delta * delta + w.citation * recentAvgCitations;
+      return { ...st, recentCount, prevCount, delta, recentAvgCitations, score, weights: w, maxYear };
+    }).filter(st => st.recentCount > 0).sort((a, b) => b.score - a.score || b.recentCount - a.recentCount);
+  },
+
+  _showEmpty(containerId, message) {
+    const el = document.getElementById(containerId);
+    if (el) el.innerHTML = `<div class="funding-empty">${message}</div>`;
+  },
+
+  _showCanvas(containerId, canvasId, heightPx) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.style.height = (heightPx || 520) + 'px';
+    el.innerHTML = `<canvas id="${canvasId}"></canvas>`;
+  },
+
+  _makeMatrixHtml(rowNames, colNames, valueGetter, cellFactory) {
+    let maxVal = 0;
+    rowNames.forEach(r => colNames.forEach(c => { const v = valueGetter(r, c) || 0; if (v > maxVal) maxVal = v; }));
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    let html = '<table class="collab-matrix"><thead><tr><th class="corner"></th>';
+    colNames.forEach(c => { html += `<th class="col-head" title="${esc(c)}"><span class="col-head-inner">${esc(c)}</span></th>`; });
+    html += '</tr></thead><tbody>';
+    rowNames.forEach(r => {
+      html += `<tr><th class="row-head" title="${esc(r)}">${esc(r)}</th>`;
+      colNames.forEach(c => {
+        const v = valueGetter(r, c) || 0;
+        const alpha = maxVal > 0 ? Math.max(0.08, v / maxVal) : 0;
+        const bg = v > 0 ? `rgba(26,115,232,${alpha.toFixed(3)})` : '#ffffff';
+        const color = v > 0 ? '#0b57d0' : '#9aa0a6';
+        html += cellFactory(r, c, v, bg, color);
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+  },
+
+  renderTopicRank() {
+    ChartRenderer.destroyChart('topicRank');
+    const topN = parseInt(document.getElementById('topNTopicRank').value) || 20;
+    const metric = document.getElementById('topicRankMetric').value;
+    const stats = this.getTopicStats();
+    const metricLabel = metric === 'citations' ? '合計被引用数' : metric === 'avgCitations' ? '平均被引用数' : '論文件数';
+    const sorted = [...stats].sort((a, b) => {
+      const va = metric === 'citations' ? a.totalCitations : metric === 'avgCitations' ? a.avgCitations : a.paperCount;
+      const vb = metric === 'citations' ? b.totalCitations : metric === 'avgCitations' ? b.avgCitations : b.paperCount;
+      return vb - va || b.totalCitations - a.totalCitations;
+    }).slice(0, topN);
+    if (!sorted.length) { this._showEmpty('topicRankContainer', 'Topic情報がありません。'); return; }
+    this._showCanvas('topicRankContainer', 'chartTopicRank', Math.max(420, sorted.length * 34 + 90));
+    const labels = sorted.map(s => ChartRenderer._truncateLabel(s.name, 70));
+    const values = sorted.map(s => metric === 'citations' ? s.totalCitations : metric === 'avgCitations' ? Number(s.avgCitations.toFixed(2)) : s.paperCount);
+    const ctx = document.getElementById('chartTopicRank').getContext('2d');
+    AppState.charts.topicRank = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: metricLabel, data: values, backgroundColor: 'rgba(147,52,230,0.75)', borderColor: '#7b1fa2', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: `Topicランキング Top ${topN}（${metricLabel}）`, font: { size: 16, weight: '600' }, color: '#202124' },
+          tooltip: { callbacks: { title: items => sorted[items[0].dataIndex].name, label: item => [`${metricLabel}: ${item.raw}`, `論文件数: ${sorted[item.dataIndex].paperCount}`, `平均被引用数: ${sorted[item.dataIndex].avgCitations.toFixed(1)}`, 'クリックで詳細表示'] } }
+        },
+        onClick: (evt, els) => { if (!els.length) return; const st = sorted[els[0].index]; Modal.show(`Topic: ${st.name}`, Modal.buildEntityContent(st.name, 'Topic', st.papers)); },
+        scales: { x: { title: { display: true, text: metricLabel, color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
+  renderTopicTrend() {
+    ChartRenderer.destroyChart('topicTrend');
+    const topN = parseInt(document.getElementById('topNTopicTrend').value) || 5;
+    const stats = this.getTopicStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, topN);
+    const years = AppState.tableData.map(d => d.year).filter(Boolean);
+    if (!stats.length || !years.length) { this._showEmpty('topicTrendContainer', 'Topic情報がありません。'); return; }
+    const minY = Math.min(...years), maxY = Math.max(...years);
+    const yearList = []; for (let y=minY; y<=maxY; y++) yearList.push(y);
+    const datasets = stats.map((st, i) => ({ label: ChartRenderer._truncateLabel(st.name, 50), data: yearList.map(y => st.years[y] || 0), borderColor: ChartRenderer.COLORS[i % ChartRenderer.COLORS.length], backgroundColor: 'transparent', pointRadius: 4, pointBackgroundColor: ChartRenderer.COLORS[i % ChartRenderer.COLORS.length], tension: 0 }));
+    const ctx = document.getElementById('chartTopicTrend').getContext('2d');
+    AppState.charts.topicTrend = new Chart(ctx, {
+      type: 'line', data: { labels: yearList, datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: true, position: 'top', labels: { font: { size: 11 } } }, title: { display: true, text: `Topic×年（上位 ${topN} Topic）`, font: { size: 16, weight: '600' }, color: '#202124' }, tooltip: { callbacks: { afterLabel: () => 'クリックで該当年×Topicの論文一覧' } } },
+        onClick: (evt, els) => { if (!els.length) return; const el = els[0]; const year = yearList[el.index]; const st = stats[el.datasetIndex]; const papers = st.papers.filter(p => p.year === year); Modal.show(`Topic: ${st.name} / ${year}年`, Modal.buildPaperListContent(`${st.name} / ${year}年`, papers)); },
+        scales: { x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } }, y: { title: { display: true, text: '件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } } }
+      }
+    });
+  },
+
+  renderEmergingTopics() {
+    ChartRenderer.destroyChart('emergingTopic');
+    const topN = parseInt(document.getElementById('topNEmergingTopic').value) || 20;
+    const stats = this.getEmergingTopicStats().slice(0, topN);
+    const def = document.getElementById('topicScoreDefinition');
+    if (!stats.length) {
+      if (def) def.innerHTML = 'スコア定義を表示できるだけの年次データがありません。';
+      this._showEmpty('emergingTopicContainer', '年次付きのTopicデータがありません。');
+      return;
+    }
+    const maxYear = stats[0].maxYear;
+    const w = this._scoreWeights();
+    if (def) def.innerHTML = `<strong>簡易スコアの定義</strong><br><code>Score = ${w.recent} × 直近3年の件数 + ${w.delta} ×（直近3年の件数 − 直前3年の件数）+ ${w.citation} × 直近3年の平均被引用数</code><br>このコレクションでは、<strong>直近3年 = ${maxYear - 2}–${maxYear}年</strong>、<strong>直前3年 = ${maxYear - 5}–${maxYear - 3}年</strong>です。重みを変更すると、ランキングとCSV出力に反映されます。`;
+    this._showCanvas('emergingTopicContainer', 'chartEmergingTopic', Math.max(420, stats.length * 34 + 90));
+    const labels = stats.map(s => ChartRenderer._truncateLabel(s.name, 70));
+    const values = stats.map(s => Number(s.score.toFixed(2)));
+    const ctx = document.getElementById('chartEmergingTopic').getContext('2d');
+    AppState.charts.emergingTopic = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: '簡易スコア', data: values, backgroundColor: 'rgba(251,188,4,0.78)', borderColor: '#e37400', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, title: { display: true, text: `新興Topic候補 Top ${topN}`, font: { size: 16, weight: '600' }, color: '#202124' }, tooltip: { callbacks: { title: items => stats[items[0].dataIndex].name, label: item => { const st = stats[item.dataIndex]; return [`簡易スコア: ${st.score.toFixed(2)}`, `直近3年件数: ${st.recentCount}`, `直前3年件数: ${st.prevCount}`, `増分: ${st.delta}`, `直近3年平均被引用数: ${st.recentAvgCitations.toFixed(2)}`, 'クリックで詳細表示']; } } } },
+        onClick: (evt, els) => { if (!els.length) return; const st = stats[els[0].index]; const extra = `<dt>直近3年件数</dt><dd>${st.recentCount}</dd><dt>直前3年件数</dt><dd>${st.prevCount}</dd><dt>増分</dt><dd>${st.delta}</dd><dt>直近3年平均被引用数</dt><dd>${st.recentAvgCitations.toFixed(2)}</dd><dt>簡易スコア</dt><dd>${st.score.toFixed(2)}</dd>`; Modal.show(`新興Topic候補: ${st.name}`, Modal.buildEntityContent(st.name, 'Topic', st.papers, { extraDl: extra })); },
+        scales: { x: { title: { display: true, text: '簡易スコア', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
+  renderTopicInstitution() {
+    ChartRenderer.destroyChart('topicInstitution');
+    const topN = parseInt(document.getElementById('topNTopicInstitution').value) || 20;
+    const rows = this.getTopicInstitutionStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations).slice(0, topN);
+    if (!rows.length) { this._showEmpty('topicInstitutionContainer', 'Topic×機関のデータがありません。'); return; }
+    this._showCanvas('topicInstitutionContainer', 'chartTopicInstitution', Math.max(420, rows.length * 34 + 90));
+    const ctx = document.getElementById('chartTopicInstitution').getContext('2d');
+    AppState.charts.topicInstitution = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: rows.map(r => ChartRenderer._truncateLabel(`${r.topic} × ${r.institution}`, 70)), datasets: [{ label: '論文件数', data: rows.map(r => r.paperCount), backgroundColor: 'rgba(52,168,83,0.75)', borderColor: '#1e8e3e', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, title: { display: true, text: `Topic×機関 Top ${topN}`, font: { size: 16, weight: '600' }, color: '#202124' }, tooltip: { callbacks: { title: items => `${rows[items[0].dataIndex].topic} × ${rows[items[0].dataIndex].institution}`, label: item => [`論文件数: ${item.raw}`, `合計被引用数: ${rows[item.dataIndex].totalCitations.toLocaleString()}`, 'クリックで詳細表示'] } } },
+        onClick: (evt, els) => { if (!els.length) return; const st = rows[els[0].index]; Modal.show(`${st.topic} × ${st.institution}`, Modal.buildPairContent(st.topic, 'Topic', st.institution, '所属機関', st.papers, '関連論文')); },
+        scales: { x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
+  renderTopicFunder() {
+    ChartRenderer.destroyChart('topicFunder');
+    const topN = parseInt(document.getElementById('topNTopicFunder').value) || 20;
+    const rows = this.getTopicFunderStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations).slice(0, topN);
+    if (!rows.length) { this._showEmpty('topicFunderContainer', 'Topic×資金源のデータがありません。'); return; }
+    this._showCanvas('topicFunderContainer', 'chartTopicFunder', Math.max(420, rows.length * 34 + 90));
+    const ctx = document.getElementById('chartTopicFunder').getContext('2d');
+    AppState.charts.topicFunder = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: rows.map(r => ChartRenderer._truncateLabel(`${r.topic} × ${r.funder}`, 70)), datasets: [{ label: '論文件数', data: rows.map(r => r.paperCount), backgroundColor: 'rgba(26,115,232,0.75)', borderColor: '#0b57d0', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, title: { display: true, text: `Topic×資金源 Top ${topN}`, font: { size: 16, weight: '600' }, color: '#202124' }, tooltip: { callbacks: { title: items => `${rows[items[0].dataIndex].topic} × ${rows[items[0].dataIndex].funder}`, label: item => [`論文件数: ${item.raw}`, `合計被引用数: ${rows[item.dataIndex].totalCitations.toLocaleString()}`, 'クリックで詳細表示'] } } },
+        onClick: (evt, els) => { if (!els.length) return; const st = rows[els[0].index]; Modal.show(`${st.topic} × ${st.funder}`, Modal.buildPairContent(st.topic, 'Topic', st.funder, '資金源', st.papers, '関連論文')); },
+        scales: { x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
+  renderTopicYearMatrix() {
+    const container = document.getElementById('topicYearMatrixContainer');
+    const topicN = parseInt(document.getElementById('matrixTopicN').value) || 12;
+    const topicStats = this.getTopicStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, topicN);
+    const years = [...new Set(AppState.tableData.map(d => d.year).filter(Boolean))].sort((a, b) => a - b);
+    if (!topicStats.length || !years.length) { container.innerHTML = '<div class="funding-empty">Topic×年のデータがありません。</div>'; return; }
+    const rowNames = topicStats.map(s => s.name);
+    const yearMap = new Map(topicStats.map(s => [s.name, s.years]));
+    container.innerHTML = this._makeMatrixHtml(rowNames, years.map(String), (topic, year) => (yearMap.get(topic) || {})[year] || 0, (topic, year, v, bg, color) => `<td class="cell ${v ? '' : 'zero'}" data-topic="${Modal.esc(topic)}" data-year="${year}" style="background:${bg};color:${color};cursor:pointer;">${v || ''}</td>`);
+    container.querySelectorAll('td[data-topic]').forEach(td => td.addEventListener('click', () => {
+      const topic = td.getAttribute('data-topic'); const year = Number(td.getAttribute('data-year')); const papers = AppState.tableData.filter(p => this._paperTopics(p).includes(topic) && p.year === year); Modal.show(`Topic: ${topic} / ${year}年`, Modal.buildPaperListContent(`${topic} / ${year}年`, papers));
+    }));
+  },
+
+  renderTopicInstMatrix() {
+    const container = document.getElementById('topicInstMatrixContainer');
+    const rowN = parseInt(document.getElementById('matrixTopicInstRows').value) || 10;
+    const colN = parseInt(document.getElementById('matrixTopicInstCols').value) || 10;
+    const topicStats = this.getTopicStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, rowN);
+    const instRanks = ChartRenderer.getInstCounts().slice(0, colN).map(([name]) => name);
+    if (!topicStats.length || !instRanks.length) { container.innerHTML = '<div class="funding-empty">Topic×機関のマトリクス対象データがありません。</div>'; return; }
+    const rowNames = topicStats.map(s => s.name);
+    const map = new Map(topicStats.map(s => [s.name, new Map(s.instPairs)]));
+    container.innerHTML = this._makeMatrixHtml(rowNames, instRanks, (topic, inst) => (map.get(topic)?.get(inst)) || 0, (topic, inst, v, bg, color) => `<td class="cell ${v ? '' : 'zero'}" data-topic="${Modal.esc(topic)}" data-inst="${Modal.esc(inst)}" style="background:${bg};color:${color};cursor:pointer;">${v || ''}</td>`);
+    container.querySelectorAll('td[data-inst]').forEach(td => td.addEventListener('click', () => {
+      const topic = td.getAttribute('data-topic'); const inst = td.getAttribute('data-inst'); const papers = AppState.tableData.filter(p => this._paperTopics(p).includes(topic) && this._splitSemi(p.institutions).includes(inst)); Modal.show(`${topic} × ${inst}`, Modal.buildPairContent(topic, 'Topic', inst, '所属機関', papers, '関連論文'));
+    }));
+  },
+
+  renderTopicFunderMatrix() {
+    const container = document.getElementById('topicFunderMatrixContainer');
+    const rowN = parseInt(document.getElementById('matrixTopicFunderRows').value) || 10;
+    const colN = parseInt(document.getElementById('matrixTopicFunderCols').value) || 10;
+    const topicStats = this.getTopicStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, rowN);
+    const funderRanks = FundingRenderer.getFunderStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, colN).map(s => s.name);
+    if (!topicStats.length || !funderRanks.length) { container.innerHTML = '<div class="funding-empty">Topic×資金源のマトリクス対象データがありません。</div>'; return; }
+    const rowNames = topicStats.map(s => s.name);
+    const map = new Map(topicStats.map(s => [s.name, new Map(s.funderPairs)]));
+    container.innerHTML = this._makeMatrixHtml(rowNames, funderRanks, (topic, funder) => (map.get(topic)?.get(funder)) || 0, (topic, funder, v, bg, color) => `<td class="cell ${v ? '' : 'zero'}" data-topic="${Modal.esc(topic)}" data-funder="${Modal.esc(funder)}" style="background:${bg};color:${color};cursor:pointer;">${v || ''}</td>`);
+    container.querySelectorAll('td[data-funder]').forEach(td => td.addEventListener('click', () => {
+      const topic = td.getAttribute('data-topic'); const funder = td.getAttribute('data-funder'); const papers = AppState.tableData.filter(p => this._paperTopics(p).includes(topic) && FundingRenderer._paperFunders(p).map(f => f.name).includes(funder)); Modal.show(`${topic} × ${funder}`, Modal.buildPairContent(topic, 'Topic', funder, '資金源', papers, '関連論文'));
+    }));
+  },
+
+  renderAll() {
+    this.renderTopicRank();
+    this.renderTopicTrend();
+    this.renderEmergingTopics();
+    this.renderTopicInstitution();
+    this.renderTopicFunder();
+    this.renderTopicYearMatrix();
+    this.renderTopicInstMatrix();
+    this.renderTopicFunderMatrix();
+  },
+};
+
+const NetworkRenderer = {
+  _splitEntities(paper, type) {
+    const raw = type === 'author' ? (paper.authors || '') : (paper.institutions || '');
+    return [...new Set(String(raw).split(';').map(s => OpenAlexAPI._stripTags(s.trim())).filter(Boolean))];
+  },
+
+  _filters(prefix) {
+    const getVal = id => (document.getElementById(prefix + id)?.value || '').trim();
+    const num = id => {
+      const v = parseFloat(getVal(id));
+      return Number.isFinite(v) ? v : null;
+    };
+    return {
+      yearFrom: num('YearFrom'),
+      yearTo: num('YearTo'),
+      topic: getVal('TopicFilter').toLowerCase(),
+      funder: getVal('FunderFilter').toLowerCase(),
+      minPapers: num('MinPapers') || 1,
+      minAvgCite: num('MinAvgCite') || 0,
+    };
+  },
+
+  _paperMatches(paper, filters) {
+    if (filters.yearFrom != null && paper.year && paper.year < filters.yearFrom) return false;
+    if (filters.yearTo != null && paper.year && paper.year > filters.yearTo) return false;
+    if (filters.topic) {
+      const topics = (typeof TopicRenderer !== 'undefined') ? TopicRenderer._paperTopics(paper) : [];
+      if (!topics.some(t => t.toLowerCase().includes(filters.topic))) return false;
+    }
+    if (filters.funder) {
+      const funders = FundingRenderer._paperFunders(paper).map(f => f.name || '');
+      if (!funders.some(f => f.toLowerCase().includes(filters.funder))) return false;
+    }
+    return true;
+  },
+
+  _gradient(val, min, max) {
+    if (!isFinite(val)) return { background: '#9aa0a6', border: '#5f6368' };
+    const range = Math.max(1e-9, max - min);
+    const t = Math.max(0, Math.min(1, (val - min) / range));
+    const hue = Math.round(210 - 210 * t);
+    return { background: `hsl(${hue}, 72%, 55%)`, border: `hsl(${hue}, 72%, 38%)` };
+  },
+
+  _computeBetweenness(nodeIds, adj) {
+    const Cb = {}; nodeIds.forEach(v => Cb[v] = 0);
+    nodeIds.forEach(s => {
+      const S = [];
+      const P = {}; nodeIds.forEach(v => P[v] = []);
+      const sigma = {}; nodeIds.forEach(v => sigma[v] = 0); sigma[s] = 1;
+      const dist = {}; nodeIds.forEach(v => dist[v] = -1); dist[s] = 0;
+      const Q = [s];
+      while (Q.length) {
+        const v = Q.shift();
+        S.push(v);
+        (adj.get(v) || []).forEach(w => {
+          if (dist[w] < 0) { Q.push(w); dist[w] = dist[v] + 1; }
+          if (dist[w] === dist[v] + 1) { sigma[w] += sigma[v]; P[w].push(v); }
+        });
+      }
+      const delta = {}; nodeIds.forEach(v => delta[v] = 0);
+      while (S.length) {
+        const w = S.pop();
+        P[w].forEach(v => { delta[v] += (sigma[v] / Math.max(1, sigma[w])) * (1 + delta[w]); });
+        if (w !== s) Cb[w] += delta[w];
+      }
+    });
+    nodeIds.forEach(v => Cb[v] = Cb[v] / 2);
+    return Cb;
+  },
+
+  _buildNetwork(type, topN, minEdgeWeight, filters) {
+    const sourcePapers = AppState.tableData.filter(p => this._paperMatches(p, filters));
+    const nodeMap = new Map();
+    const edgeMap = new Map();
+    sourcePapers.forEach(p => {
+      const entities = this._splitEntities(p, type);
+      if (!entities.length) return;
+      const cite = Number(p.citation_count) || 0;
+      entities.forEach(name => {
+        if (!nodeMap.has(name)) nodeMap.set(name, { name, papers: [], paperIds: new Set(), totalCitations: 0 });
+        const st = nodeMap.get(name);
+        const pid = p.paper_id || p.title;
+        if (!st.paperIds.has(pid)) { st.paperIds.add(pid); st.papers.push(p); st.totalCitations += cite; }
+      });
+      for (let i=0; i<entities.length; i++) {
+        for (let j=i+1; j<entities.length; j++) {
+          const [a,b] = entities[i] < entities[j] ? [entities[i], entities[j]] : [entities[j], entities[i]];
+          const key = `${a}||${b}`;
+          if (!edgeMap.has(key)) edgeMap.set(key, { a, b, weight: 0, papers: [] });
+          const e = edgeMap.get(key); e.weight++; e.papers.push(p);
+        }
+      }
+    });
+    const eligibleNames = [...nodeMap.values()]
+      .filter(n => n.papers.length >= filters.minPapers && (n.papers.length ? n.totalCitations / n.papers.length : 0) >= filters.minAvgCite)
+      .sort((a,b) => b.papers.length - a.papers.length || b.totalCitations - a.totalCitations)
+      .slice(0, topN)
+      .map(v => v.name);
+    const visibleSet = new Set(eligibleNames);
+    const edges = [...edgeMap.values()].filter(e => visibleSet.has(e.a) && visibleSet.has(e.b) && e.weight >= minEdgeWeight);
+    const activeSet = new Set(); edges.forEach(e => { activeSet.add(e.a); activeSet.add(e.b); });
+    if (!edges.length) return { nodes: [], edges: [], nodeStats: [], filteredPaperCount: sourcePapers.length };
+    const nodes = [...activeSet].map(name => nodeMap.get(name));
+    const adj = new Map();
+    nodes.forEach(n => adj.set(n.name, []));
+    const degree = new Map(), weightedDegree = new Map();
+    nodes.forEach(n => { degree.set(n.name, 0); weightedDegree.set(n.name, 0); });
+    edges.forEach(e => {
+      degree.set(e.a, (degree.get(e.a) || 0) + 1); degree.set(e.b, (degree.get(e.b) || 0) + 1);
+      weightedDegree.set(e.a, (weightedDegree.get(e.a) || 0) + e.weight); weightedDegree.set(e.b, (weightedDegree.get(e.b) || 0) + e.weight);
+      adj.get(e.a).push(e.b); adj.get(e.b).push(e.a);
+    });
+    const between = this._computeBetweenness(nodes.map(n => n.name), adj);
+    const nodeStats = nodes.map(n => ({
+      id: n.name,
+      name: n.name,
+      papers: n.papers,
+      paperCount: n.papers.length,
+      totalCitations: n.totalCitations,
+      avgCitations: n.papers.length ? n.totalCitations / n.papers.length : 0,
+      degree: degree.get(n.name) || 0,
+      weightedDegree: weightedDegree.get(n.name) || 0,
+      betweenness: between[n.name] || 0,
+    }));
+    return { nodes, edges, nodeStats, filteredPaperCount: sourcePapers.length };
+  },
+
+  _render(type, opts) {
+    const topN = parseInt(document.getElementById(opts.topInput).value) || 40;
+    const minEdge = parseInt(document.getElementById(opts.edgeInput).value) || 1;
+    const sizeMetric = document.getElementById(opts.sizeSelect).value;
+    const colorMetric = document.getElementById(opts.colorSelect).value;
+    const filters = this._filters(opts.prefix);
+    const status = document.getElementById(opts.statusId);
+    const container = document.getElementById(opts.containerId);
+    if (typeof vis === 'undefined' || !vis.Network) { status.textContent = 'vis-network ライブラリがロードされていません'; return; }
+    const built = this._buildNetwork(type, topN, minEdge, filters);
+    if (!built.edges.length) { container.innerHTML = '<div class="funding-empty">該当するネットワークがありません。フィルタを緩めるか、最小エッジ重みを下げてください。</div>'; status.textContent = `対象論文 ${built.filteredPaperCount || 0} 件 / エッジなし`; return; }
+    const nodeStats = built.nodeStats;
+    const vMin = Math.min(...nodeStats.map(n => Number(n[colorMetric]) || 0));
+    const vMax = Math.max(...nodeStats.map(n => Number(n[colorMetric]) || 0));
+    const sMin = Math.min(...nodeStats.map(n => Number(n[sizeMetric]) || 0));
+    const sMax = Math.max(...nodeStats.map(n => Number(n[sizeMetric]) || 0));
+    const statMap = new Map(nodeStats.map(n => [n.id, n]));
+    const visNodes = nodeStats.map(n => ({
+      id: n.id,
+      label: n.name.length > 24 ? n.name.slice(0, 24) + '…' : n.name,
+      title: `${n.name}\n論文数: ${n.paperCount}\n平均被引用数: ${n.avgCitations.toFixed(2)}\n次数: ${n.degree}\n重み付き次数: ${n.weightedDegree}\n媒介中心性: ${n.betweenness.toFixed(3)}\nクリックで詳細`,
+      value: 10 + ((Number(n[sizeMetric]) || 0) - sMin) / Math.max(1e-9, sMax - sMin) * 25,
+      color: this._gradient(Number(n[colorMetric]) || 0, vMin, vMax),
+      font: { size: 12 },
+    }));
+    const visEdges = built.edges.map(e => ({ id: `${e.a}||${e.b}`, from: e.a, to: e.b, value: e.weight, width: 1 + Math.log2(1 + e.weight), color: { color: '#9aa0a6', opacity: 0.55 }, title: `${e.a} × ${e.b}\n共著/共同研究: ${e.weight} 件\nクリックで詳細` }));
+    container.innerHTML = '';
+    const network = new vis.Network(container, { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(visEdges) }, {
+      physics: { enabled: true, stabilization: { iterations: 200 }, barnesHut: { gravitationalConstant: -2800, springLength: 140 } },
+      interaction: { hover: true, dragNodes: true, dragView: true, zoomView: true, tooltipDelay: 100 },
+      nodes: { shape: 'dot', scaling: { min: 10, max: 42 }, borderWidth: 1.5 },
+      edges: { smooth: { type: 'continuous' } }
+    });
+    network.on('click', params => {
+      if (params.nodes && params.nodes.length) {
+        const id = params.nodes[0];
+        const st = statMap.get(id);
+        if (!st) return;
+        const extra = `<dt>次数</dt><dd>${st.degree}</dd><dt>重み付き次数</dt><dd>${st.weightedDegree}</dd><dt>媒介中心性</dt><dd>${st.betweenness.toFixed(3)}</dd><dt>平均被引用数</dt><dd>${st.avgCitations.toFixed(2)}</dd>`;
+        Modal.show(`${opts.entityLabel}: ${st.name}`, Modal.buildEntityContent(st.name, opts.entityLabel, st.papers, { extraDl: extra }));
+      } else if (params.edges && params.edges.length) {
+        const eid = params.edges[0];
+        const edge = built.edges.find(e => `${e.a}||${e.b}` === eid);
+        if (!edge) return;
+        Modal.show(`${edge.a} × ${edge.b}`, Modal.buildPairContent(edge.a, opts.entityLabel, edge.b, opts.entityLabel, edge.papers, opts.metricLabel));
+      }
+    });
+    AppState.networks[type] = { nodeStats, edges: built.edges, filters };
+    status.textContent = `対象論文 ${built.filteredPaperCount} 件 / ノード ${nodeStats.length} 件 / エッジ ${built.edges.length} 件 / ノード色: ${document.getElementById(opts.colorSelect).selectedOptions[0].textContent}`;
+  },
+
+  renderInstitutionNetwork() {
+    this._render('institution', { prefix: 'instNet', topInput: 'instNetTopN', edgeInput: 'instNetMinEdge', sizeSelect: 'instNetSizeMetric', colorSelect: 'instNetColorMetric', statusId: 'instNetworkStatus', containerId: 'institutionNetworkContainer', entityLabel: '所属機関', metricLabel: '共同研究論文' });
+  },
+
+  renderAuthorNetwork() {
+    this._render('author', { prefix: 'authorNet', topInput: 'authorNetTopN', edgeInput: 'authorNetMinEdge', sizeSelect: 'authorNetSizeMetric', colorSelect: 'authorNetColorMetric', statusId: 'authorNetworkStatus', containerId: 'authorNetworkContainer', entityLabel: '著者', metricLabel: '共著論文' });
+  },
+
+  resetContainers() {
+    const ids = ['institutionNetworkContainer', 'authorNetworkContainer'];
+    ids.forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = '<div class="funding-empty">描画ボタンを押すとネットワーク図を表示します。</div>'; });
+    ['instNetworkStatus','authorNetworkStatus'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = ''; });
+  },
+};
+
 const Exporter = {
   _csvEscape(v) {
     let s = String(v == null ? '' : v);
@@ -4070,18 +6050,26 @@ const Exporter = {
       UIController.showToast('ダウンロードするデータがありません。', 'error');
       return;
     }
-    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script', 'referenced_works_count', 'referenced_works'];
+    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script', 'primary_topic', 'topics', 'referenced_works_count', 'referenced_works', 'funder_names', 'funder_ids', 'award_ids', 'funding_sources', 'crossref_funder_names', 'crossref_award_ids', 'nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles'];
     const _rows = [columns];
     AppState.tableData.forEach(row => {
+      FundingRenderer._syncFundingFields(row);
       _rows.push(columns.map(col => {
         if (col === 'referenced_works') {
           // 配列をセミコロン区切りでフラット化（CSVラウンドトリップ用）
           return Array.isArray(row[col]) ? row[col].join('; ') : '';
         }
+        if (col === 'topics') return Array.isArray(row.topics) ? row.topics.join('; ') : (row.topics || '');
+        if (col === 'funding_sources') return Array.isArray(row.funding_sources) ? row.funding_sources.join('; ') : (row.funding_sources || '');
+        if (col === 'crossref_funder_names') return Array.isArray(row.crossref_funders) ? row.crossref_funders.join('; ') : (row.crossref_funders || '');
+        if (col === 'crossref_award_ids') return Array.isArray(row.crossref_awards) ? row.crossref_awards.join('; ') : (row.crossref_awards || '');
+        if (['nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles'].includes(col)) {
+          return Array.isArray(row[col]) ? row[col].join('; ') : (row[col] || '');
+        }
         return row[col] == null ? '' : row[col];
       }));
     });
-    this._downloadCSVText(_rows, `openalex_papers_${new Date().toISOString().slice(0, 10)}.csv`);
+    this._downloadCSVText(_rows, `openalex_collector_v4_papers_${new Date().toISOString().slice(0, 10)}.csv`);
   },
 
 
@@ -4156,6 +6144,147 @@ const Exporter = {
       const sorted = ChartRenderer.getInstCounts();      // full list, not Top-N
       rows.push(['rank', 'institution', 'count']);
       sorted.forEach(([name, count], i) => rows.push([i + 1, name, count]));
+
+    // Funding Intelligence
+    } else if (chartKey === 'funderRank') {
+      const sorted = FundingRenderer.getFunderStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'funder', 'funder_id', 'paper_count', 'award_count', 'total_citations', 'avg_citations', 'sources', 'award_ids']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.name, s.id || '', s.paperCount, s.awardCount, s.totalCitations, s.avgCitations.toFixed(2),
+        (s.sourcesList || []).join('; '), (s.awardsList || []).join('; ')
+      ]));
+
+    } else if (chartKey === 'funderTrend') {
+      const funders = FundingRenderer.getFunderStats().sort((a, b) => b.paperCount - a.paperCount);
+      const years = AppState.tableData.map(p => p.year).filter(Boolean);
+      if (!years.length) {
+        UIController.showToast('ダウンロードするデータがありません。', 'error');
+        return;
+      }
+      const minY = Math.min(...years), maxY = Math.max(...years);
+      rows.push(['year', 'funder', 'paper_count']);
+      for (let y = minY; y <= maxY; y++) {
+        funders.forEach(f => rows.push([y, f.name, f.years[y] || 0]));
+      }
+
+    } else if (chartKey === 'awardRank') {
+      const sorted = FundingRenderer.getAwardStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'award_id', 'funder', 'paper_count', 'total_citations', 'avg_citations', 'amount', 'currency', 'start_year', 'end_year', 'sources']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.award_id, s.funder_name || '', s.paperCount, s.totalCitations, s.avgCitations.toFixed(2),
+        s.amount || '', s.currency || '', s.start_year || '', s.end_year || '', (s.sourcesList || []).join('; ')
+      ]));
+
+    } else if (chartKey === 'funderInst') {
+      const sorted = FundingRenderer.getFunderInstitutionStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'funder', 'funder_id', 'institution', 'paper_count', 'total_citations', 'avg_citations']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.funder, s.funder_id || '', s.institution, s.paperCount, s.totalCitations, s.avgCitations.toFixed(2)
+      ]));
+
+    } else if (chartKey === 'externalFunding') {
+      rows.push(['paper_id', 'title', 'year', 'doi', 'crossref_funders', 'crossref_awards', 'nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles']);
+      AppState.tableData.forEach(p => rows.push([
+        p.paper_id || '', p.title || '', p.year || '', p.doi || '',
+        FundingRenderer._splitSemi(p.crossref_funders).join('; '),
+        FundingRenderer._splitSemi(p.crossref_awards).join('; '),
+        FundingRenderer._splitSemi(p.nih_project_nums).join('; '),
+        FundingRenderer._splitSemi(p.nih_award_amounts).join('; '),
+        FundingRenderer._splitSemi(p.nih_fiscal_years).join('; '),
+        FundingRenderer._splitSemi(p.nih_orgs).join('; '),
+        FundingRenderer._splitSemi(p.nih_pis).join('; '),
+        FundingRenderer._splitSemi(p.nih_project_titles).join('; '),
+      ]));
+
+    } else if (chartKey === 'funderInstMatrix') {
+      const rowN = parseInt(document.getElementById('funderInstMatrixRows').value) || 12;
+      const colN = parseInt(document.getElementById('funderInstMatrixCols').value) || 12;
+      const pairStats = FundingRenderer.getFunderInstitutionStats();
+      const funders = FundingRenderer.getFunderStats().sort((a,b)=>b.paperCount-a.paperCount).slice(0,rowN).map(s => s.name);
+      const instCounts = new Map();
+      pairStats.forEach(s => instCounts.set(s.institution, (instCounts.get(s.institution) || 0) + s.paperCount));
+      const insts = [...instCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,colN).map(([name]) => name);
+      const map = new Map(pairStats.map(s => [`${s.funder}||${s.institution}`, s]));
+      rows.push(['funder', ...insts]);
+      funders.forEach(f => rows.push([f, ...insts.map(inst => map.get(`${f}||${inst}`)?.paperCount || 0)]));
+
+    } else if (chartKey === 'topicRank') {
+      const sorted = TopicRenderer.getTopicStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'topic', 'paper_count', 'total_citations', 'avg_citations']);
+      sorted.forEach((s, i) => rows.push([i + 1, s.name, s.paperCount, s.totalCitations, s.avgCitations.toFixed(2)]));
+
+    } else if (chartKey === 'topicTrend') {
+      const stats = TopicRenderer.getTopicStats().sort((a, b) => b.paperCount - a.paperCount);
+      const years = AppState.tableData.map(p => p.year).filter(Boolean);
+      if (!stats.length || !years.length) { UIController.showToast('ダウンロードするデータがありません。', 'error'); return; }
+      const minY = Math.min(...years), maxY = Math.max(...years);
+      rows.push(['year', 'topic', 'paper_count']);
+      for (let y = minY; y <= maxY; y++) stats.forEach(s => rows.push([y, s.name, s.years[y] || 0]));
+
+    } else if (chartKey === 'emergingTopic') {
+      const sorted = TopicRenderer.getEmergingTopicStats();
+      const w = TopicRenderer._scoreWeights();
+      rows.push(['rank', 'topic', 'paper_count', 'recent_3y_count', 'previous_3y_count', 'delta', 'recent_3y_avg_citations', 'weight_recent_count', 'weight_delta', 'weight_recent_avg_citations', 'score']);
+      sorted.forEach((s, i) => rows.push([i + 1, s.name, s.paperCount, s.recentCount, s.prevCount, s.delta, s.recentAvgCitations.toFixed(2), w.recent, w.delta, w.citation, s.score.toFixed(2)]));
+
+    } else if (chartKey === 'topicInstitution') {
+      const sorted = TopicRenderer.getTopicInstitutionStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'topic', 'institution', 'paper_count', 'total_citations', 'avg_citations']);
+      sorted.forEach((s, i) => rows.push([i + 1, s.topic, s.institution, s.paperCount, s.totalCitations, s.avgCitations.toFixed(2)]));
+
+    } else if (chartKey === 'topicFunder') {
+      const sorted = TopicRenderer.getTopicFunderStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'topic', 'funder', 'paper_count', 'total_citations', 'avg_citations']);
+      sorted.forEach((s, i) => rows.push([i + 1, s.topic, s.funder, s.paperCount, s.totalCitations, s.avgCitations.toFixed(2)]));
+
+    } else if (chartKey === 'topicYearMatrix') {
+      const N = parseInt(document.getElementById('matrixTopicN').value) || 12;
+      const topics = TopicRenderer.getTopicStats().sort((a,b)=>b.paperCount-a.paperCount).slice(0,N);
+      const years = [...new Set(AppState.tableData.map(d => d.year).filter(Boolean))].sort((a,b)=>a-b);
+      rows.push(['topic', ...years]);
+      topics.forEach(t => rows.push([t.name, ...years.map(y => t.years[y] || 0)]));
+
+    } else if (chartKey === 'topicInstMatrix') {
+      const rowN = parseInt(document.getElementById('matrixTopicInstRows').value) || 10;
+      const colN = parseInt(document.getElementById('matrixTopicInstCols').value) || 10;
+      const topics = TopicRenderer.getTopicStats().sort((a,b)=>b.paperCount-a.paperCount).slice(0,rowN);
+      const insts = ChartRenderer.getInstCounts().slice(0,colN).map(([n]) => n);
+      rows.push(['topic', ...insts]);
+      topics.forEach(t => {
+        const m = new Map(t.instPairs);
+        rows.push([t.name, ...insts.map(inst => m.get(inst) || 0)]);
+      });
+
+    } else if (chartKey === 'topicFunderMatrix') {
+      const rowN = parseInt(document.getElementById('matrixTopicFunderRows').value) || 10;
+      const colN = parseInt(document.getElementById('matrixTopicFunderCols').value) || 10;
+      const topics = TopicRenderer.getTopicStats().sort((a,b)=>b.paperCount-a.paperCount).slice(0,rowN);
+      const funders = FundingRenderer.getFunderStats().sort((a,b)=>b.paperCount-a.paperCount).slice(0,colN).map(s => s.name);
+      rows.push(['topic', ...funders]);
+      topics.forEach(t => {
+        const m = new Map(t.funderPairs);
+        rows.push([t.name, ...funders.map(f => m.get(f) || 0)]);
+      });
+
+    } else if (chartKey === 'institutionNetworkNodes') {
+      const data = (AppState.networks && AppState.networks.institution) ? AppState.networks.institution.nodeStats : [];
+      rows.push(['institution', 'paper_count', 'total_citations', 'avg_citations', 'degree', 'weighted_degree', 'betweenness']);
+      data.forEach(n => rows.push([n.name, n.paperCount, n.totalCitations, n.avgCitations.toFixed(2), n.degree, n.weightedDegree, n.betweenness.toFixed(6)]));
+
+    } else if (chartKey === 'institutionNetworkEdges') {
+      const data = (AppState.networks && AppState.networks.institution) ? AppState.networks.institution.edges : [];
+      rows.push(['institution_a', 'institution_b', 'weight']);
+      data.forEach(e => rows.push([e.a, e.b, e.weight]));
+
+    } else if (chartKey === 'authorNetworkNodes') {
+      const data = (AppState.networks && AppState.networks.author) ? AppState.networks.author.nodeStats : [];
+      rows.push(['author', 'paper_count', 'total_citations', 'avg_citations', 'degree', 'weighted_degree', 'betweenness']);
+      data.forEach(n => rows.push([n.name, n.paperCount, n.totalCitations, n.avgCitations.toFixed(2), n.degree, n.weightedDegree, n.betweenness.toFixed(6)]));
+
+    } else if (chartKey === 'authorNetworkEdges') {
+      const data = (AppState.networks && AppState.networks.author) ? AppState.networks.author.edges : [];
+      rows.push(['author_a', 'author_b', 'weight']);
+      data.forEach(e => rows.push([e.a, e.b, e.weight]));
 
     // Citation rankings
     } else if (chartKey === 'paperCiteRank') {
@@ -4448,6 +6577,24 @@ const Importer = {
           const refs = refsRaw
             ? refsRaw.split(';').map(s => s.trim()).filter(s => s)
             : [];
+          const splitSemi = (v) => String(v || '').split(';').map(s => s.trim()).filter(s => s);
+          const funderNames = splitSemi(row.funder_names || row.funders || '');
+          const funderIds = splitSemi(row.funder_ids || '');
+          const awardIds = splitSemi(row.award_ids || '');
+          const fundingSources = splitSemi(row.funding_sources || 'CSV');
+          const funders = funderNames.map((name, i) => ({
+            name: OpenAlexAPI._stripTags(name),
+            id: funderIds[i] || '',
+            sources: fundingSources.length ? fundingSources : ['CSV'],
+            award_ids: awardIds,
+          }));
+          const awards = awardIds.map(id => ({
+            award_id: OpenAlexAPI._stripTags(id),
+            display_name: OpenAlexAPI._stripTags(id),
+            funder_name: funderNames[0] || '',
+            funder_id: funderIds[0] || '',
+            sources: fundingSources.length ? fundingSources : ['CSV'],
+          }));
           return {
             paper_id: row.paper_id || '',
             title: cleanTitle,
@@ -4462,8 +6609,25 @@ const Importer = {
             // 旧バージョンのCSVには language / title_script / referenced_works 列が無いので補完
             language: row.language || '',
             title_script: row.title_script || OpenAlexAPI._detectScript(cleanTitle),
+            primary_topic: row.primary_topic || '',
+            topics: splitSemi(row.topics || ''),
             referenced_works: refs,
             referenced_works_count: parseInt(row.referenced_works_count) || refs.length,
+            funders,
+            awards,
+            funder_names: funderNames.join('; '),
+            funder_ids: funderIds.join('; '),
+            award_ids: awardIds.join('; '),
+            funding_sources: fundingSources,
+            crossref_funders: splitSemi(row.crossref_funder_names || row.crossref_funders || ''),
+            crossref_awards: splitSemi(row.crossref_award_ids || row.crossref_awards || ''),
+            nih_projects: [],
+            nih_project_nums: splitSemi(row.nih_project_nums || ''),
+            nih_award_amounts: splitSemi(row.nih_award_amounts || ''),
+            nih_fiscal_years: splitSemi(row.nih_fiscal_years || ''),
+            nih_orgs: splitSemi(row.nih_orgs || ''),
+            nih_pis: splitSemi(row.nih_pis || ''),
+            nih_project_titles: splitSemi(row.nih_project_titles || ''),
           };
         });
 
@@ -4697,6 +6861,8 @@ const Modal = {
     const abs = paper.abstract && paper.abstract.length > 600
       ? paper.abstract.slice(0, 600) + '…'
       : (paper.abstract || '(要約なし)');
+    const topicList = Array.isArray(paper.topics) ? paper.topics : String(paper.topics || '').split(';').map(s => s.trim()).filter(Boolean);
+    const topicText = topicList.length ? topicList.join('; ') : (paper.primary_topic || '-');
 
     const summaryText = [
       paper.title || '',
@@ -4705,6 +6871,7 @@ const Modal = {
       `${paper.venue || ''} (${yr})`,
       paper.doi ? `https://doi.org/${paper.doi}` : '',
       `被引用数: ${cite}`,
+      `Topic: ${topicText}`,
     ].filter(s => s).join('\n');
 
     return `
@@ -4716,6 +6883,7 @@ const Modal = {
         <dt>OpenAlex</dt><dd>${oaLink}</dd>
         <dt>言語</dt><dd>${e(paper.language || '-')} / タイトル文字種: ${e(paper.title_script || '-')}</dd>
         <dt>引用文献数</dt><dd>${(paper.referenced_works_count != null ? paper.referenced_works_count : (paper.referenced_works || []).length)}</dd>
+        <dt>Topic</dt><dd>${e(topicText)}</dd>
       </dl>
       <h4>著者</h4>
       <div>${e(paper.authors || '-')}</div>
@@ -4750,9 +6918,7 @@ const Modal = {
 
     // Top papers by citation
     const topPapers = [...papers].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0)).slice(0, 15);
-    const paperListHtml = topPapers.length
-      ? `<ul>${topPapers.map(p => `<li>${e(p.title || p.paper_id)}${p.year ? ` (${p.year})` : ''} — 被引用 ${(p.citation_count || 0).toLocaleString()}${p.doi ? ` — <a href="https://doi.org/${e(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</li>`).join('')}${papers.length > 15 ? `<li>… 他 ${papers.length - 15} 件</li>` : ''}</ul>`
-      : '<p style="color:#5f6368;">該当論文なし</p>';
+    const paperListHtml = this.paperListHtml(topPapers, 15);
 
     // Top co-authors / collaborators (for author/institution)
     let extraSections = '';
@@ -4820,9 +6986,7 @@ const Modal = {
     const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '-';
 
     const sorted = [...sharedPapers].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
-    const listHtml = sorted.length
-      ? `<ul>${sorted.slice(0, 30).map(p => `<li>${e(p.title || p.paper_id)}${p.year ? ` (${p.year})` : ''} — 被引用 ${(p.citation_count || 0).toLocaleString()}${p.doi ? ` — <a href="https://doi.org/${e(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</li>`).join('')}${sorted.length > 30 ? `<li>… 他 ${sorted.length - 30} 件</li>` : ''}</ul>`
-      : '<p style="color:#5f6368;">該当論文なし</p>';
+    const listHtml = this.paperListHtml(sorted, 30);
 
     const summaryText = [
       `${typeA}: ${nameA}`,
@@ -4847,14 +7011,28 @@ const Modal = {
     `;
   },
 
+  paperListItem(paper) {
+    const e = this.esc;
+    const authors = String(paper.authors || '').split('; ').filter(Boolean);
+    const authorText = authors.length ? `${authors.slice(0, 4).join('; ')}${authors.length > 4 ? ' …' : ''}` : '-';
+    const insts = String(paper.institutions || '').split('; ').filter(Boolean);
+    const instText = insts.length ? `${insts.slice(0, 3).join('; ')}${insts.length > 3 ? ' …' : ''}` : '-';
+    const topics = Array.isArray(paper.topics) ? paper.topics : String(paper.topics || '').split(';').map(s => s.trim()).filter(Boolean);
+    const topicText = topics.length ? `${topics.slice(0, 2).join('; ')}${topics.length > 2 ? ' …' : ''}` : (paper.primary_topic || '-');
+    return `<li><strong>${e(paper.title || paper.paper_id)}</strong>${paper.year ? ` (${paper.year})` : ''} — 被引用 ${(paper.citation_count || 0).toLocaleString()}<br><span style="color:#5f6368;">著者: ${e(authorText)} / 所属機関: ${e(instText)} / Topic: ${e(topicText)}</span>${paper.doi ? ` — <a href="https://doi.org/${e(paper.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</li>`;
+  },
+
+  paperListHtml(papers, limit = 30) {
+    const sorted = [...papers].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
+    if (!sorted.length) return '<p style="color:#5f6368;">該当論文なし</p>';
+    return `<ul>${sorted.slice(0, limit).map(p => this.paperListItem(p)).join('')}${sorted.length > limit ? `<li>… 他 ${sorted.length - limit} 件</li>` : ''}</ul>`;
+  },
+
   // Render a list of papers (year click, etc.) as modal content
   buildPaperListContent(title, papers) {
-    const e = this.esc;
     const sorted = [...papers].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
     const totalCite = sorted.reduce((s, p) => s + (Number(p.citation_count) || 0), 0);
-    const listHtml = sorted.length
-      ? `<ul>${sorted.slice(0, 50).map(p => `<li>${e(p.title || p.paper_id)} — ${e(p.authors ? p.authors.split('; ').slice(0, 3).join('; ') + ((p.authors.split('; ').length > 3) ? ' …' : '') : '')} — 被引用 ${(p.citation_count || 0).toLocaleString()}${p.doi ? ` — <a href="https://doi.org/${e(p.doi)}" target="_blank" rel="noopener">DOI</a>` : ''}</li>`).join('')}${sorted.length > 50 ? `<li>… 他 ${sorted.length - 50} 件</li>` : ''}</ul>`
-      : '<p style="color:#5f6368;">該当論文なし</p>';
+    const listHtml = this.paperListHtml(sorted, 50);
     const summary = [
       title,
       `論文数: ${sorted.length}`,
@@ -4869,6 +7047,111 @@ const Modal = {
       ${listHtml}
       <h4>コピー用サマリ</h4>
       ${this.copyBlock(summary)}
+    `;
+  },
+
+
+  buildFunderContent(stats) {
+    const e = this.esc;
+    const sources = (stats.sourcesList || []).map(s => `<span class="funding-badge${s === 'Crossref' || s === 'NIH RePORTER' ? ' external' : ''}">${e(s)}</span>`).join(' ') || '-';
+    const topPapers = [...(stats.papers || [])].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
+    const years = topPapers.map(p => p.year).filter(Boolean);
+    const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '-';
+    const listHtml = this.paperListHtml(topPapers, 30);
+    const awards = (stats.awardsList || []).slice(0, 30);
+    const awardHtml = awards.length
+      ? `<ul>${awards.map(a => `<li>${e(a)}</li>`).join('')}${(stats.awardsList || []).length > 30 ? `<li>… 他 ${(stats.awardsList || []).length - 30} 件</li>` : ''}</ul>`
+      : '<p style="color:#5f6368;">助成番号なし</p>';
+    const summaryText = [
+      `資金源: ${stats.name}`,
+      stats.id ? `ID: ${stats.id}` : '',
+      `論文件数: ${stats.paperCount}`,
+      `助成番号数: ${stats.awardCount}`,
+      `合計被引用数: ${stats.totalCitations.toLocaleString()}`,
+      `平均被引用数: ${stats.avgCitations.toFixed(1)}`,
+      `期間: ${yearRange}`,
+      `情報源: ${(stats.sourcesList || []).join('; ')}`,
+    ].filter(Boolean).join('\n');
+    return `
+      <dl>
+        <dt>資金源</dt><dd>${e(stats.name || '-')}</dd>
+        <dt>ID</dt><dd>${stats.id ? e(stats.id) : '-'}</dd>
+        <dt>論文件数</dt><dd>${stats.paperCount.toLocaleString()}</dd>
+        <dt>助成番号数</dt><dd>${stats.awardCount.toLocaleString()}</dd>
+        <dt>合計被引用数</dt><dd>${stats.totalCitations.toLocaleString()}</dd>
+        <dt>平均被引用数</dt><dd>${stats.avgCitations.toFixed(1)}</dd>
+        <dt>期間</dt><dd>${e(yearRange)}</dd>
+        <dt>情報源</dt><dd>${sources}</dd>
+      </dl>
+      <h4>助成番号 / Award ID（最大30件）</h4>
+      ${awardHtml}
+      <h4>関連論文（被引用数順、最大30件）</h4>
+      ${listHtml}
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summaryText)}
+    `;
+  },
+
+  buildAwardContent(stats) {
+    const e = this.esc;
+    const sources = (stats.sourcesList || []).map(s => `<span class="funding-badge${s === 'Crossref' || s === 'NIH RePORTER' ? ' external' : ''}">${e(s)}</span>`).join(' ') || '-';
+    const papers = [...(stats.papers || [])].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
+    const amount = stats.amount !== '' && stats.amount != null ? `${Number(stats.amount).toLocaleString()} ${e(stats.currency || '')}` : '-';
+    const listHtml = this.paperListHtml(papers, 30);
+    const summaryText = [
+      `助成番号: ${stats.award_id}`,
+      `資金源: ${stats.funder_name || '-'}`,
+      `論文件数: ${stats.paperCount}`,
+      `合計被引用数: ${stats.totalCitations.toLocaleString()}`,
+      `平均被引用数: ${stats.avgCitations.toFixed(1)}`,
+      `金額: ${amount}`,
+      `情報源: ${(stats.sourcesList || []).join('; ')}`,
+    ].join('\n');
+    return `
+      <dl>
+        <dt>助成番号</dt><dd>${e(stats.award_id || '-')}</dd>
+        <dt>資金源</dt><dd>${e(stats.funder_name || '-')}</dd>
+        <dt>論文件数</dt><dd>${stats.paperCount.toLocaleString()}</dd>
+        <dt>合計被引用数</dt><dd>${stats.totalCitations.toLocaleString()}</dd>
+        <dt>平均被引用数</dt><dd>${stats.avgCitations.toFixed(1)}</dd>
+        <dt>金額</dt><dd>${amount}</dd>
+        <dt>期間</dt><dd>${e([stats.start_year, stats.end_year].filter(Boolean).join('–') || '-')}</dd>
+        <dt>情報源</dt><dd>${sources}</dd>
+      </dl>
+      <h4>関連論文（被引用数順、最大30件）</h4>
+      ${listHtml}
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summaryText)}
+    `;
+  },
+
+  buildFunderInstitutionContent(stats) {
+    const e = this.esc;
+    const papers = [...(stats.papers || [])].sort((a, b) => (Number(b.citation_count) || 0) - (Number(a.citation_count) || 0));
+    const years = papers.map(p => p.year).filter(Boolean);
+    const yearRange = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '-';
+    const listHtml = this.paperListHtml(papers, 30);
+    const summaryText = [
+      `資金源: ${stats.funder}`,
+      `機関: ${stats.institution}`,
+      `論文件数: ${stats.paperCount}`,
+      `合計被引用数: ${stats.totalCitations.toLocaleString()}`,
+      `平均被引用数: ${stats.avgCitations.toFixed(1)}`,
+      `期間: ${yearRange}`,
+    ].join('\n');
+    return `
+      <dl>
+        <dt>資金源</dt><dd>${e(stats.funder || '-')}</dd>
+        <dt>機関</dt><dd>${e(stats.institution || '-')}</dd>
+        <dt>論文件数</dt><dd>${stats.paperCount.toLocaleString()}</dd>
+        <dt>合計被引用数</dt><dd>${stats.totalCitations.toLocaleString()}</dd>
+        <dt>平均被引用数</dt><dd>${stats.avgCitations.toFixed(1)}</dd>
+        <dt>期間</dt><dd>${e(yearRange)}</dd>
+      </dl>
+      <h4>関連論文（被引用数順、最大30件）</h4>
+      ${listHtml}
+      <h4>コピー用サマリ</h4>
+      ${this.copyBlock(summaryText)}
     `;
   },
 
