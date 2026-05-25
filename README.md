@@ -1,11 +1,11 @@
-# OpenALEX Collector v4.0
+# OpenALEX Collector v5.0
 
-OpenALEX Collector v4.0 は、OpenAlex APIを中心に、学術論文の収集、トピック分析、資金分析、引用分析、共同研究・共著ネットワーク分析をブラウザ上で行うための単一HTMLツールです。サーバーを用意せず、`OpenALEX_Collector_v4.0.html` をブラウザで開くだけで利用できます。
+OpenALEX Collector v5.0 は、OpenAlex APIを中心に、学術論文の収集、トピック分析、資金分析、引用分析、共同研究・共著ネットワーク分析をブラウザ上で行うための単一HTMLツールです。サーバーを用意せず、`OpenALEX_Collector.html` をブラウザで開くだけで利用できます。
 
 > すべての論文は、誰かの肩である。
 
 ![Powered by OpenAlex API](https://img.shields.io/badge/Powered%20by-OpenAlex%20API-1a73e8)
-![Version](https://img.shields.io/badge/version-v4.0-1a73e8)
+![Version](https://img.shields.io/badge/version-v5.0-1a73e8)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
@@ -13,8 +13,8 @@ OpenALEX Collector v4.0 は、OpenAlex APIを中心に、学術論文の収集�
 ## 目次
 
 - [概要](#概要)
-- [v4.0の設計方針](#v40の設計方針)
-- [v4.0の主な機能](#v40の主な機能)
+- [v5.0の設計方針](#v50の設計方針)
+- [v5.0の主な機能](#v50の主な機能)
 - [クイックスタート](#クイックスタート)
 - [使い方の全体フロー](#使い方の全体フロー)
 - [モジュール詳細](#モジュール詳細)
@@ -43,7 +43,7 @@ OpenALEX Collector v4.0 は、OpenAlex APIを中心に、学術論文の収集�
 
 ## 概要
 
-**OpenALEX Collector v4.0** は、OpenAlexの論文メタデータを起点に、研究領域の構造を多面的に把握するための分析ツールです。
+**OpenALEX Collector v5.0** は、OpenAlexの論文メタデータを起点に、研究領域の構造を多面的に把握するための分析ツールです。
 
 主に次の問いに答えることを目的にしています。
 
@@ -54,17 +54,17 @@ OpenALEX Collector v4.0 は、OpenAlex APIを中心に、学術論文の収集�
 - どの資金源・助成番号が、どのTopicや機関に関係しているのか。
 - どの文献が基礎文献・共通基盤・内部引用ハブになっているのか。
 
-v4.0では、v3系の検索・引用・共同研究・引用文献ネットワークに加えて、**Funding Intelligence**、**Topic Intelligence**、**ネットワーク図（機関・著者）**、**各種マトリクス分析**を統合しました。
+v5.0では、v4.0の検索・引用・共同研究・資金・Topic・ネットワーク分析に加えて、**コマンドライン検索式**を実装しました。検索条件を `#01`、`#02` のような番号付きコマンド行として定義し、最後に `T=(#01 AND #02) OR #03` のような結合論理式で母集合を作れます。OpenAlexで広めの候補集合を取得し、Collector内部でタイトル・要旨に対するBoolean、ワイルドカード、nearN / adjN近傍判定を行います。
 
 ---
 
-## v4.0の設計方針
+## v5.0の設計方針
 
 | 方針 | 内容 |
 |---|---|
 | OpenAlex中心 | 論文母集団形成、Topic、引用文献、機関、著者、資金情報はOpenAlexを主軸にします。 |
-| Semantic Scholar不使用 | Semantic Scholarはv4.0では使用しません。大量取得制約を避け、OpenAlex中心で設計しています。 |
-| APIキー欄なし | v4.0ではOpenAlex API key入力欄は実装していません。 |
+| Semantic Scholar不使用 | Semantic Scholarはv5.0では使用しません。大量取得制約を避け、OpenAlex中心で設計しています。 |
+| APIキー欄なし | v5.0ではOpenAlex API key入力欄は実装していません。 |
 | 登録不要APIのみ | 外部補完はCrossref REST APIとNIH RePORTER APIに限定しています。 |
 | 単一HTML | サーバー不要。ブラウザだけで動作します。 |
 | 日本語GUI | GUI文言は日本語で統一し、分析意図が分かる説明を各カードに配置しています。 |
@@ -72,11 +72,12 @@ v4.0では、v3系の検索・引用・共同研究・引用文献ネットワ�
 
 ---
 
-## v4.0の主な機能
+## v5.0の主な機能
 
 | 分類 | 機能 | 内容 |
 |---|---|---|
 | 論文収集 | OpenAlex検索 | キーワード、所属機関、著者、年範囲、論文種別、検索範囲、OA、要約有無、英語のみ等で検索 |
+| 論文収集 | コマンドライン検索式 | `#01` 形式の番号付きコマンド行と `T=(#01 AND #02) OR #03` の結合論理式に対応。各行で `TI` / `AB` / `TA` / `TX` / `FT`、nearN / adjN、Boolean、ワイルドカードを使用可能 |
 | 基本可視化 | 件数推移 | 年別件数、CAGR、トレンド、著者比較、著者・機関ランキング |
 | 引用分析 | 引用ランキング | 被引用論文、著者、機関、ジャーナル、件数×平均被引用数、h-index |
 | 共同研究分析 | 機関ペア分析 | 共同研究ペア、エゴネットワーク、共同研究の広さ、ペア時系列、共同研究マトリクス |
@@ -93,10 +94,10 @@ v4.0では、v3系の検索・引用・共同研究・引用文献ネットワ�
 
 ```bash
 # 1. HTMLファイルをブラウザで開く
-open OpenALEX_Collector_v4.0.html
+open OpenALEX_Collector.html
 
-# 2. 検索キーワードを入力
-# 例: "lithium-ion battery"
+# 2. コマンド行と結合論理式Tを入力
+# 例: TA=((sulfide OR oxide OR polymer) near5 electrolyte)
 
 # 3. 「検索を実行」をクリック
 
@@ -137,14 +138,15 @@ OpenAlex APIに対する検索条件を設定します。キーワードを空�
 
 | 入力項目 | 内容 | 例 |
 |---|---|---|
-| 検索キーワード | スペース区切りでAND、引用符でフレーズ、複数行でOR | `"solid electrolyte"` |
+| コマンド行 | 1行1条件。各行に `TI=` / `AB=` / `TA=` / `TX=` / `FT=` を明示 | `#01  TI=(solid adj3 electrolyte)` |
+| 結合論理式 T | コマンド行を `#01` / `#02` で参照し、AND / OR / NOTで結合 | `T=(#01 AND #02) OR #03` |
 | 所属機関フィルタ | セミコロン区切りで複数機関をOR指定 | `Meijo University; MIT` |
 | 著者フィルタ | セミコロン区切りで複数著者をAND指定 | `Akira Yoshino; John Goodenough` |
 | 年範囲 | 開始年・終了年 | `2020`〜`2026` |
 | 取得上限 | クエリあたり、または年あたりの取得件数 | `200`, `10000` |
 | 年別取得 | 年単位に分けて取得し、10,000件超の領域に対応 | ON/OFF |
 
-詳細フィルタでは、論文種別、検索範囲、ソート順、最小引用数、オープンアクセスのみ、要約ありのみ、英語論文のみを指定できます。
+詳細フィルタでは、論文種別、ソート順、最小引用数、オープンアクセスのみ、要約ありのみ、英語論文のみを指定できます。コマンドライン検索式モードでは、各コマンド行で検索範囲を明示するため、詳細フィルタの「検索範囲」はグレーアウトされ、内部判定には使いません。標準OpenAlex検索モードに切り替えた場合のみ、詳細フィルタの「検索範囲」が入力全体に適用されます。標準OpenAlex検索モードでは、Collector内部近傍フィルタ用の「近傍グループ内の最大幅（語）」と「OR分割上限」は非表示になります。
 
 ### 2. データテーブル
 
@@ -156,7 +158,7 @@ OpenAlex APIに対する検索条件を設定します。キーワードを空�
 | ソート | 各カラムヘッダをクリックして昇順・降順を切り替え |
 | ページネーション | 50件単位で表示 |
 | DOIリンク | DOIがある論文は `doi.org` へリンク |
-| CSV出力 | v4.0拡張カラムを含む論文CSVを出力 |
+| CSV出力 | v5.0拡張カラムを含む論文CSVを出力 |
 
 ### 3. 件数グラフ
 
@@ -213,7 +215,7 @@ OpenAlexに含まれる `grants` / `funders` / `awards` 相当の情報を中心
 
 #### 資金源×機関マトリクス
 
-v4.0では、資金源×機関を棒グラフだけでなくマトリクスでも見られます。
+v5.0では、資金源×機関を棒グラフだけでなくマトリクスでも見られます。
 
 - 行：資金源
 - 列：所属機関
@@ -231,7 +233,7 @@ v4.0では、資金源×機関を棒グラフだけでなくマトリクスで�
 | Crossref REST API | DOIをキーにfunder / award metadataを補完 |
 | NIH RePORTER API | NIH型助成番号からプロジェクト番号、年度、金額、PI、機関、課題名を補完 |
 
-KAKEN / JST / AMEDのAPI直結は、登録不要APIのみというv4.0の条件に合わせ、標準機能には入れていません。
+KAKEN / JST / AMEDのAPI直結は、登録不要APIのみというv5.0の条件に合わせ、標準機能には入れていません。
 
 ### 7. Topic分析（Topic Intelligence）
 
@@ -252,7 +254,7 @@ OpenAlexの `primary_topic` / `topics` を用いて、研究テーマの構造�
 
 ### 8. ネットワーク図（共同研究・共著）
 
-vis-networkを使って、機関ネットワークと著者ネットワークを描画します。v4.0では、単なるランキングではなく、ネットワーク構造を視覚的に探索できます。
+vis-networkを使って、機関ネットワークと著者ネットワークを描画します。v5.0では、単なるランキングではなく、ネットワーク構造を視覚的に探索できます。
 
 | タブ | 内容 |
 |---|---|
@@ -316,7 +318,7 @@ vis-networkを使って、機関ネットワークと著者ネットワークを
 
 | 機能 | 内容 |
 |---|---|
-| 論文CSV出力 | 取得した論文データをv4.0拡張カラムつきで出力 |
+| 論文CSV出力 | 取得した論文データをv5.0拡張カラムつきで出力 |
 | グラフCSV出力 | 表示Top-Nだけでなく、原則として全件をCSV出力 |
 | マトリクスCSV出力 | Topic×年、Topic×機関、Topic×資金源、資金源×機関などを表形式で出力 |
 | ネットワークCSV出力 | 機関・著者ネットワークのノードCSV、エッジCSVを出力 |
@@ -374,7 +376,7 @@ Score =
 
 ## CSV出力カラム
 
-論文CSVには、v4.0で以下のカラムを出力します。
+論文CSVには、v5.0で以下のカラムを出力します。
 
 ```text
 paper_id
@@ -393,6 +395,13 @@ primary_topic
 topics
 referenced_works_count
 referenced_works
+collector_query
+collector_candidate_query
+collector_match
+collector_match_field
+collector_match_operator
+collector_match_distance
+collector_match_snippet
 funder_names
 funder_ids
 award_ids
@@ -414,6 +423,13 @@ nih_project_titles
 | `primary_topic` | OpenAlex上の代表Topic |
 | `topics` | OpenAlex上の関連Topic群 |
 | `referenced_works` | その論文が引用しているOpenAlex Work ID |
+| `collector_query` | 実行したCollector拡張構文 |
+| `collector_candidate_query` | OpenAlexに投げた候補取得用クエリ |
+| `collector_match` | Collector内部判定の結果。`true` または `candidate_only` |
+| `collector_match_field` | 一致したフィールド。タイトル、要旨など |
+| `collector_match_operator` | 一致した演算子。`near5`、`adj3`、`AND`など |
+| `collector_match_distance` | near/adj一致時の語間距離 |
+| `collector_match_snippet` | 一致箇所の前後文脈 |
 | `funder_names` | OpenAlex / Crossref / NIH RePORTER由来の資金提供機関名 |
 | `award_ids` | OpenAlex / Crossref / NIH RePORTER由来の助成番号・Award ID |
 | `funding_sources` | 資金情報の由来。OpenAlex、Crossref、NIH RePORTER、CSVなど |
@@ -423,30 +439,95 @@ nih_project_titles
 
 ## 検索構文
 
+### 検索モード
+
+| モード | 内容 |
+|---|---|
+| コマンドライン検索式 | `#01`、`#02` のような番号付きコマンド行を定義し、最後に `T=(#01 AND #02) OR #03` の形式で結合します。OpenAlexで候補集合を取得し、Collector内部でTI/AB/TAを厳密判定します。 |
+| 標準OpenAlex検索 | 入力した検索語をOpenAlexへ直接渡します。 |
+
+### コマンドライン検索式の基本形
+
 ```text
-AND検索:
-  lithium battery
-  → lithium と battery の両方を含む論文を検索
-
-フレーズ検索:
-  "solid electrolyte"
-  → solid electrolyte という語句を検索
-
-OR検索:
-  "lithium-ion battery"
-  "lithium ion battery"
-  → 各行を別クエリとして検索し、重複除去して統合
-
-所属機関フィルタ:
-  Meijo University; MIT
-  → セミコロン区切りでOR指定
-
-著者フィルタ:
-  Akira Yoshino; John Goodenough
-  → セミコロン区切りでAND指定。両者を含む論文を抽出
+#01  TI=(solid adj3 electrolyte)
+#02  AB=((degradation AND capacity) near8 (mechanism OR fade*))
+#03  TA=(review)
+T=(#01 AND #02) AND NOT #03
 ```
 
----
+各コマンド行は1つの検索条件です。行番号はUIで自動採番されます。`#1` と `#01` は同じ行として扱います。複数行を使う場合は、結合論理式 `T` を入力してください。1行だけ入力し、T式を空欄にした場合は自動的に `T=(#01)` として扱います。
+
+### フィールド
+
+| フィールド | 対象 | 内部厳密判定 |
+|---|---|---:|
+| `TI` | タイトル | 対応 |
+| `AB` | 要旨 | 対応 |
+| `TA` | タイトル＋要旨 | 対応。near/adjはタイトルと要旨をまたがず、それぞれの中で判定 |
+| `TX` | OpenAlex総合検索対象 | 候補取得中心 |
+| `FT` | OpenAlex fulltext索引 | 候補取得中心 |
+
+コマンドライン検索式モードでは、各コマンド行に `TI=` / `AB=` / `TA=` / `TX=` / `FT=` のいずれかを明示してください。フィールド未指定行は構文エラーです。
+
+### 詳細フィルタ「検索範囲」の扱い
+
+コマンドライン検索式モードでは、詳細フィルタの「検索範囲」はグレーアウトされ、クリックできません。検索範囲は各コマンド行の `TI=` / `AB=` / `TA=` / `TX=` / `FT=` で指定します。
+
+| 状態 | 詳細フィルタ「検索範囲」の扱い |
+|---|---|
+| コマンドライン検索式モード | 無効。各コマンド行のフィールド指定を使用 |
+| 標準OpenAlex検索モード | 有効。入力した検索語全体へ適用。「近傍グループ内の最大幅（語）」と「OR分割上限」は非表示 |
+
+OpenAlex候補形成では、式中フィールドが1種類ならそのスコープを使います。`TI` / `AB` / `TA` が複数混在する場合は `title_and_abstract` 相当で候補形成し、その後Collector内部で各フィールド条件を厳密判定します。`TX` / `FT` が混在する場合は、より広めの候補形成を行います。
+
+### Boolean
+
+```text
+A AND B
+A OR B
+NOT A
+```
+
+演算子は大文字推奨です。小文字でも解釈します。
+
+### 近傍検索
+
+```text
+A near5 B
+A adj3 B
+```
+
+| 演算子 | 意味 |
+|---|---|
+| `nearN` | 順不同でN語以内 |
+| `adjN` | 左の語句が右の語句より前にあり、N語以内 |
+
+左右には、単語、フレーズ、ワイルドカード、Booleanグループを指定できます。
+
+```text
+TA=((sulfide OR oxide OR polymer) near5 electrolyte)
+AB=((degradation AND capacity) near8 (mechanism OR fade*))
+```
+
+### フレーズ・ワイルドカード
+
+```text
+"solid electrolyte"
+cathod*
+wom?n
+```
+
+| 記法 | 意味 |
+|---|---|
+| `"..."` | 連続フレーズ |
+| `*` | 0文字以上に一致 |
+| `?` | 1文字に一致 |
+
+語頭ワイルドカード、たとえば `*electrolyte` は使えません。引用符フレーズ内のワイルドカードは未対応です。
+
+### OpenAlex候補取得と内部フィルタ
+
+コマンドライン検索式は、そのままOpenAlexへ投げません。まず近傍条件を広めのBoolean候補式に変換してOpenAlexから候補を取得し、その後Collector内部でTI/AB/TAを判定します。UIの「構文チェック / OpenAlex候補式プレビュー」では、コマンド行、T式、展開後Collector式、OpenAlex候補検索式、候補取得scopeを確認できます。
 
 ## ユースケース別ガイド
 
@@ -499,11 +580,11 @@ OR検索:
 | ネットワーク描画 | vis-network v9 |
 | ヒートマップ | HTMLテーブル |
 | API | OpenAlex REST API、Crossref REST API、NIH RePORTER API |
-| 外部API登録 | v4.0では登録不要APIのみ利用 |
+| 外部API登録 | v5.0では登録不要APIのみ利用 |
 | OpenAlex API key欄 | 未実装 |
 | CSV | UTF-8 BOM付き、Excelで開きやすい形式 |
 | リトライ | 429等に対する指数バックオフを実装 |
-| CSV再読み込み | v4.0拡張CSVおよび旧版CSVの読み込みに対応 |
+| CSV再読み込み | v5.0拡張CSVおよび旧版CSVの読み込みに対応 |
 
 ### JavaScriptモジュール
 
@@ -511,6 +592,7 @@ OR検索:
 |---|---|
 | `AppState` | アプリ全体の状態管理 |
 | `OpenAlexAPI` | OpenAlex APIクライアント、検索・著者/機関解決・メタデータ整形 |
+| `CollectorQuery` | Collector拡張構文の解析、OpenAlex候補式生成、TI/AB/TA内部フィルタ、スニペット生成 |
 | `SearchController` | 検索実行、進捗表示、結果描画 |
 | `TableRenderer` | データテーブル、ソート、ページネーション |
 | `ChartRenderer` | 件数、引用、共同研究、引用ネットワークの描画 |
@@ -531,7 +613,7 @@ OR検索:
 - 資金分析はOpenAlexの資金情報を主軸にします。資金情報が空欄でも、実際に資金提供が存在しないことを意味するとは限りません。
 - Crossref補完はDOI単位で順次取得します。大量一括取得には向きません。
 - NIH RePORTER補完はNIH型助成番号が見つかった場合に有効です。
-- KAKEN / JST / AMEDのAPI直結はv4.0では標準搭載していません。
+- KAKEN / JST / AMEDのAPI直結はv5.0では標準搭載していません。
 - 新興Topicスコアは探索用の相対指標です。分野横断の絶対比較には使わないでください。
 - ネットワーク図の媒介中心性は、現在の検索集合・フィルタ条件内で計算されます。
 - h-indexは現在の検索集合内で計算される簡易指標です。
@@ -545,8 +627,9 @@ OR検索:
 
 | 症状 | 主な原因 | 対応 |
 |---|---|---|
-| 検索結果が少ない | 要約ありのみ、英語のみ、最小引用数などで絞り込み過ぎ | 詳細フィルタを緩める |
-| Topic分析にデータが出ない | OpenAlex側にTopic情報がない、またはCSVにTopic列がない | 新規検索するか、v4.0 CSVを使用 |
+| 検索結果が少ない | 要約ありのみ、英語のみ、最小引用数、Collector内部近傍フィルタなどで絞り込み過ぎ | 詳細フィルタを緩める。コマンドライン検索式モードではnearNの距離や近傍グループ最大幅を調整する |
+| Collector構文エラーが出る | 括弧・引用符の閉じ忘れ、語頭ワイルドカード、引用符内ワイルドカード | 「構文チェック / OpenAlex候補式プレビュー」でエラー箇所を確認する |
+| Topic分析にデータが出ない | OpenAlex側にTopic情報がない、またはCSVにTopic列がない | 新規検索するか、v5.0 CSVを使用 |
 | 資金分析にデータが出ない | 論文に資金情報が付与されていない | Crossref補完を試す。NIH型番号があればNIH補完も実行 |
 | ネットワーク図が空になる | 最小エッジ重み、最小論文数、Topic/資金源フィルタが厳しすぎる | 閾値を下げ、フィルタを空欄にする |
 | マトリクスが見づらい | 対象行・列が多すぎる | 対象Topic数、資金源数、機関数を小さくする |

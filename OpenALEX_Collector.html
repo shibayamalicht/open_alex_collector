@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenALEX Collector v4.0</title>
+<title>OpenALEX Collector v5.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a73e8'/%3E%3Cstop offset='1' stop-color='%230d47a1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='12' fill='url(%23g)'/%3E%3Crect x='10' y='22' width='28' height='36' rx='2' fill='%23bbdefb' opacity='.6'/%3E%3Crect x='15' y='17' width='28' height='36' rx='2' fill='%23e3f2fd' opacity='.85'/%3E%3Crect x='20' y='12' width='28' height='36' rx='2' fill='%23ffffff'/%3E%3Crect x='24' y='18' width='16' height='2.5' rx='1' fill='%231565c0'/%3E%3Crect x='24' y='25' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='29' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='33' width='16' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='37' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='41' width='14' height='1.5' fill='%235f6368'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/vis-network@9/standalone/umd/vis-network.min.js"></script>
@@ -634,6 +634,77 @@ td a:hover { text-decoration: underline; }
   padding: 1px 5px;
   border-radius: 4px;
 }
+
+
+/* --- Collector Query DSL v5.0 --- */
+.query-preview-box {
+  margin-top: 10px;
+  padding: 12px 14px;
+  border: 1px solid rgba(26,115,232,0.22);
+  background: #f8fbff;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+.query-preview-box pre {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+}
+.syntax-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 10px 0;
+}
+.syntax-card {
+  border: 1px solid var(--border-light);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+.syntax-card h4 {
+  font-size: 13px;
+  color: var(--primary-dark);
+  margin: 0 0 6px;
+}
+.syntax-card code, .query-example code {
+  background: rgba(26,115,232,0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.query-example {
+  margin: 8px 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--primary);
+  background: #f8fbff;
+  font-size: 12px;
+}
+.match-cell {
+  max-width: 280px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.match-cell .match-meta {
+  display: block;
+  color: var(--primary-dark);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+mark.query-hit {
+  background: #fff2a8;
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+.metric-card.collector-metric {
+  border-color: rgba(26,115,232,0.24);
+  background: #f8fbff;
+}
 .matrix-tab-note {
   font-size: 12px;
   color: var(--text-secondary);
@@ -832,13 +903,93 @@ td a:hover { text-decoration: underline; }
 .toast-success { background: var(--success); color: #fff; }
 .toast-error { background: var(--error); color: #fff; }
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+
+/* --- Command-line query builder v5.0 --- */
+.command-panel {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 14px;
+  background: #fbfdff;
+  margin-bottom: 12px;
+}
+.command-editor-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.command-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.command-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+.command-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 700;
+  color: var(--primary-dark);
+  background: var(--primary-light);
+  border: 1px solid rgba(26,115,232,0.18);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  text-align: center;
+}
+.command-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.command-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.command-logic-input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.scope-lock-note {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--warning-bg);
+  color: #7a4b00;
+  border: 1px solid rgba(227,116,0,0.20);
+  font-size: 12px;
+}
+.scope-disabled label {
+  color: var(--text-tertiary);
+}
+.scope-disabled select,
+select:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+@media (max-width: 720px) {
+  .command-row {
+    grid-template-columns: 56px 1fr;
+  }
+  .command-row .command-remove {
+    grid-column: 2 / 3;
+    justify-self: flex-start;
+  }
+}
+
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="app-header">
-  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v4.0</span></h1>
+  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v5.0</span></h1>
   <div class="tagline" style="font-size:15px;font-style:italic;opacity:0.95;margin-top:6px;letter-spacing:0.5px;">— すべての論文は、誰かの肩である —</div>
   <div class="subtitle" style="margin-top:6px;">OpenALEX APIを活用した学術論文・資金情報分析ツール</div>
   <div class="badge">Powered by OpenAlex API</div>
@@ -854,17 +1005,131 @@ td a:hover { text-decoration: underline; }
     <div class="card-title"><span class="icon">Q</span> 論文検索</div>
 
     <div class="alert alert-info">
-      <strong>検索構文:</strong>
+      <strong>コマンドライン検索式:</strong>
       <span>
-        スペース区切り = AND検索 / 引用符 = フレーズ一致 / 複数行 = OR検索（各クエリを個別検索し重複除去）
+        <strong>コマンドライン検索式</strong>では、検索条件を <code>#01</code> / <code>#02</code> のような番号付きコマンド行として入力し、最後に <code>T=(#01 AND #02) OR #03</code> の形で結合します。
+        <br>各コマンド行には <code>TI=</code> / <code>AB=</code> / <code>TA=</code> / <code>TX=</code> / <code>FT=</code> のいずれかを明示します。
         <br>キーワードを空欄にして、<strong>所属機関フィルタや著者フィルタだけでも検索可能</strong>です。
       </span>
     </div>
 
-    <div class="form-group">
-      <label for="searchQuery">検索キーワード（1行1クエリ、複数行でOR検索）</label>
-      <textarea id="searchQuery" placeholder='"lithium-ion battery"&#10;"lithium ion battery"'></textarea>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="searchMode">検索モード</label>
+        <select id="searchMode">
+          <option value="command" selected>コマンドライン検索式</option>
+          <option value="standard">標準OpenAlex検索モード</option>
+        </select>
+        <div class="form-hint">コマンドライン検索式モードでは、各行のフィールド指定とT式で検索範囲・論理式を制御します。標準モードではOpenAlexへ検索語を直接渡します。</div>
+      </div>
+      <div class="form-group" id="collectorGroupWidthGroup">
+        <label for="collectorGroupWidth">近傍グループ内の最大幅（語）</label>
+        <input type="number" id="collectorGroupWidth" min="2" max="200" value="30" step="1">
+        <div class="form-hint"><code>(A AND B) near5 C</code> の A/B グループが広がりすぎる偽陽性を抑制します。</div>
+      </div>
+      <div class="form-group" id="collectorMaxCandidateQueriesGroup">
+        <label for="collectorMaxCandidateQueries">OR分割上限</label>
+        <input type="number" id="collectorMaxCandidateQueries" min="1" max="100" value="32" step="1">
+        <div class="form-hint">OR式をOpenAlex候補検索へ自動分割する最大クエリ数。超過時はBoolean式1本に圧縮します。</div>
+      </div>
     </div>
+
+    <div id="commandSearchPanel" class="command-panel">
+      <div class="command-editor-title">
+        <span>コマンド定義（1行1条件）</span>
+        <span class="form-hint">行番号は自動採番されます。</span>
+      </div>
+      <div id="collectorCommandRows" class="command-lines">
+        <div class="command-row" data-command-index="1">
+          <div class="command-label">#01</div>
+          <input type="text" class="command-input" data-command-id="1" placeholder="TI=(solid adj3 electrolyte)">
+          <button type="button" class="btn btn-secondary btn-sm command-remove" onclick="CollectorQuery.removeCommandRow(this)">削除</button>
+        </div>
+        <div class="command-row" data-command-index="2">
+          <div class="command-label">#02</div>
+          <input type="text" class="command-input" data-command-id="2" placeholder="AB=((degradation AND capacity) near8 (mechanism OR fade*))">
+          <button type="button" class="btn btn-secondary btn-sm command-remove" onclick="CollectorQuery.removeCommandRow(this)">削除</button>
+        </div>
+        <div class="command-row" data-command-index="3">
+          <div class="command-label">#03</div>
+          <input type="text" class="command-input" data-command-id="3" placeholder="TA=(review)">
+          <button type="button" class="btn btn-secondary btn-sm command-remove" onclick="CollectorQuery.removeCommandRow(this)">削除</button>
+        </div>
+      </div>
+      <div class="command-actions">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="CollectorQuery.addCommandRow()">行を追加</button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="CollectorQuery.clearEmptyCommandRows()">空行を削除</button>
+      </div>
+      <div class="form-group" style="margin-top:12px;">
+        <label for="commandLogicExpr">結合論理式 T</label>
+        <input type="text" id="commandLogicExpr" class="command-logic-input" placeholder="T=(#01 AND #02) OR #03">
+        <div class="form-hint"><code>#1</code> と <code>#01</code> は同じ行として扱います。1行だけ入力してT式が空欄の場合は、自動的に <code>T=(#01)</code> として扱います。</div>
+      </div>
+      <div class="scope-lock-note">コマンドラインモードでは、詳細フィルタの「検索範囲」はグレーアウトされ、クリックできません。検索範囲は各行の <code>TI=</code> / <code>AB=</code> / <code>TA=</code> / <code>TX=</code> / <code>FT=</code> で指定してください。</div>
+    </div>
+
+    <div id="standardSearchPanel" class="form-group hidden">
+      <label for="searchQuery">検索キーワード（標準OpenAlex検索。1行1クエリ、複数行でOR検索）</label>
+      <textarea id="searchQuery" placeholder='"lithium-ion battery"&#10;"lithium ion battery"'></textarea>
+      <div class="form-hint">標準モードでは、入力語をOpenAlexへ直接渡します。詳細フィルタの「検索範囲」が有効です。</div>
+    </div>
+
+    <div style="display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap;">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="CollectorQuery.previewFromUI()">構文チェック / OpenAlex候補式プレビュー</button>
+      <span id="querySyntaxStatus" class="form-hint"></span>
+    </div>
+    <div id="queryPreview" class="query-preview-box hidden"></div>
+
+    <details>
+      <summary>コマンドライン検索式の詳細ルール</summary>
+      <div class="details-content">
+        <div class="syntax-grid">
+          <div class="syntax-card">
+            <h4>コマンド行</h4>
+            <div><code>#01</code>、<code>#02</code> のように自動採番されます。</div>
+            <div>各行には1つの検索条件を入力します。</div>
+            <div>各行には <code>TI=</code> / <code>AB=</code> / <code>TA=</code> / <code>TX=</code> / <code>FT=</code> のいずれかを明示してください。</div>
+          </div>
+          <div class="syntax-card">
+            <h4>結合論理式 T</h4>
+            <div><code>T=(#01 AND #02) OR #03</code></div>
+            <div><code>#1</code> と <code>#01</code> は同じ行です。</div>
+            <div>複数行を使う場合はT式を入力してください。</div>
+          </div>
+          <div class="syntax-card">
+            <h4>フィールド</h4>
+            <div><code>TI=(...)</code> タイトル</div>
+            <div><code>AB=(...)</code> 要旨</div>
+            <div><code>TA=(...)</code> タイトル＋要旨</div>
+            <div><code>TX=(...)</code> OpenAlex総合検索対象（候補取得中心）</div>
+            <div><code>FT=(...)</code> OpenAlex fulltext索引（候補取得中心）</div>
+          </div>
+          <div class="syntax-card">
+            <h4>検索範囲</h4>
+            <div>コマンドラインモードでは詳細フィルタの「検索範囲」を無効化します。</div>
+            <div>範囲は各行の <code>TI=</code> / <code>AB=</code> / <code>TA=</code> 等で指定します。</div>
+            <div>フィールド未指定行は構文エラーです。</div>
+          </div>
+          <div class="syntax-card">
+            <h4>Boolean</h4>
+            <div><code>A AND B</code> 両方を含む</div>
+            <div><code>A OR B</code> どちらかを含む</div>
+            <div><code>NOT A</code> 除外</div>
+          </div>
+          <div class="syntax-card">
+            <h4>近傍・ワイルドカード</h4>
+            <div><code>A near5 B</code> 順不同で5語以内</div>
+            <div><code>A adj3 B</code> AがBより前、3語以内</div>
+            <div><code>cathod*</code> / <code>wom?n</code></div>
+          </div>
+        </div>
+        <div class="query-example"><strong>例:</strong><br><code>#01&nbsp;&nbsp;TI=(solid adj3 electrolyte)</code><br><code>#02&nbsp;&nbsp;AB=((degradation AND capacity) near8 (mechanism OR fade*))</code><br><code>#03&nbsp;&nbsp;TA=(review)</code><br><code>T=(#01 AND #02) AND NOT #03</code></div>
+        <div class="alert alert-warning" style="margin-top:12px;">
+          <strong>注意:</strong>
+          <span>厳密な内部近傍判定は <code>TI</code> / <code>AB</code> / <code>TA</code> が対象です。<code>TX</code> / <code>FT</code> はOpenAlex索引で候補取得できますが、本文全文がCollector内部に無い場合、near/adjの厳密検証とスニペット表示は行いません。<code>TA</code> のnear/adjはタイトルと要旨をまたがず、それぞれの中で判定します。</span>
+        </div>
+      </div>
+    </details>
 
     <div class="form-group">
       <label for="institutionFilter">所属機関フィルタ（機関名を入力、キーワードとAND検索）</label>
@@ -928,15 +1193,16 @@ td a:hover { text-decoration: underline; }
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="searchScope">検索範囲</label>
-            <select id="searchScope">
+            <label for="searchScope">検索範囲（標準OpenAlex検索時のみ）</label>
+            <select id="searchScope" disabled>
               <option value="all">全文（タイトル＋要約＋fulltext）</option>
               <option value="title_and_abstract">タイトル＋要約のみ</option>
               <option value="title">タイトルのみ</option>
               <option value="abstract">要約のみ</option>
               <option value="fulltext">fulltext のみ</option>
             </select>
-            <div class="form-hint">「全文」はOpenAlexが索引化したfulltext（OA論文等）も含むため、タイトル/要約に無い語句でもヒットすることがあります。ノイズを抑えるには「タイトル＋要約のみ」を推奨。</div>
+            <div class="form-hint">標準OpenAlex検索でのみ使用します。コマンドライン検索式モードではクリックできないように無効化されます。コマンドライン検索式の検索範囲は各行のTI/AB/TA/TX/FT指定で決まります。</div>
+            <div id="searchScopeLockNote" class="scope-lock-note">コマンドライン検索式モード中: 検索範囲は各コマンド行の <code>TI=</code> / <code>AB=</code> / <code>TA=</code> / <code>TX=</code> / <code>FT=</code> で指定します。</div>
           </div>
           <div class="form-group">
             <label for="sortOrder">ソート順</label>
@@ -999,6 +1265,18 @@ td a:hover { text-decoration: underline; }
         <div class="metric-value" id="metricTotal">0</div>
         <div class="metric-label">取得論文数</div>
       </div>
+      <div class="metric-card collector-metric hidden" id="metricCandidateCard">
+        <div class="metric-value" id="metricCandidate">0</div>
+        <div class="metric-label">OpenAlex候補</div>
+      </div>
+      <div class="metric-card collector-metric hidden" id="metricCollectorMatchedCard">
+        <div class="metric-value" id="metricCollectorMatched">0</div>
+        <div class="metric-label">内部一致</div>
+      </div>
+      <div class="metric-card collector-metric hidden" id="metricCollectorDroppedCard">
+        <div class="metric-value" id="metricCollectorDropped">0</div>
+        <div class="metric-label">内部除外</div>
+      </div>
       <div class="metric-card">
         <div class="metric-value" id="metricAbstract">0</div>
         <div class="metric-label">要約あり</div>
@@ -1030,6 +1308,7 @@ td a:hover { text-decoration: underline; }
               <th onclick="TableRenderer.sortBy('institutions')">所属機関 <span class="sort-icon">&#9650;&#9660;</span></th>
               <th onclick="TableRenderer.sortBy('venue')">ジャーナル <span class="sort-icon">&#9650;&#9660;</span></th>
               <th onclick="TableRenderer.sortBy('citation_count')" style="width:70px">引用数 <span class="sort-icon">&#9650;&#9660;</span></th>
+              <th style="width:260px">一致箇所</th>
               <th style="width:60px">DOI</th>
             </tr>
           </thead>
@@ -1961,6 +2240,8 @@ const AppState = {
   abortController: null,
   isSearching: false,
   networks: {},
+  collectorPlan: null,
+  collectorStats: null,
 };
 
 // OpenAlex API Module
@@ -2492,10 +2773,1223 @@ const OpenAlexAPI = {
   }
 };
 
+// Collector Query DSL v5.0
+const CollectorQuery = {
+  FIELD_LABELS: { TI: 'タイトル', AB: '要旨', TA: 'タイトル＋要旨', TX: 'OpenAlex総合', FT: 'fulltext索引' },
+  SEARCH_SCOPE_LABELS: {
+    all: '全文（タイトル＋要旨＋fulltext）',
+    title_and_abstract: 'タイトル＋要旨',
+    title: 'タイトル',
+    abstract: '要旨',
+    fulltext: 'fulltext',
+  },
+  STRICT_FIELDS: new Set(['TI', 'AB', 'TA']),
+  CANDIDATE_ONLY_FIELDS: new Set(['TX', 'FT']),
+
+  normalizeInput(text) {
+    return String(text || '')
+      .normalize('NFKC')
+      .replace(/[“”]/g, '"')
+      .replace(/[‘’]/g, "'")
+      .replace(/＝/g, '=')
+      .replace(/（/g, '(')
+      .replace(/）/g, ')')
+      .trim();
+  },
+
+  defaultFieldFromScope(scope) {
+    const map = {
+      title: 'TI',
+      abstract: 'AB',
+      title_and_abstract: 'TA',
+      all: 'TX',
+      fulltext: 'FT',
+    };
+    return map[scope] || 'TX';
+  },
+
+  escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  },
+
+  scopeLabel(scope) {
+    const map = {
+      all: '全文（OpenAlex top-level search）',
+      title_and_abstract: 'タイトル＋要旨',
+      title: 'タイトル',
+      abstract: '要旨',
+      fulltext: 'fulltext索引',
+    };
+    return map[scope] || scope || '全文';
+  },
+
+  scopeRuleText(plan) {
+    const defaultLabel = this.FIELD_LABELS[plan.defaultField] || plan.defaultField || 'OpenAlex総合';
+    const candidateLabel = this.scopeLabel(plan.candidateScope);
+    const lines = [
+      '詳細フィルタの「検索範囲」は、フィールド未指定の語・式にだけ適用されます。',
+      'TI=/AB=/TA=/TX=/FT=で明示した部分は、この設定を上書きします。',
+    ];
+    if (plan.usesDefaultField) {
+      lines.push(`今回のフィールド未指定語に適用する既定範囲: ${defaultLabel}`);
+    } else {
+      lines.push('今回の式はすべてフィールド指定済みのため、「検索範囲」は内部判定には使いません。');
+    }
+    lines.push('複数フィールドが混在する場合は偽陰性を避けるため、式中フィールドに応じて候補取得scopeを自動決定し、内部フィルタで最終判定します。');
+    lines.push(`今回のOpenAlex候補取得scope: ${candidateLabel}`);
+    return lines.join('\n');
+  },
+
+  tokenize(query) {
+    const q = this.normalizeInput(query);
+    const tokens = [];
+    let i = 0;
+    while (i < q.length) {
+      const ch = q[i];
+      if (/\s/.test(ch)) { i++; continue; }
+      if (ch === '(') { tokens.push({ type: 'LPAREN', value: ch }); i++; continue; }
+      if (ch === ')') { tokens.push({ type: 'RPAREN', value: ch }); i++; continue; }
+      if (ch === '=') { tokens.push({ type: 'EQ', value: ch }); i++; continue; }
+      if (ch === '"') {
+        let j = i + 1;
+        let val = '';
+        while (j < q.length) {
+          if (q[j] === '"') break;
+          if (q[j] === '\\' && j + 1 < q.length) { val += q[j + 1]; j += 2; continue; }
+          val += q[j];
+          j++;
+        }
+        if (j >= q.length || q[j] !== '"') throw new Error('引用符が閉じていません。');
+        tokens.push({ type: 'PHRASE', value: val });
+        i = j + 1;
+        continue;
+      }
+      let j = i;
+      let val = '';
+      while (j < q.length && !/\s/.test(q[j]) && !['(', ')', '='].includes(q[j])) {
+        val += q[j];
+        j++;
+      }
+      if (val) tokens.push({ type: 'WORD', value: val });
+      i = j;
+    }
+    return tokens;
+  },
+
+  parse(query, defaultField = 'TX') {
+    const tokens = this.tokenize(query);
+    let pos = 0;
+    const self = this;
+    const peek = (n = 0) => tokens[pos + n];
+    const consume = () => tokens[pos++];
+    const isWord = (t, word) => t && t.type === 'WORD' && t.value.toUpperCase() === word;
+    const isNear = (t) => t && t.type === 'WORD' && /^(near|adj)\d+$/i.test(t.value);
+    const isField = (t) => t && t.type === 'WORD' && ['TI', 'AB', 'TA', 'TX', 'FT'].includes(t.value.toUpperCase());
+    const isPrimaryStart = (t) => {
+      if (!t) return false;
+      if (t.type === 'LPAREN' || t.type === 'PHRASE') return true;
+      if (t.type !== 'WORD') return false;
+      if (['AND', 'OR'].includes(t.value.toUpperCase())) return false;
+      if (isNear(t)) return false;
+      return true;
+    };
+
+    const parseExpression = () => parseOr();
+
+    const parseOr = () => {
+      let node = parseAnd();
+      while (isWord(peek(), 'OR')) {
+        consume();
+        const right = parseAnd();
+        node = { type: 'OR', left: node, right };
+      }
+      return node;
+    };
+
+    const parseAnd = () => {
+      let node = parseNot();
+      while (true) {
+        if (isWord(peek(), 'AND')) {
+          consume();
+          const right = parseNot();
+          node = { type: 'AND', left: node, right };
+        } else if (isPrimaryStart(peek()) && !isWord(peek(), 'OR') && !isWord(peek(), 'AND')) {
+          // 後方互換: 演算子なしの隣接語は AND として扱う。
+          const right = parseNot();
+          node = { type: 'AND', left: node, right, implicit: true };
+        } else {
+          break;
+        }
+      }
+      return node;
+    };
+
+    const parseNot = () => {
+      if (isWord(peek(), 'NOT')) {
+        consume();
+        return { type: 'NOT', child: parseNot() };
+      }
+      return parseProximity();
+    };
+
+    const parseProximity = () => {
+      let node = parsePrimary();
+      while (isNear(peek())) {
+        const opToken = consume().value;
+        const m = opToken.match(/^(near|adj)(\d+)$/i);
+        const op = m[1].toLowerCase();
+        const n = parseInt(m[2], 10);
+        if (!Number.isFinite(n) || n < 0) throw new Error(`${opToken} の距離指定が不正です。`);
+        const right = parsePrimary();
+        node = { type: 'PROX', op, n, left: node, right };
+      }
+      return node;
+    };
+
+    const parsePrimary = () => {
+      const t = peek();
+      if (!t) throw new Error('式が途中で終わっています。');
+
+      if (isField(t) && peek(1) && peek(1).type === 'EQ') {
+        const field = consume().value.toUpperCase();
+        consume(); // EQ
+        let child;
+        if (peek() && peek().type === 'LPAREN') {
+          consume();
+          child = parseExpression();
+          if (!peek() || peek().type !== 'RPAREN') throw new Error(`${field}= の閉じ括弧がありません。`);
+          consume();
+        } else {
+          child = parsePrimary();
+        }
+        return { type: 'FIELD', field, child };
+      }
+
+      if (t.type === 'LPAREN') {
+        consume();
+        const node = parseExpression();
+        if (!peek() || peek().type !== 'RPAREN') throw new Error('閉じ括弧がありません。');
+        consume();
+        return node;
+      }
+      if (t.type === 'PHRASE') {
+        consume();
+        return { type: 'PHRASE', value: t.value };
+      }
+      if (t.type === 'WORD') {
+        const v = consume().value;
+        if (['AND', 'OR', 'NOT'].includes(v.toUpperCase()) || /^(near|adj)\d+$/i.test(v)) {
+          throw new Error(`演算子 ${v} の位置が不正です。`);
+        }
+        return { type: 'TERM', value: v };
+      }
+      throw new Error(`予期しないトークン: ${t.value}`);
+    };
+
+    if (!tokens.length) return { type: 'EMPTY' };
+    const ast = parseExpression();
+    if (pos < tokens.length) {
+      const t = tokens[pos];
+      throw new Error(`解釈できない残りの入力があります: ${t.value}`);
+    }
+    this.validateAst(ast);
+    return ast;
+  },
+
+  validateAst(ast) {
+    const walk = (node) => {
+      if (!node) return;
+      if (node.type === 'TERM' || node.type === 'PHRASE') this.validateWildcard(node.value, node.type === 'PHRASE');
+      if (node.left) walk(node.left);
+      if (node.right) walk(node.right);
+      if (node.child) walk(node.child);
+    };
+    walk(ast);
+  },
+
+  validateWildcard(value, isPhrase = false) {
+    if (isPhrase && /[*?]/.test(value)) {
+      throw new Error('引用符フレーズ内のワイルドカードは未対応です。例: solid adj0 electrol* のように指定してください。');
+    }
+    const parts = this.searchTokens(value, true);
+    for (const p of parts) {
+      if (p.startsWith('*') || p.startsWith('?')) throw new Error(`語頭ワイルドカードは使用できません: ${value}`);
+      const star = p.search(/[?*]/);
+      if (star >= 0 && star < 3) throw new Error(`ワイルドカード前は3文字以上にしてください: ${value}`);
+    }
+  },
+
+  prepare(queryText, searchScope = 'all', maxCandidateQueries = 32, groupWidth = 30) {
+    const normalized = this.normalizeInput(queryText);
+    const defaultField = this.defaultFieldFromScope(searchScope);
+    const lines = normalized.split(/\n+/).map(s => s.trim()).filter(Boolean);
+    const asts = lines.map(line => ({ source: line, ast: this.parse(line, defaultField) }));
+    const candidateQueries = [];
+    const warnings = [];
+    let compressed = false;
+
+    asts.forEach(item => {
+      const cq = this.buildCandidateQueries(item.ast, maxCandidateQueries);
+      if (cq.compressed) compressed = true;
+      candidateQueries.push(...cq.queries);
+    });
+
+    let uniqueCandidates = [...new Set(candidateQueries.map(q => q.trim()))];
+    // NOTのみ、または OR の一枝がNOTのみの場合は、候補形成で絞り込むと偽陰性が出るため空クエリを優先する。
+    if (uniqueCandidates.includes('')) uniqueCandidates = [''];
+    if (!uniqueCandidates.length) uniqueCandidates.push('');
+    const hasCandidateOnly = asts.some(item => this.hasCandidateOnlyField(item.ast, defaultField));
+    const hasStrict = asts.some(item => this.hasStrictField(item.ast, defaultField));
+    const hasExplicitField = asts.some(item => this.hasExplicitField(item.ast));
+    const hasUnfieldedExpression = asts.some(item => this.hasUnfieldedExpression(item.ast));
+    const usesDefaultField = hasUnfieldedExpression;
+    const positiveFields = new Set();
+    const explicitFields = new Set();
+    asts.forEach(item => {
+      this.collectPositiveFields(item.ast, defaultField, positiveFields);
+      this.collectExplicitFields(item.ast, explicitFields);
+    });
+    const candidateScope = this.candidateScopeFromFields(positiveFields);
+    if (hasExplicitField) warnings.push('式内のTI=/AB=/TA=/TX=/FT=が優先されます。詳細フィルタの「検索範囲」はフィールド未指定語の既定値としてのみ使われます。');
+    if (hasCandidateOnly) warnings.push('TX/FTはOpenAlex索引による候補取得のみです。本文全文がないため、Collector内部での厳密なnear/adj検証とスニペット表示は行いません。');
+    if (compressed) warnings.push('OR展開数が上限を超えたため、一部のOpenAlex候補式はBoolean式1本に圧縮しました。');
+
+    return {
+      enabled: true,
+      original: queryText,
+      normalized,
+      defaultField,
+      searchScope,
+      asts,
+      candidateQueries: uniqueCandidates,
+      hasStrictFilter: hasStrict,
+      hasCandidateOnly,
+      hasExplicitField,
+      hasUnfieldedExpression,
+      warnings,
+      groupWidth: Math.max(2, Number(groupWidth) || 30),
+      maxCandidateQueries: Math.max(1, Number(maxCandidateQueries) || 32),
+      candidateScope,
+      positiveFields: [...positiveFields],
+      explicitFields: [...explicitFields],
+      usesDefaultField,
+    };
+  },
+
+  collectPositiveFields(node, currentField = 'TX', out = new Set(), inNot = false) {
+    if (!node) return out;
+    if (node.type === 'FIELD') return this.collectPositiveFields(node.child, node.field, out, inNot);
+    if (node.type === 'NOT') return this.collectPositiveFields(node.child, currentField, out, true);
+    if (node.type === 'TERM' || node.type === 'PHRASE' || node.type === 'PROX') {
+      if (!inNot) out.add(currentField);
+      if (node.type === 'PROX') {
+        this.collectPositiveFields(node.left, currentField, out, inNot);
+        this.collectPositiveFields(node.right, currentField, out, inNot);
+      }
+      return out;
+    }
+    this.collectPositiveFields(node.left, currentField, out, inNot);
+    this.collectPositiveFields(node.right, currentField, out, inNot);
+    return out;
+  },
+
+  collectExplicitFields(node, out = new Set()) {
+    if (!node) return out;
+    if (node.type === 'FIELD') {
+      out.add(node.field);
+      return this.collectExplicitFields(node.child, out);
+    }
+    this.collectExplicitFields(node.left, out);
+    this.collectExplicitFields(node.right, out);
+    this.collectExplicitFields(node.child, out);
+    return out;
+  },
+
+  usesDefaultField(node, insideExplicitField = false) {
+    if (!node) return false;
+    if (node.type === 'FIELD') return this.usesDefaultField(node.child, true);
+    if (node.type === 'TERM' || node.type === 'PHRASE' || node.type === 'PROX') return !insideExplicitField;
+    return this.usesDefaultField(node.left, insideExplicitField) ||
+      this.usesDefaultField(node.right, insideExplicitField) ||
+      this.usesDefaultField(node.child, insideExplicitField);
+  },
+
+  candidateScopeFromFields(fields) {
+    if (!fields || !fields.size) return 'all';
+    const fieldSet = new Set([...fields]);
+    const strictOnly = [...fieldSet].every(f => ['TI', 'AB', 'TA'].includes(f));
+    if (strictOnly) {
+      if (fieldSet.size === 1) {
+        const field = [...fieldSet][0];
+        const map = { TI: 'title', AB: 'abstract', TA: 'title_and_abstract' };
+        return map[field] || 'title_and_abstract';
+      }
+      return 'title_and_abstract';
+    }
+    if (fieldSet.size === 1) {
+      const field = [...fieldSet][0];
+      const map = { TX: 'all', FT: 'fulltext' };
+      return map[field] || 'all';
+    }
+    // strictフィールドとTX/FTが混在する場合は、偽陰性を避けるためtop-level searchで広めに候補形成する。
+    return 'all';
+  },
+
+  hasExplicitField(node) {
+    if (!node) return false;
+    if (node.type === 'FIELD') return true;
+    return this.hasExplicitField(node.left) || this.hasExplicitField(node.right) || this.hasExplicitField(node.child);
+  },
+
+  hasUnfieldedExpression(node, insideField = false) {
+    if (!node) return false;
+    if (node.type === 'FIELD') return this.hasUnfieldedExpression(node.child, true);
+    if (node.type === 'TERM' || node.type === 'PHRASE') return !insideField;
+    return this.hasUnfieldedExpression(node.left, insideField) || this.hasUnfieldedExpression(node.right, insideField) || this.hasUnfieldedExpression(node.child, insideField);
+  },
+
+  scopeUsageText(plan) {
+    const scope = this.scopeLabel(plan.searchScope);
+    if (plan.hasExplicitField && plan.hasUnfieldedExpression) {
+      return `クエリ内のTI=/AB=/TA=/TX=/FT=を優先します。フィールド未指定語句だけ、詳細フィルタの「検索範囲」=${scope} として評価します。`;
+    }
+    if (plan.hasExplicitField) {
+      return `クエリ内のフィールド指定が全体を規定しているため、詳細フィルタの「検索範囲」=${scope} は内部判定には使いません。OpenAlex候補形成範囲は式中フィールドから自動決定します。`;
+    }
+    return `フィールド指定がないため、詳細フィルタの「検索範囲」=${scope} をCollector式全体のデフォルト範囲として使います。`;
+  },
+
+  buildCandidateQueries(ast, maxQueries = 32) {
+    const max = Math.max(1, Number(maxQueries) || 32);
+    const alts = this.candidateAlternatives(ast, max + 1);
+    if (!alts.overflow && alts.items.length <= max) {
+      const queries = alts.items.map(parts => {
+        const uniq = [...new Set(parts.map(p => p.trim()).filter(Boolean))];
+        return uniq.join(' AND ');
+      });
+      return { queries: [...new Set(queries)], compressed: false };
+    }
+    const compact = this.compactCandidateString(ast);
+    return { queries: [compact], compressed: true };
+  },
+
+  candidateAlternatives(node, limit = 33) {
+    const pack = (items, overflow = false) => ({ items, overflow });
+    const concatUnique = (arrays) => [...new Set(arrays.flatMap(x => x.map(v => v.trim()).filter(Boolean)))];
+    const combine = (a, b) => {
+      const out = [];
+      let overflow = a.overflow || b.overflow;
+      for (const la of a.items) {
+        for (const rb of b.items) {
+          out.push(concatUnique([la, rb]));
+          if (out.length > limit) { overflow = true; return pack(out, overflow); }
+        }
+      }
+      return pack(out, overflow);
+    };
+    if (!node || node.type === 'EMPTY') return pack([[]]);
+    switch (node.type) {
+      case 'TERM':
+      case 'PHRASE':
+        return pack([[this.formatCandidateTerm(node)]]);
+      case 'FIELD':
+        return this.candidateAlternatives(node.child, limit);
+      case 'NOT':
+        return pack([[]]);
+      case 'OR': {
+        const l = this.candidateAlternatives(node.left, limit);
+        const r = this.candidateAlternatives(node.right, limit);
+        const items = [...l.items, ...r.items];
+        return pack(items.slice(0, limit + 1), l.overflow || r.overflow || items.length > limit);
+      }
+      case 'AND':
+      case 'PROX': {
+        const l = this.candidateAlternatives(node.left, limit);
+        const r = this.candidateAlternatives(node.right, limit);
+        return combine(l, r);
+      }
+      default:
+        return pack([[]]);
+    }
+  },
+
+  formatCandidateTerm(node) {
+    const v = String(node.value || '').trim();
+    if (node.type === 'PHRASE' || /\s/.test(v)) return `"${v.replace(/"/g, '\\"')}"`;
+    return v;
+  },
+
+  compactCandidateString(node) {
+    if (!node || node.type === 'EMPTY') return '';
+    switch (node.type) {
+      case 'TERM':
+      case 'PHRASE':
+        return this.formatCandidateTerm(node);
+      case 'FIELD':
+        return this.compactCandidateString(node.child);
+      case 'NOT':
+        return '';
+      case 'OR': {
+        const l = this.compactCandidateString(node.left);
+        const r = this.compactCandidateString(node.right);
+        if (l && r) return `(${l} OR ${r})`;
+        return l || r;
+      }
+      case 'AND':
+      case 'PROX': {
+        const l = this.compactCandidateString(node.left);
+        const r = this.compactCandidateString(node.right);
+        if (l && r) return `(${l} AND ${r})`;
+        return l || r;
+      }
+      default:
+        return '';
+    }
+  },
+
+  hasStrictField(node, defaultField = 'TX', currentField = defaultField) {
+    if (!node) return false;
+    if (node.type === 'FIELD') return this.hasStrictField(node.child, defaultField, node.field);
+    if (['TERM', 'PHRASE', 'PROX'].includes(node.type)) return this.STRICT_FIELDS.has(currentField);
+    if (node.type === 'NOT') return this.hasStrictField(node.child, defaultField, currentField);
+    return this.hasStrictField(node.left, defaultField, currentField) || this.hasStrictField(node.right, defaultField, currentField);
+  },
+
+  hasCandidateOnlyField(node, defaultField = 'TX', currentField = defaultField) {
+    if (!node) return false;
+    if (node.type === 'FIELD') return this.hasCandidateOnlyField(node.child, defaultField, node.field);
+    if (['TERM', 'PHRASE', 'PROX'].includes(node.type)) return this.CANDIDATE_ONLY_FIELDS.has(currentField);
+    if (node.type === 'NOT') return this.hasCandidateOnlyField(node.child, defaultField, currentField);
+    return this.hasCandidateOnlyField(node.left, defaultField, currentField) || this.hasCandidateOnlyField(node.right, defaultField, currentField);
+  },
+
+  containsProximity(node) {
+    if (!node) return false;
+    if (node.type === 'PROX') return true;
+    return this.containsProximity(node.left) || this.containsProximity(node.right) || this.containsProximity(node.child);
+  },
+
+  searchNormalize(text) {
+    return String(text || '')
+      .normalize('NFKC')
+      .toLowerCase()
+      .replace(/[‐‑‒–—−ーｰ・·/\\]+/g, ' ')
+      .replace(/[’'`´]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  },
+
+  searchTokens(text, keepWildcards = false) {
+    const norm = this.searchNormalize(text);
+    const re = keepWildcards ? /[\p{L}\p{N}*?]+/gu : /[\p{L}\p{N}]+/gu;
+    const out = [];
+    let m;
+    while ((m = re.exec(norm)) !== null) out.push(m[0]);
+    return out;
+  },
+
+  tokenizeDocument(text) {
+    const norm = this.searchNormalize(text);
+    const tokens = [];
+    const re = /[\p{L}\p{N}]+/gu;
+    let m;
+    while ((m = re.exec(norm)) !== null) {
+      tokens.push({ text: m[0], start: m.index, end: m.index + m[0].length });
+    }
+    return { text: norm, tokens };
+  },
+
+  makeDocs(paper) {
+    const titleText = paper.title || '';
+    const abstractText = paper.abstract || '';
+    return {
+      TI: { field: 'TI', label: 'タイトル', ...this.tokenizeDocument(titleText) },
+      AB: { field: 'AB', label: '要旨', ...this.tokenizeDocument(abstractText) },
+      TA: { field: 'TA', label: 'タイトル＋要旨', ...this.tokenizeDocument([titleText, abstractText].filter(Boolean).join(' / ')) },
+    };
+  },
+
+  patternFromToken(token) {
+    const esc = token.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*').replace(/\?/g, '.');
+    return new RegExp(`^${esc}$`, 'u');
+  },
+
+  termPatterns(value, isPhrase = false) {
+    if (isPhrase) return this.searchTokens(value, false).map(t => ({ raw: t, re: this.patternFromToken(t) }));
+    return this.searchTokens(value, true).map(t => ({ raw: t, re: this.patternFromToken(t) }));
+  },
+
+  findTermSpans(node, doc) {
+    const patterns = this.termPatterns(node.value, node.type === 'PHRASE');
+    if (!patterns.length || !doc.tokens.length) return [];
+    const spans = [];
+    for (let i = 0; i <= doc.tokens.length - patterns.length; i++) {
+      let ok = true;
+      for (let j = 0; j < patterns.length; j++) {
+        if (!patterns[j].re.test(doc.tokens[i + j].text)) { ok = false; break; }
+      }
+      if (ok) {
+        const first = doc.tokens[i];
+        const last = doc.tokens[i + patterns.length - 1];
+        spans.push({ start: i, end: i + patterns.length - 1, charStart: first.start, charEnd: last.end, doc });
+      }
+    }
+    return spans;
+  },
+
+  combineSpanCovers(aSpans, bSpans, maxWidth = Infinity) {
+    const out = [];
+    for (const a of aSpans) {
+      for (const b of bSpans) {
+        const start = Math.min(a.start, b.start);
+        const end = Math.max(a.end, b.end);
+        const width = end - start + 1;
+        if (width <= maxWidth) {
+          out.push({
+            start, end,
+            charStart: Math.min(a.charStart, b.charStart),
+            charEnd: Math.max(a.charEnd, b.charEnd),
+            doc: a.doc || b.doc,
+          });
+        }
+      }
+    }
+    out.sort((x, y) => (x.end - x.start) - (y.end - y.start) || x.start - y.start);
+    return out.slice(0, 200);
+  },
+
+  compareProximity(l, r, op, n) {
+    if (op === 'adj') {
+      if (l.end < r.start) {
+        const gap = r.start - l.end - 1;
+        if (gap <= n) return { ok: true, gap, start: l.start, end: r.end, charStart: l.charStart, charEnd: r.charEnd };
+      }
+      return { ok: false };
+    }
+    let gap;
+    if (l.end < r.start) gap = r.start - l.end - 1;
+    else if (r.end < l.start) gap = l.start - r.end - 1;
+    else gap = 0;
+    if (gap <= n) {
+      return {
+        ok: true, gap,
+        start: Math.min(l.start, r.start),
+        end: Math.max(l.end, r.end),
+        charStart: Math.min(l.charStart, r.charStart),
+        charEnd: Math.max(l.charEnd, r.charEnd),
+      };
+    }
+    return { ok: false };
+  },
+
+  evalInDoc(node, doc, opts = {}) {
+    const groupMode = !!opts.groupMode;
+    const groupWidth = Number(opts.groupWidth) || 30;
+    if (!node || node.type === 'EMPTY') return { matched: true, spans: [], field: doc.field, fieldLabel: doc.label };
+
+    if (node.type === 'TERM' || node.type === 'PHRASE') {
+      const spans = this.findTermSpans(node, doc);
+      return { matched: spans.length > 0, spans, field: doc.field, fieldLabel: doc.label, operator: 'term' };
+    }
+    if (node.type === 'FIELD') {
+      // フィールド指定は外側の評価器で処理する。ここに到達した場合は子式だけ評価する。
+      return this.evalInDoc(node.child, doc, opts);
+    }
+    if (node.type === 'NOT') {
+      const child = this.evalInDoc(node.child, doc, { ...opts, groupMode: false });
+      return { matched: !child.matched, spans: [], field: doc.field, fieldLabel: doc.label, operator: 'NOT' };
+    }
+    if (node.type === 'OR') {
+      const l = this.evalInDoc(node.left, doc, opts);
+      const r = this.evalInDoc(node.right, doc, opts);
+      if (l.matched) return { ...l, operator: l.operator || 'OR' };
+      if (r.matched) return { ...r, operator: r.operator || 'OR' };
+      return { matched: false, spans: [], field: doc.field, fieldLabel: doc.label, operator: 'OR' };
+    }
+    if (node.type === 'AND') {
+      const l = this.evalInDoc(node.left, doc, opts);
+      const r = this.evalInDoc(node.right, doc, opts);
+      const matched = l.matched && r.matched;
+      const maxWidth = groupMode ? groupWidth : Infinity;
+      let spans = [];
+      if (matched) {
+        const ls = l.spans || [];
+        const rs = r.spans || [];
+        if (ls.length && rs.length) spans = this.combineSpanCovers(ls, rs, maxWidth);
+        else spans = ls.length ? ls : rs;
+      }
+      return {
+        matched: matched && (!groupMode || spans.length > 0),
+        spans,
+        field: doc.field,
+        fieldLabel: doc.label,
+        operator: 'AND',
+      };
+    }
+    if (node.type === 'PROX') {
+      const l = this.evalInDoc(node.left, doc, { ...opts, groupMode: true });
+      const r = this.evalInDoc(node.right, doc, { ...opts, groupMode: true });
+      if (!l.matched || !r.matched) return { matched: false, spans: [], field: doc.field, fieldLabel: doc.label, operator: `${node.op}${node.n}` };
+      let best = null;
+      for (const ls of (l.spans || [])) {
+        for (const rs of (r.spans || [])) {
+          const cmp = this.compareProximity(ls, rs, node.op, node.n);
+          if (cmp.ok && (!best || cmp.gap < best.distance || (cmp.end - cmp.start) < (best.end - best.start))) {
+            best = { ...cmp, distance: cmp.gap, doc };
+          }
+        }
+      }
+      if (!best) return { matched: false, spans: [], field: doc.field, fieldLabel: doc.label, operator: `${node.op}${node.n}` };
+      return {
+        matched: true,
+        spans: [best],
+        field: doc.field,
+        fieldLabel: doc.label,
+        operator: `${node.op}${node.n}`,
+        distance: best.distance,
+      };
+    }
+    return { matched: false, spans: [], field: doc.field, fieldLabel: doc.label };
+  },
+
+  snippetFromResult(result) {
+    const span = result && result.spans && result.spans[0];
+    if (!span || !span.doc) return { plain: '', html: '' };
+    const doc = span.doc;
+    const pad = 90;
+    const s = Math.max(0, span.charStart - pad);
+    const e = Math.min(doc.text.length, span.charEnd + pad);
+    const before = doc.text.slice(s, span.charStart);
+    const hit = doc.text.slice(span.charStart, span.charEnd);
+    const after = doc.text.slice(span.charEnd, e);
+    const prefix = s > 0 ? '…' : '';
+    const suffix = e < doc.text.length ? '…' : '';
+    const plain = `${prefix}${before}${hit}${after}${suffix}`;
+    const html = `${prefix}${this.escapeHtml(before)}<mark class="query-hit">${this.escapeHtml(hit)}</mark>${this.escapeHtml(after)}${suffix}`;
+    return { plain, html };
+  },
+
+  evalInField(node, paper, field, opts = {}) {
+    if (this.CANDIDATE_ONLY_FIELDS.has(field)) {
+      return {
+        matched: true,
+        spans: [],
+        field,
+        fieldLabel: this.FIELD_LABELS[field] || field,
+        operator: 'candidate-only',
+        candidateOnly: true,
+        warning: `${field}は候補取得のみ`,
+      };
+    }
+    const docs = this.makeDocs(paper);
+    if (field === 'TA' && this.containsProximity(node)) {
+      const ti = this.evalInDoc(node, docs.TI, opts);
+      if (ti.matched) return ti;
+      return this.evalInDoc(node, docs.AB, opts);
+    }
+    const doc = docs[field] || docs.TA;
+    return this.evalInDoc(node, doc, opts);
+  },
+
+  evalAst(node, paper, defaultField = 'TX', opts = {}) {
+    if (!node || node.type === 'EMPTY') return { matched: true, spans: [], operator: 'empty' };
+    if (node.type === 'FIELD') return this.evalInField(node.child, paper, node.field, opts);
+    if (node.type === 'AND') {
+      const l = this.evalAst(node.left, paper, defaultField, opts);
+      const r = this.evalAst(node.right, paper, defaultField, opts);
+      const matched = l.matched && r.matched;
+      const chosen = (l.snippet || (l.spans && l.spans.length)) ? l : r;
+      return { matched, spans: chosen.spans || [], field: chosen.field, fieldLabel: chosen.fieldLabel, operator: 'AND', distance: chosen.distance, candidateOnly: l.candidateOnly && r.candidateOnly };
+    }
+    if (node.type === 'OR') {
+      const l = this.evalAst(node.left, paper, defaultField, opts);
+      if (l.matched) return { ...l, operator: l.operator || 'OR' };
+      const r = this.evalAst(node.right, paper, defaultField, opts);
+      return r.matched ? { ...r, operator: r.operator || 'OR' } : { matched: false, spans: [], operator: 'OR' };
+    }
+    if (node.type === 'NOT') {
+      const child = this.evalAst(node.child, paper, defaultField, opts);
+      return { matched: !child.matched, spans: [], operator: 'NOT' };
+    }
+    return this.evalInField(node, paper, defaultField, opts);
+  },
+
+  evaluatePlan(paper, plan) {
+    if (!plan || !plan.asts || !plan.asts.length) return { matched: true };
+    for (let i = 0; i < plan.asts.length; i++) {
+      const item = plan.asts[i];
+      const res = this.evalAst(item.ast, paper, plan.defaultField, { groupWidth: plan.groupWidth });
+      if (res.matched) {
+        const sn = this.snippetFromResult(res);
+        return {
+          ...res,
+          queryIndex: i + 1,
+          sourceQuery: item.source,
+          snippet: sn.plain,
+          snippetHtml: sn.html,
+        };
+      }
+    }
+    return { matched: false };
+  },
+
+  applyToPapers(papers, plan) {
+    const rows = [];
+    let dropped = 0;
+    const candidateOnlyPlan = plan && !plan.hasStrictFilter;
+    papers.forEach(row => {
+      let res;
+      if (candidateOnlyPlan) {
+        res = { matched: true, field: plan.hasCandidateOnly ? 'TX/FT' : '', fieldLabel: '候補取得', operator: 'candidate-only', candidateOnly: true, sourceQuery: plan.normalized, snippet: '', snippetHtml: '' };
+      } else {
+        res = this.evaluatePlan(row, plan);
+      }
+      if (res.matched) {
+        row.collector_query = plan.commandDisplay || plan.normalized || '';
+        row.collector_candidate_query = (plan.candidateQueries || []).join(' || ');
+        row.collector_match = res.candidateOnly ? 'candidate_only' : 'true';
+        row.collector_match_field = res.fieldLabel || res.field || '';
+        row.collector_match_operator = res.operator || '';
+        row.collector_match_distance = res.distance != null ? res.distance : '';
+        row.collector_match_snippet = res.snippet || '';
+        row.collector_match_snippet_html = res.snippetHtml || '';
+        rows.push(row);
+      } else {
+        dropped++;
+      }
+    });
+    return {
+      rows,
+      candidateCount: papers.length,
+      matchedCount: rows.length,
+      droppedCount: dropped,
+      candidateOnly: candidateOnlyPlan,
+    };
+  },
+
+  commandId(n) {
+    return `#${String(n).padStart(2, '0')}`;
+  },
+
+  commandPlaceholder(n) {
+    const examples = [
+      'TI=(solid adj3 electrolyte)',
+      'AB=((degradation AND capacity) near8 (mechanism OR fade*))',
+      'TA=(review)',
+      'TA=((sulfide OR oxide OR polymer) near5 electrolyte)',
+    ];
+    return examples[(Math.max(1, Number(n) || 1) - 1) % examples.length];
+  },
+
+  bindCommandInputEvents(input) {
+    if (!input || input.dataset.bound === '1') return;
+    input.dataset.bound = '1';
+    input.addEventListener('input', () => {
+      const box = document.getElementById('queryPreview');
+      if (box && !box.classList.contains('hidden')) this.previewFromUI();
+    });
+  },
+
+  renumberCommandRows() {
+    const rows = Array.from(document.querySelectorAll('#collectorCommandRows .command-row'));
+    rows.forEach((row, i) => {
+      const n = i + 1;
+      row.dataset.commandIndex = String(n);
+      const label = row.querySelector('.command-label');
+      const input = row.querySelector('.command-input');
+      const remove = row.querySelector('.command-remove');
+      if (label) label.textContent = this.commandId(n);
+      if (input) {
+        input.dataset.commandId = String(n);
+        input.placeholder = this.commandPlaceholder(n);
+        this.bindCommandInputEvents(input);
+      }
+      if (remove) remove.disabled = rows.length <= 1;
+    });
+  },
+
+  addCommandRow(value = '') {
+    const container = document.getElementById('collectorCommandRows');
+    if (!container) return;
+    const n = container.querySelectorAll('.command-row').length + 1;
+    const row = document.createElement('div');
+    row.className = 'command-row';
+    row.dataset.commandIndex = String(n);
+    row.innerHTML = `
+      <div class="command-label">${this.commandId(n)}</div>
+      <input type="text" class="command-input" data-command-id="${n}" placeholder="${this.escapeHtml(this.commandPlaceholder(n))}">
+      <button type="button" class="btn btn-secondary btn-sm command-remove" onclick="CollectorQuery.removeCommandRow(this)">削除</button>`;
+    const input = row.querySelector('.command-input');
+    if (input) input.value = value || '';
+    container.appendChild(row);
+    this.renumberCommandRows();
+    if (input) input.focus();
+  },
+
+  removeCommandRow(btn) {
+    const rows = Array.from(document.querySelectorAll('#collectorCommandRows .command-row'));
+    const row = btn ? btn.closest('.command-row') : null;
+    if (!row) return;
+    if (rows.length <= 1) {
+      const input = row.querySelector('.command-input');
+      if (input) input.value = '';
+    } else {
+      row.remove();
+    }
+    this.renumberCommandRows();
+    const box = document.getElementById('queryPreview');
+    if (box && !box.classList.contains('hidden')) this.previewFromUI();
+  },
+
+  clearEmptyCommandRows() {
+    const rows = Array.from(document.querySelectorAll('#collectorCommandRows .command-row'));
+    const nonEmpty = rows.filter(row => {
+      const input = row.querySelector('.command-input');
+      return input && input.value.trim();
+    });
+    if (!nonEmpty.length) {
+      rows.slice(1).forEach(row => row.remove());
+      const firstInput = rows[0] ? rows[0].querySelector('.command-input') : null;
+      if (firstInput) firstInput.value = '';
+    } else {
+      rows.forEach(row => {
+        const input = row.querySelector('.command-input');
+        if (input && !input.value.trim()) row.remove();
+      });
+    }
+    this.renumberCommandRows();
+    const box = document.getElementById('queryPreview');
+    if (box && !box.classList.contains('hidden')) this.previewFromUI();
+  },
+
+  collectCommandRows() {
+    this.renumberCommandRows();
+    return Array.from(document.querySelectorAll('#collectorCommandRows .command-row')).map((row, i) => {
+      const input = row.querySelector('.command-input');
+      const n = i + 1;
+      return { index: n, ref: this.commandId(n), expr: input ? input.value.trim() : '' };
+    });
+  },
+
+  stripTFormula(raw) {
+    return this.normalizeInput(raw || '').replace(/^T\s*=\s*/i, '').trim();
+  },
+
+  buildCommandQuery(opts = {}) {
+    const allowEmpty = !!opts.allowEmpty;
+    const commands = this.collectCommandRows().filter(r => r.expr);
+    if (!commands.length) {
+      if (allowEmpty) return { queryText: '', expandedQuery: '', displayQuery: '', commands: [], commandSummary: '' };
+      throw new Error('コマンド行を1行以上入力してください。');
+    }
+    for (const row of commands) {
+      let ast;
+      try {
+        ast = this.parse(row.expr, 'TX');
+      } catch (e) {
+        throw new Error(`${row.ref} の構文エラー: ${e.message}`);
+      }
+      if (!this.hasExplicitField(ast)) {
+        throw new Error(`${row.ref}: コマンドラインモードでは TI=/AB=/TA=/TX=/FT= のいずれかを明示してください。`);
+      }
+      if (this.hasUnfieldedExpression(ast)) {
+        throw new Error(`${row.ref}: フィールド未指定の語・式があります。例: TI=(A) AND AB=(B) のように各部分へ範囲を明示してください。`);
+      }
+    }
+    const rawLogic = document.getElementById('commandLogicExpr') ? document.getElementById('commandLogicExpr').value : '';
+    let logicBody = this.stripTFormula(rawLogic);
+    if (!logicBody) {
+      if (commands.length === 1) logicBody = commands[0].ref;
+      else throw new Error('複数のコマンド行を使う場合は、結合論理式 T を入力してください。例: T=(#01 AND #02) OR #03');
+    }
+    if (/#(?!\d)/.test(logicBody)) {
+      throw new Error('結合論理式の行参照は #01 または #1 の形式で指定してください。');
+    }
+    const used = new Set();
+    const expanded = logicBody.replace(/#0*(\d+)/g, (m, n) => {
+      const idx = parseInt(n, 10);
+      const row = commands.find(r => r.index === idx);
+      if (!row) throw new Error(`結合論理式が未入力または存在しない行 ${m} を参照しています。`);
+      used.add(row.ref);
+      return `(${row.expr})`;
+    });
+    if (!used.size) {
+      throw new Error('結合論理式には #01 などのコマンド行参照を1つ以上含めてください。');
+    }
+    try {
+      this.parse(expanded, 'TX');
+    } catch (e) {
+      throw new Error(`結合後の構文エラー: ${e.message}`);
+    }
+    const commandSummary = commands.map(r => `${r.ref} = ${r.expr}`).join('\n');
+    return {
+      queryText: expanded,
+      expandedQuery: expanded,
+      displayQuery: `T=${logicBody}`,
+      commands,
+      commandSummary,
+      usedRefs: [...used],
+    };
+  },
+
+  updateSearchModeUI() {
+    const mode = document.getElementById('searchMode') ? document.getElementById('searchMode').value : 'command';
+    const isCommand = mode === 'command';
+    const commandPanel = document.getElementById('commandSearchPanel');
+    const standardPanel = document.getElementById('standardSearchPanel');
+    const scope = document.getElementById('searchScope');
+    const lockNote = document.getElementById('searchScopeLockNote');
+    const groupWidthGroup = document.getElementById('collectorGroupWidthGroup');
+    const candidateLimitGroup = document.getElementById('collectorMaxCandidateQueriesGroup');
+    if (commandPanel) commandPanel.classList.toggle('hidden', !isCommand);
+    if (standardPanel) standardPanel.classList.toggle('hidden', isCommand);
+    if (groupWidthGroup) {
+      groupWidthGroup.classList.toggle('hidden', !isCommand);
+      groupWidthGroup.setAttribute('aria-hidden', String(!isCommand));
+    }
+    if (candidateLimitGroup) {
+      candidateLimitGroup.classList.toggle('hidden', !isCommand);
+      candidateLimitGroup.setAttribute('aria-hidden', String(!isCommand));
+    }
+    if (scope) {
+      scope.disabled = isCommand;
+      const group = scope.closest('.form-group');
+      if (group) group.classList.toggle('scope-disabled', isCommand);
+    }
+    if (lockNote) lockNote.classList.toggle('hidden', !isCommand);
+  },
+
+  initCommandUI() {
+    this.renumberCommandRows();
+    const logic = document.getElementById('commandLogicExpr');
+    if (logic && logic.dataset.bound !== '1') {
+      logic.dataset.bound = '1';
+      logic.addEventListener('input', () => {
+        const box = document.getElementById('queryPreview');
+        if (box && !box.classList.contains('hidden')) this.previewFromUI();
+      });
+    }
+    this.updateSearchModeUI();
+  },
+
+  previewFromUI() {
+    const mode = document.getElementById('searchMode') ? document.getElementById('searchMode').value : 'command';
+    const status = document.getElementById('querySyntaxStatus');
+    const box = document.getElementById('queryPreview');
+    if (!box) return;
+    this.updateSearchModeUI();
+    if (mode === 'standard') {
+      const q = document.getElementById('searchQuery') ? document.getElementById('searchQuery').value : '';
+      if (status) status.textContent = q.trim() ? '標準OpenAlex検索モードです。' : '標準検索語が未入力です。';
+      box.classList.remove('hidden');
+      box.innerHTML = '<strong>標準モード:</strong> 入力された検索語をOpenAlexへ直接渡します。詳細フィルタの「検索範囲」が有効です。';
+      return;
+    }
+
+    let commandBuild;
+    try {
+      commandBuild = this.buildCommandQuery({ allowEmpty: true });
+    } catch (e) {
+      if (status) status.textContent = '構文エラー';
+      box.classList.remove('hidden');
+      box.innerHTML = `<strong style="color:var(--error);">構文エラー:</strong><pre>${this.escapeHtml(e.message)}</pre>`;
+      return;
+    }
+    if (!commandBuild.queryText.trim()) {
+      if (status) status.textContent = 'コマンド未入力です。機関・著者フィルタのみで検索できます。';
+      box.classList.add('hidden');
+      return;
+    }
+    try {
+      const maxQ = document.getElementById('collectorMaxCandidateQueries') ? parseInt(document.getElementById('collectorMaxCandidateQueries').value) : 32;
+      const groupW = document.getElementById('collectorGroupWidth') ? parseInt(document.getElementById('collectorGroupWidth').value) : 30;
+      const plan = this.prepare(commandBuild.queryText, 'all', maxQ, groupW);
+      if (status) status.textContent = '構文OK';
+      const warnings = plan.warnings.length ? '\n警告:\n- ' + plan.warnings.join('\n- ') : '';
+      box.classList.remove('hidden');
+      box.innerHTML = `
+        <strong>コマンド行</strong>
+        <pre>${this.escapeHtml(commandBuild.commandSummary)}</pre>
+        <strong>結合論理式 T</strong>
+        <pre>${this.escapeHtml(commandBuild.displayQuery)}</pre>
+        <strong>展開後Collector式</strong>
+        <pre>${this.escapeHtml(commandBuild.expandedQuery)}</pre>
+        <strong>検索範囲の扱い</strong>
+        <pre>${this.escapeHtml('コマンドラインモードでは詳細フィルタ「検索範囲」は無効です。各コマンド行のTI=/AB=/TA=/TX=/FT=からOpenAlex候補取得scopeを自動決定します。')}</pre>
+        <strong>OpenAlex候補検索式（${plan.candidateQueries.length}件 / scope=${this.escapeHtml(this.scopeLabel(plan.candidateScope))}）</strong>
+        <pre>${this.escapeHtml(plan.candidateQueries.map((x, i) => `${i + 1}. ${x || '(空クエリ: フィルタのみ)'}`).join('\n'))}</pre>
+        <strong>内部フィルタ</strong>
+        <pre>${this.escapeHtml(plan.hasStrictFilter ? `TI/AB/TAで厳密判定。近傍グループ最大幅=${plan.groupWidth}語` : 'TX/FTまたは全文候補のみ。内部厳密フィルタなし。')}${this.escapeHtml(warnings)}</pre>`;
+    } catch (e) {
+      if (status) status.textContent = '構文エラー';
+      box.classList.remove('hidden');
+      box.innerHTML = `<strong style="color:var(--error);">構文エラー:</strong><pre>${this.escapeHtml(e.message)}</pre>`;
+    }
+  },
+
+  clearPreview() {
+    const status = document.getElementById('querySyntaxStatus');
+    const box = document.getElementById('queryPreview');
+    if (status) status.textContent = '';
+    if (box) box.classList.add('hidden');
+  },
+};
+
+
 // Search Controller
 const SearchController = {
+  _readSearchParams(yearFrom, yearTo, englishOnly) {
+    const selectedPubTypes = [];
+    document.querySelectorAll('#pubTypeChips .chip.active').forEach(c => selectedPubTypes.push(c.dataset.value));
+    return {
+      yearFrom, yearTo,
+      pubTypes: selectedPubTypes.length ? selectedPubTypes : null,
+      sort: document.getElementById('sortOrder').value,
+      minCitations: parseInt(document.getElementById('minCitations').value) || 0,
+      oaOnly: document.getElementById('oaOnly').checked,
+      hasAbstractOnly: document.getElementById('hasAbstractOnly').checked,
+      languageOnly: englishOnly ? 'en' : null,
+      searchScope: document.getElementById('searchScope').value || 'all',
+      institutionId: null,
+      institutionIds: null,
+      authorIds: null,
+    };
+  },
+
+  async _resolveInstitutionFilter(params, signal) {
+    const instFilterText = document.getElementById('institutionFilter').value.trim();
+    const instStatus = document.getElementById('institutionResolveStatus');
+    if (!instFilterText) {
+      instStatus.classList.add('hidden');
+      return;
+    }
+    const instNames = instFilterText.split(';').map(s => s.trim()).filter(s => s);
+    instStatus.classList.remove('hidden');
+    instStatus.className = 'alert alert-info';
+    instStatus.textContent = `機関を検索中...（${instNames.length} 件）`;
+    UIController.updateProgress(0, '機関を検索中...');
+
+    const resolvedIds = [];
+    const resolvedNames = [];
+    const failedNames = [];
+    for (const name of instNames) {
+      const inst = await OpenAlexAPI.resolveInstitution(name, signal);
+      if (inst) {
+        resolvedIds.push(inst.id);
+        resolvedNames.push(inst.display_name);
+      } else {
+        failedNames.push(name);
+      }
+    }
+    if (resolvedIds.length > 0) {
+      params.institutionIds = resolvedIds;
+      let msg = `機関フィルタ: ${resolvedNames.join(' / ')}`;
+      if (failedNames.length > 0) msg += `（未検出: ${failedNames.join(', ')}）`;
+      instStatus.className = 'alert alert-success';
+      instStatus.textContent = msg;
+    } else {
+      instStatus.className = 'alert alert-warning';
+      instStatus.textContent = '一致する機関が見つかりませんでした。機関フィルタなしで検索します。';
+    }
+  },
+
+  async _resolveAuthorFilter(params, signal) {
+    const authFilterText = document.getElementById('authorFilter').value.trim();
+    const authStatus = document.getElementById('authorResolveStatus');
+    if (!authFilterText) {
+      authStatus.classList.add('hidden');
+      return;
+    }
+    const authNames = authFilterText.split(';').map(s => s.trim()).filter(s => s);
+    authStatus.classList.remove('hidden');
+    authStatus.className = 'alert alert-info';
+    authStatus.textContent = `著者を検索中...（${authNames.length} 件）`;
+    UIController.updateProgress(0, '著者を検索中...');
+
+    const resolvedAuthorIds = [];
+    const resolvedAuthorNames = [];
+    const failedAuthorNames = [];
+    for (const name of authNames) {
+      const a = await OpenAlexAPI.resolveAuthor(name, signal);
+      if (a) {
+        resolvedAuthorIds.push(a.id);
+        resolvedAuthorNames.push(`${a.display_name} (引用 ${a.cited_by_count.toLocaleString()})`);
+      } else {
+        failedAuthorNames.push(name);
+      }
+    }
+    if (resolvedAuthorIds.length > 0) {
+      params.authorIds = resolvedAuthorIds;
+      let msg = `著者フィルタ (AND): ${resolvedAuthorNames.join(' & ')}`;
+      if (failedAuthorNames.length > 0) msg += `（未検出: ${failedAuthorNames.join(', ')}）`;
+      authStatus.className = 'alert alert-success';
+      authStatus.textContent = msg;
+    } else {
+      authStatus.className = 'alert alert-warning';
+      authStatus.textContent = '一致する著者が見つかりませんでした。著者フィルタなしで検索します。';
+    }
+  },
+
+  async _fetchRawPapers(queries, params, yearlyMode, yearFrom, yearTo, maxResults, signal) {
+    if (yearlyMode && queries.length === 1) {
+      return await OpenAlexAPI.fetchByYear(
+        queries[0], params, yearFrom, yearTo, maxResults,
+        (yi, totalYears, year, yearCount, yearTotal, allCount) => {
+          const yearProg = yearTotal > 0 ? yearCount / yearTotal : 1;
+          const overall = (yi + Math.min(yearProg, 1)) / totalYears;
+          UIController.updateProgress(overall * 100,
+            `${year}年: ${yearCount}/${yearTotal} 件 | 合計: ${allCount} 件 (${yi + 1}/${totalYears} 年)`);
+        }, signal);
+    }
+    if (yearlyMode && queries.length > 1) {
+      return await OpenAlexAPI.fetchMultiQueryByYear(
+        queries, params, yearFrom, yearTo, maxResults,
+        (qi, totalQ, yi, totalYears, year, yearCount, yearTotal, allCount) => {
+          const yearProg = yearTotal > 0 ? yearCount / yearTotal : 1;
+          const queryProg = (yi + Math.min(yearProg, 1)) / totalYears;
+          const overall = (qi + queryProg) / totalQ;
+          UIController.updateProgress(overall * 100,
+            `候補式 ${qi + 1}/${totalQ} | ${year}年: ${yearCount}/${yearTotal} 件 | 合計: ${allCount} 件`);
+        }, signal);
+    }
+    if (queries.length === 1) {
+      return await OpenAlexAPI.fetchBatch(
+        queries[0], params, maxResults,
+        (current, total) => {
+          UIController.updateProgress(Math.min(current / Math.max(total, 1), 1) * 100,
+            `取得中: ${current} / ${total} 件`);
+        }, signal);
+    }
+    return await OpenAlexAPI.fetchMultiQuery(
+      queries, params, maxResults,
+      (qi, totalQ, current, total) => {
+        const overall = (qi / totalQ) + (1 / totalQ) * Math.min(current / Math.max(total, 1), 1);
+        UIController.updateProgress(overall * 100,
+          `候補式 ${qi + 1}/${totalQ}: ${current}/${total} 件`);
+      }, signal);
+  },
+
   async startSearch() {
-    const queryText = document.getElementById('searchQuery').value.trim();
+    const searchMode = document.getElementById('searchMode') ? document.getElementById('searchMode').value : 'command';
+    let queryText = '';
+    let commandBuild = null;
+    try {
+      if (searchMode === 'command') {
+        commandBuild = CollectorQuery.buildCommandQuery({ allowEmpty: true });
+        queryText = (commandBuild.queryText || '').trim();
+      } else {
+        queryText = document.getElementById('searchQuery') ? document.getElementById('searchQuery').value.trim() : '';
+      }
+    } catch (e) {
+      UIController.showToast(`検索構文エラー: ${e.message}`, 'error');
+      CollectorQuery.previewFromUI();
+      return;
+    }
+
     const hasInstFilter = !!document.getElementById('institutionFilter').value.trim();
     const hasAuthFilter = !!document.getElementById('authorFilter').value.trim();
 
@@ -2511,165 +4005,56 @@ const SearchController = {
       return;
     }
 
-    // キーワードが空でも機関/著者フィルタのみで検索できるよう、空クエリ1件として扱う
-    const queries = queryText
-      ? queryText.split('\n').map(q => q.trim()).filter(q => q)
-      : [''];
     const yearlyMode = document.getElementById('yearlyMode').checked;
     const maxResults = parseInt(document.getElementById('maxResults').value) || 200;
-
-    const selectedPubTypes = [];
-    document.querySelectorAll('#pubTypeChips .chip.active').forEach(c => {
-      selectedPubTypes.push(c.dataset.value);
-    });
-    const sortOrder = document.getElementById('sortOrder').value;
-    const minCitations = parseInt(document.getElementById('minCitations').value) || 0;
-    const oaOnly = document.getElementById('oaOnly').checked;
-    const hasAbstractOnly = document.getElementById('hasAbstractOnly').checked;
     const englishOnly = document.getElementById('englishOnly').checked;
-    const searchScope = document.getElementById('searchScope').value || 'all';
+    const baseSearchScope = document.getElementById('searchScope') ? (document.getElementById('searchScope').value || 'all') : 'all';
+    const params = this._readSearchParams(yearFrom, yearTo, englishOnly);
 
-    const params = {
-      yearFrom, yearTo,
-      pubTypes: selectedPubTypes.length ? selectedPubTypes : null,
-      sort: sortOrder,
-      minCitations,
-      oaOnly,
-      hasAbstractOnly,
-      languageOnly: englishOnly ? 'en' : null,
-      searchScope,
-      institutionId: null,
-      institutionIds: null,
-      authorIds: null,
-    };
+    let collectorPlan = null;
+    let queries;
+    if (searchMode === 'command' && queryText) {
+      try {
+        const maxCandidateQueries = document.getElementById('collectorMaxCandidateQueries') ? parseInt(document.getElementById('collectorMaxCandidateQueries').value) : 32;
+        const groupWidth = document.getElementById('collectorGroupWidth') ? parseInt(document.getElementById('collectorGroupWidth').value) : 30;
+        collectorPlan = CollectorQuery.prepare(queryText, 'all', maxCandidateQueries, groupWidth);
+        collectorPlan.commandLines = commandBuild.commands || [];
+        collectorPlan.commandLogic = commandBuild.displayQuery || '';
+        collectorPlan.expandedQuery = commandBuild.expandedQuery || queryText;
+        collectorPlan.commandDisplay = [commandBuild.commandSummary, commandBuild.displayQuery].filter(Boolean).join('\n');
+        collectorPlan.normalized = commandBuild.displayQuery || collectorPlan.normalized;
+        queries = collectorPlan.candidateQueries.length ? collectorPlan.candidateQueries : [''];
+        params.searchScope = collectorPlan.candidateScope || 'all';
+        CollectorQuery.previewFromUI();
+      } catch (e) {
+        UIController.showToast(`検索構文エラー: ${e.message}`, 'error');
+        CollectorQuery.previewFromUI();
+        return;
+      }
+    } else {
+      queries = queryText ? queryText.split('\n').map(q => q.trim()).filter(q => q) : [''];
+      if (searchMode === 'standard') CollectorQuery.clearPreview();
+      params.searchScope = baseSearchScope;
+    }
 
     AppState.abortController = new AbortController();
     const signal = AppState.abortController.signal;
     AppState.isSearching = true;
+    AppState.collectorPlan = collectorPlan;
+    AppState.collectorStats = null;
 
     UIController.showProgress();
     document.getElementById('searchBtn').disabled = true;
 
     try {
-      const instFilterText = document.getElementById('institutionFilter').value.trim();
-      const instStatus = document.getElementById('institutionResolveStatus');
-      if (instFilterText) {
-        const instNames = instFilterText.split(';').map(s => s.trim()).filter(s => s);
-        instStatus.classList.remove('hidden');
-        instStatus.className = 'alert alert-info';
-        instStatus.textContent = `機関を検索中...（${instNames.length} 件）`;
-        UIController.updateProgress(0, `機関を検索中...`);
+      await this._resolveInstitutionFilter(params, signal);
+      await this._resolveAuthorFilter(params, signal);
 
-        const resolvedIds = [];
-        const resolvedNames = [];
-        const failedNames = [];
-
-        for (const name of instNames) {
-          const inst = await OpenAlexAPI.resolveInstitution(name, signal);
-          if (inst) {
-            resolvedIds.push(inst.id);
-            resolvedNames.push(inst.display_name);
-          } else {
-            failedNames.push(name);
-          }
-        }
-
-        if (resolvedIds.length > 0) {
-          params.institutionIds = resolvedIds;
-          let msg = `機関フィルタ: ${resolvedNames.join(' / ')}`;
-          if (failedNames.length > 0) msg += `（未検出: ${failedNames.join(', ')}）`;
-          instStatus.className = 'alert alert-success';
-          instStatus.textContent = msg;
-        } else {
-          instStatus.className = 'alert alert-warning';
-          instStatus.textContent = `一致する機関が見つかりませんでした。機関フィルタなしで検索します。`;
-        }
-      } else {
-        instStatus.classList.add('hidden');
-      }
-
-      // Author resolution
-      const authFilterText = document.getElementById('authorFilter').value.trim();
-      const authStatus = document.getElementById('authorResolveStatus');
-      if (authFilterText) {
-        const authNames = authFilterText.split(';').map(s => s.trim()).filter(s => s);
-        authStatus.classList.remove('hidden');
-        authStatus.className = 'alert alert-info';
-        authStatus.textContent = `著者を検索中...（${authNames.length} 件）`;
-        UIController.updateProgress(0, '著者を検索中...');
-
-        const resolvedAuthorIds = [];
-        const resolvedAuthorNames = [];
-        const failedAuthorNames = [];
-
-        for (const name of authNames) {
-          const a = await OpenAlexAPI.resolveAuthor(name, signal);
-          if (a) {
-            resolvedAuthorIds.push(a.id);
-            resolvedAuthorNames.push(`${a.display_name} (引用 ${a.cited_by_count.toLocaleString()})`);
-          } else {
-            failedAuthorNames.push(name);
-          }
-        }
-
-        if (resolvedAuthorIds.length > 0) {
-          params.authorIds = resolvedAuthorIds;
-          let msg = `著者フィルタ (AND): ${resolvedAuthorNames.join(' & ')}`;
-          if (failedAuthorNames.length > 0) msg += `（未検出: ${failedAuthorNames.join(', ')}）`;
-          authStatus.className = 'alert alert-success';
-          authStatus.textContent = msg;
-        } else {
-          authStatus.className = 'alert alert-warning';
-          authStatus.textContent = '一致する著者が見つかりませんでした。著者フィルタなしで検索します。';
-        }
-      } else {
-        authStatus.classList.add('hidden');
-      }
-
-      let rawPapers;
-
-      if (yearlyMode && queries.length === 1) {
-        rawPapers = await OpenAlexAPI.fetchByYear(
-          queries[0], params, yearFrom, yearTo, maxResults,
-          (yi, totalYears, year, yearCount, yearTotal, allCount) => {
-            const yearProg = yearTotal > 0 ? yearCount / yearTotal : 1;
-            const overall = (yi + Math.min(yearProg, 1)) / totalYears;
-            UIController.updateProgress(overall * 100,
-              `${year}年: ${yearCount}/${yearTotal} 件 | 合計: ${allCount} 件 (${yi + 1}/${totalYears} 年)`);
-          }, signal);
-
-      } else if (yearlyMode && queries.length > 1) {
-        rawPapers = await OpenAlexAPI.fetchMultiQueryByYear(
-          queries, params, yearFrom, yearTo, maxResults,
-          (qi, totalQ, yi, totalYears, year, yearCount, yearTotal, allCount) => {
-            const yearProg = yearTotal > 0 ? yearCount / yearTotal : 1;
-            const queryProg = (yi + Math.min(yearProg, 1)) / totalYears;
-            const overall = (qi + queryProg) / totalQ;
-            UIController.updateProgress(overall * 100,
-              `Q${qi + 1}/${totalQ} | ${year}年: ${yearCount}/${yearTotal} 件 | 合計: ${allCount} 件`);
-          }, signal);
-
-      } else if (queries.length === 1) {
-        rawPapers = await OpenAlexAPI.fetchBatch(
-          queries[0], params, maxResults,
-          (current, total) => {
-            UIController.updateProgress(Math.min(current / Math.max(total, 1), 1) * 100,
-              `取得中: ${current} / ${total} 件`);
-          }, signal);
-
-      } else {
-        rawPapers = await OpenAlexAPI.fetchMultiQuery(
-          queries, params, maxResults,
-          (qi, totalQ, current, total) => {
-            const overall = (qi / totalQ) + (1 / totalQ) * Math.min(current / Math.max(total, 1), 1);
-            UIController.updateProgress(overall * 100,
-              `クエリ ${qi + 1}/${totalQ}: ${current}/${total} 件`);
-          }, signal);
-      }
-
-      UIController.updateProgress(100, '完了');
+      const rawPapers = await this._fetchRawPapers(queries, params, yearlyMode, yearFrom, yearTo, maxResults, signal);
+      UIController.updateProgress(92, collectorPlan ? 'Collector内部フィルタを適用中...' : 'データ整形中...');
 
       let tableData = rawPapers.map(p => OpenAlexAPI.transformPaper(p));
+      const candidateCountBeforeLang = tableData.length;
 
       // OpenALEXの language:en は要約ベース判定のため、タイトルだけ多言語の論文が混入する。
       // CJK統合漢字 / ひらがな / カタカナ / ハングル / キリル / ヘブライ / アラビア / タイ / デーヴァナーガリー を検出。
@@ -2681,13 +4066,32 @@ const SearchController = {
         droppedByLang = before - tableData.length;
       }
 
+      let collectorStats = null;
+      if (collectorPlan) {
+        const filtered = CollectorQuery.applyToPapers(tableData, collectorPlan);
+        tableData = filtered.rows;
+        collectorStats = {
+          enabled: true,
+          candidateCount: filtered.candidateCount,
+          candidateCountBeforeLang,
+          matchedCount: filtered.matchedCount,
+          droppedCount: filtered.droppedCount,
+          candidateOnly: filtered.candidateOnly,
+          queryCount: queries.length,
+          warnings: collectorPlan.warnings || [],
+        };
+        AppState.collectorStats = collectorStats;
+      }
+
+      UIController.updateProgress(100, '完了');
+
       AppState.papers = rawPapers;
       AppState.tableData = tableData;
       AppState.currentPage = 0;
       AppState.sortColumn = 'year';
       AppState.sortDirection = 'desc';
 
-      this.renderResults(tableData, queries.length, droppedByLang);
+      this.renderResults(tableData, queries.length, droppedByLang, collectorStats);
 
     } catch (e) {
       if (e.name === 'AbortError') {
@@ -2703,16 +4107,21 @@ const SearchController = {
   },
 
   cancelSearch() {
-    if (AppState.abortController) {
-      AppState.abortController.abort();
-    }
+    if (AppState.abortController) AppState.abortController.abort();
   },
 
-  renderResults(data, queryCount, droppedByLang = 0) {
+  renderResults(data, queryCount, droppedByLang = 0, collectorStats = null) {
+    const candidateCard = document.getElementById('metricCandidateCard');
+    const matchedCard = document.getElementById('metricCollectorMatchedCard');
+    const droppedCard = document.getElementById('metricCollectorDroppedCard');
+    const collectorCards = [candidateCard, matchedCard, droppedCard].filter(Boolean);
+
     if (!data.length) {
       let emptyMsg = '該当する論文が見つかりませんでした。';
+      if (collectorStats && collectorStats.enabled) emptyMsg += `（OpenAlex候補 ${collectorStats.candidateCount.toLocaleString()} 件、内部除外 ${collectorStats.droppedCount.toLocaleString()} 件）`;
       if (droppedByLang > 0) emptyMsg += `（CJK等タイトル ${droppedByLang} 件を除外しました）`;
       UIController.showToast(emptyMsg, 'error');
+      collectorCards.forEach(c => c.classList.add('hidden'));
       return;
     }
 
@@ -2728,14 +4137,31 @@ const SearchController = {
     document.getElementById('metricAbstract').textContent = absCount.toLocaleString();
     document.getElementById('metricPeriod').textContent = years.length ? `${minY}-${maxY}` : '-';
 
+    if (collectorStats && collectorStats.enabled) {
+      collectorCards.forEach(c => c.classList.remove('hidden'));
+      document.getElementById('metricCandidate').textContent = collectorStats.candidateCount.toLocaleString();
+      document.getElementById('metricCollectorMatched').textContent = collectorStats.matchedCount.toLocaleString();
+      document.getElementById('metricCollectorDropped').textContent = collectorStats.droppedCount.toLocaleString();
+    } else {
+      collectorCards.forEach(c => c.classList.add('hidden'));
+    }
+
     const { cagr, trend } = this.calculateCAGR(data);
     document.getElementById('metricCAGR').textContent = cagr !== null ? `${(cagr * 100).toFixed(1)}%` : '-';
     document.getElementById('metricTrend').textContent = trend;
 
     let msg = `論文 ${data.length} 件を取得しました（要約あり: ${absCount} 件）。`;
-    if (queryCount > 1) msg += `（${queryCount} クエリ統合、重複除去済み）`;
+    if (collectorStats && collectorStats.enabled) {
+      msg += ` OpenAlex候補 ${collectorStats.candidateCount.toLocaleString()} 件 → 内部一致 ${collectorStats.matchedCount.toLocaleString()} 件。`;
+      if (collectorStats.candidateOnly) msg += ' TX/FT候補取得のみのため内部厳密判定は未実施。';
+    } else if (queryCount > 1) {
+      msg += `（${queryCount} クエリ統合、重複除去済み）`;
+    }
     if (droppedByLang > 0) msg += ` 🌐 CJK等タイトル ${droppedByLang} 件を除外`;
     UIController.showToast(msg, 'success');
+    if (collectorStats && collectorStats.warnings && collectorStats.warnings.length) {
+      collectorStats.warnings.forEach(w => UIController.showToast(w, 'error'));
+    }
 
     TableRenderer.sortAndRender();
     ChartRenderer.renderTrendBar();
@@ -2779,10 +4205,10 @@ const SearchController = {
     if (nYears > 0 && firstNonZero > 0 && lastVal > 0) {
       cagr = Math.pow(lastVal / firstNonZero, 1 / nYears) - 1;
     }
-
     return { cagr, trend, slope };
   }
 };
+
 
 // Table Renderer
 const TableRenderer = {
@@ -2817,6 +4243,13 @@ const TableRenderer = {
       const doiLink = row.doi ? `<a href="https://doi.org/${this.escapeHtml(row.doi)}" target="_blank" rel="noopener">Link</a>` : '';
       const authorsDisplay = row.authors.length > 80 ? row.authors.substring(0, 80) + '...' : row.authors;
       const instDisplay = (row.institutions || '').length > 80 ? row.institutions.substring(0, 80) + '...' : (row.institutions || '');
+      const matchMeta = row.collector_match
+        ? `${this.escapeHtml(row.collector_match_field || '')}${row.collector_match_operator ? ' / ' + this.escapeHtml(row.collector_match_operator) : ''}${row.collector_match_distance !== '' && row.collector_match_distance != null ? ' / 距離 ' + this.escapeHtml(String(row.collector_match_distance)) : ''}`
+        : '';
+      const matchSnippet = row.collector_match_snippet_html || this.escapeHtml(row.collector_match_snippet || '');
+      const matchCell = row.collector_match
+        ? `<span class="match-meta">${matchMeta}</span>${matchSnippet || this.escapeHtml(row.collector_match)}`
+        : '';
       return `<tr>
         <td class="title-cell" title="${this.escapeHtml(row.abstract || row.title)}">${this.escapeHtml(row.title)}</td>
         <td>${row.year || ''}</td>
@@ -2824,6 +4257,7 @@ const TableRenderer = {
         <td class="authors-cell" title="${this.escapeHtml(row.institutions || '')}">${this.escapeHtml(instDisplay)}</td>
         <td>${this.escapeHtml(row.venue)}</td>
         <td style="text-align:right">${(row.citation_count || 0).toLocaleString()}</td>
+        <td class="match-cell">${matchCell}</td>
         <td>${doiLink}</td>
       </tr>`;
     }).join('');
@@ -6050,7 +7484,7 @@ const Exporter = {
       UIController.showToast('ダウンロードするデータがありません。', 'error');
       return;
     }
-    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script', 'primary_topic', 'topics', 'referenced_works_count', 'referenced_works', 'funder_names', 'funder_ids', 'award_ids', 'funding_sources', 'crossref_funder_names', 'crossref_award_ids', 'nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles'];
+    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script', 'primary_topic', 'topics', 'referenced_works_count', 'referenced_works', 'collector_query', 'collector_candidate_query', 'collector_match', 'collector_match_field', 'collector_match_operator', 'collector_match_distance', 'collector_match_snippet', 'funder_names', 'funder_ids', 'award_ids', 'funding_sources', 'crossref_funder_names', 'crossref_award_ids', 'nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles'];
     const _rows = [columns];
     AppState.tableData.forEach(row => {
       FundingRenderer._syncFundingFields(row);
@@ -6069,7 +7503,7 @@ const Exporter = {
         return row[col] == null ? '' : row[col];
       }));
     });
-    this._downloadCSVText(_rows, `openalex_collector_v4_papers_${new Date().toISOString().slice(0, 10)}.csv`);
+    this._downloadCSVText(_rows, `openalex_collector_v5_papers_${new Date().toISOString().slice(0, 10)}.csv`);
   },
 
 
@@ -6613,6 +8047,14 @@ const Importer = {
             topics: splitSemi(row.topics || ''),
             referenced_works: refs,
             referenced_works_count: parseInt(row.referenced_works_count) || refs.length,
+            collector_query: row.collector_query || '',
+            collector_candidate_query: row.collector_candidate_query || '',
+            collector_match: row.collector_match || '',
+            collector_match_field: row.collector_match_field || '',
+            collector_match_operator: row.collector_match_operator || '',
+            collector_match_distance: row.collector_match_distance || '',
+            collector_match_snippet: row.collector_match_snippet || '',
+            collector_match_snippet_html: '',
             funders,
             awards,
             funder_names: funderNames.join('; '),
@@ -6742,6 +8184,8 @@ const UIController = {
   },
 
   init() {
+    if (typeof CollectorQuery !== 'undefined' && CollectorQuery.initCommandUI) CollectorQuery.initCommandUI();
+
     document.querySelectorAll('#pubTypeChips .chip').forEach(chip => {
       chip.addEventListener('click', () => chip.classList.toggle('active'));
     });
@@ -6765,6 +8209,17 @@ const UIController = {
         input.min = '50';
         input.step = '50';
       }
+    });
+
+    const previewIds = ['searchMode', 'searchScope', 'collectorGroupWidth', 'collectorMaxCandidateQueries'];
+    previewIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => {
+        if (id === 'searchMode' && typeof CollectorQuery !== 'undefined' && CollectorQuery.updateSearchModeUI) CollectorQuery.updateSearchModeUI();
+        if (document.getElementById('queryPreview') && !document.getElementById('queryPreview').classList.contains('hidden')) {
+          CollectorQuery.previewFromUI();
+        }
+      });
     });
   }
 };
