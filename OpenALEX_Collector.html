@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OpenALEX Collector v5.0</title>
+<title>OpenALEX Collector v6.0</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a73e8'/%3E%3Cstop offset='1' stop-color='%230d47a1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='12' fill='url(%23g)'/%3E%3Crect x='10' y='22' width='28' height='36' rx='2' fill='%23bbdefb' opacity='.6'/%3E%3Crect x='15' y='17' width='28' height='36' rx='2' fill='%23e3f2fd' opacity='.85'/%3E%3Crect x='20' y='12' width='28' height='36' rx='2' fill='%23ffffff'/%3E%3Crect x='24' y='18' width='16' height='2.5' rx='1' fill='%231565c0'/%3E%3Crect x='24' y='25' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='29' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='33' width='16' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='37' width='20' height='1.5' fill='%235f6368'/%3E%3Crect x='24' y='41' width='14' height='1.5' fill='%235f6368'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/vis-network@9/standalone/umd/vis-network.min.js"></script>
@@ -636,7 +636,7 @@ td a:hover { text-decoration: underline; }
 }
 
 
-/* --- Collector Query DSL v5.0 --- */
+/* --- Collector Query DSL v6.0 --- */
 .query-preview-box {
   margin-top: 10px;
   padding: 12px 14px;
@@ -905,7 +905,7 @@ mark.query-hit {
 @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
 
-/* --- Command-line query builder v5.0 --- */
+/* --- Command-line query builder v6.0 --- */
 .command-panel {
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
@@ -983,15 +983,260 @@ select:disabled {
   }
 }
 
+
+/* --- 著者・機関名寄せ v6.0 --- */
+.identity-diagnostics {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: #fbfdff;
+  padding: 12px;
+}
+.identity-diagnostics .identity-metric-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.identity-diagnostics .identity-metric-card {
+  border: 1px solid rgba(26,115,232,0.18);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  padding: 10px;
+}
+.identity-diagnostics .identity-metric-card .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+.identity-diagnostics .identity-metric-card .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 3px;
+}
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+.identity-small-table {
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+.identity-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.identity-status {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.identity-key {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.identity-gui-note {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(26,115,232,0.18);
+  background: #f8fbff;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.identity-mode-status {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.modal-window.modal-wide {
+  width: min(1120px, 96vw);
+}
+.identity-workbench {
+  display: grid;
+  grid-template-columns: minmax(520px, 1.2fr) minmax(360px, 0.8fr);
+  gap: 14px;
+}
+.identity-workbench-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+.identity-workbench-toolbar .form-group {
+  margin-bottom: 0;
+  min-width: 220px;
+}
+.identity-workbench-table {
+  max-height: 440px;
+  overflow: auto;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+}
+.identity-workbench-table table {
+  font-size: 12px;
+}
+.identity-workbench-table td,
+.identity-workbench-table th {
+  padding: 7px 8px;
+}
+.identity-workbench-detail {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  background: #fff;
+  max-height: 560px;
+  overflow: auto;
+}
+.identity-workbench-detail .identity-key {
+  word-break: break-all;
+}
+.identity-chip-inline {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 12px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-size: 11px;
+  margin: 2px 4px 2px 0;
+}
+.identity-action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+}
+.identity-action-bar input[type="text"] {
+  max-width: 280px;
+}
+.identity-mini-help {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 6px 0 10px;
+}
+@media (max-width: 900px) {
+  .identity-workbench { grid-template-columns: 1fr; }
+}
+
+
+
+.identity-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 16px 0 8px;
+  padding-left: 8px;
+  border-left: 3px solid var(--primary);
+}
+.identity-workbench-hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 6px 0 10px;
+}
+.identity-action-panel {
+  border: 1px solid var(--border-light);
+  background: #fbfdff;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin: 10px 0 14px;
+}
+.identity-action-panel .mini-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-end;
+  margin: 8px 0 10px;
+}
+.identity-action-panel .merge-input {
+  min-width: 280px;
+  flex: 1 1 320px;
+}
+.identity-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: #fff;
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin: 2px 4px 2px 0;
+}
+.identity-candidate-table td,
+.identity-candidate-table th { font-size: 12px; }
+.identity-workbench-empty {
+  padding: 14px;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.identity-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  font-size: 11px;
+  font-weight: 500;
+  margin: 2px 4px 2px 0;
+  white-space: nowrap;
+}
+.identity-badge.warn {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+.identity-badge.merge {
+  background: var(--success-bg);
+  color: var(--success);
+}
+.identity-merge-note {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.identity-browser-table tr.identity-row-merged td {
+  background: #f7fbf8;
+}
+.identity-browser-table tr.identity-row-alias td {
+  background: #fffaf2;
+}
+.identity-action-panel.compact {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  margin: 8px 0 12px;
+}
+
+
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <header class="app-header">
-  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v5.0</span></h1>
+  <h1>OpenALEX Collector <span style="font-size:16px;background:rgba(255,255,255,0.25);padding:2px 10px;border-radius:6px;vertical-align:middle;margin-left:6px;">v6.0</span></h1>
   <div class="tagline" style="font-size:15px;font-style:italic;opacity:0.95;margin-top:6px;letter-spacing:0.5px;">— すべての論文は、誰かの肩である —</div>
-  <div class="subtitle" style="margin-top:6px;">OpenALEX APIを活用した学術論文・資金情報分析ツール</div>
+  <div class="subtitle" style="margin-top:6px;">OpenALEX APIを活用した学術論文・資金情報・名寄せ分析ツール</div>
   <div class="badge">Powered by OpenAlex API</div>
 </header>
 
@@ -1126,7 +1371,7 @@ select:disabled {
         <div class="query-example"><strong>例:</strong><br><code>#01&nbsp;&nbsp;TI=(solid adj3 electrolyte)</code><br><code>#02&nbsp;&nbsp;AB=((degradation AND capacity) near8 (mechanism OR fade*))</code><br><code>#03&nbsp;&nbsp;TA=(review)</code><br><code>T=(#01 AND #02) AND NOT #03</code></div>
         <div class="alert alert-warning" style="margin-top:12px;">
           <strong>注意:</strong>
-          <span>厳密な内部近傍判定は <code>TI</code> / <code>AB</code> / <code>TA</code> が対象です。<code>TX</code> / <code>FT</code> はOpenAlex索引で候補取得できますが、本文全文がCollector内部に無い場合、near/adjの厳密検証とスニペット表示は行いません。<code>TA</code> のnear/adjはタイトルと要旨をまたがず、それぞれの中で判定します。</span>
+          <span>内部除外が発生するのは、原則として <code>TI</code> / <code>AB</code> / <code>TA</code> に <code>nearN</code> / <code>adjN</code> を使った場合だけです。通常の <code>TI</code> / <code>AB</code> / <code>TA</code>、Boolean、ワイルドカードではOpenAlex候補をそのまま採用します。<code>TA</code> のnear/adjはタイトル＋要旨を連結した仮想フィールドで判定します。<code>TX</code> / <code>FT</code> はOpenAlex索引による候補取得中心です。</span>
         </div>
       </div>
     </details>
@@ -1134,14 +1379,14 @@ select:disabled {
     <div class="form-group">
       <label for="institutionFilter">所属機関フィルタ（機関名を入力、キーワードとAND検索）</label>
       <input type="text" id="institutionFilter" placeholder="例: The University of Texas at Austin; Meijo University（セミコロン区切りで複数指定可、OR検索）">
-      <div class="form-hint">空欄の場合はフィルタなし。セミコロン（;）区切りで複数機関をOR指定できます。機関名の一部でも検索可能です。</div>
+      <div class="form-hint">空欄の場合はフィルタなし。セミコロン（;）区切りで複数機関をOR指定できます。OpenAlex機関ID（例: I136199984 / https://openalex.org/I...）も直接指定できます。取得後の分析では「著者・機関名寄せ」によりID/ROR基準で集計します。</div>
       <div id="institutionResolveStatus" class="hidden" style="margin-top:6px;"></div>
     </div>
 
     <div class="form-group">
       <label for="authorFilter">著者フィルタ（著者名を入力、キーワード・機関とAND検索）</label>
       <input type="text" id="authorFilter" placeholder="例: Akira Yoshino; John Goodenough（セミコロン区切りで複数指定可、AND検索）">
-      <div class="form-hint">空欄の場合はフィルタなし。セミコロン（;）区切りで複数著者を指定すると、すべての著者を含む論文（AND）を抽出します。同名異人がある場合は最も引用数の多い著者が自動選択されます（解決後の正式名はステータスバーに表示されます）。</div>
+      <div class="form-hint">空欄の場合はフィルタなし。セミコロン（;）区切りで複数著者を指定すると、すべての著者を含む論文（AND）を抽出します。OpenAlex著者ID（例: A123... / https://openalex.org/A...）も直接指定できます。取得後の分析では「著者・機関名寄せ」によりAuthor ID/ORCID基準で集計します。</div>
       <div id="authorResolveStatus" class="hidden" style="margin-top:6px;"></div>
     </div>
 
@@ -1293,6 +1538,100 @@ select:disabled {
         <div class="metric-value" id="metricTrend">-</div>
         <div class="metric-label">トレンド</div>
       </div>
+    </div>
+
+    <!-- IDENTITY RESOLUTION -->
+    <div class="card" id="identityCard">
+      <div class="card-title"><span class="icon">ID</span> 著者・機関名寄せ</div>
+      <div class="alert alert-info">
+        <strong>名寄せ:</strong>
+        <span>著者はOpenAlex Author ID / ORCID、機関はOpenAlex Institution ID / RORを優先して集計します。下のワークベンチで、キーごとの論文、共著者・共同研究先、Topic、同じ名前の候補を確認しながらクリック操作で統合・分離できます。</span>
+      </div>
+
+      <div class="identity-section-title">機関集計単位</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="institutionIdentityMode">機関集計単位</label>
+          <select id="institutionIdentityMode" onchange="IdentityManager.setInstitutionMode(this.value)">
+            <option value="exact" selected>個別ID（OpenAlex Institution ID / ROR）</option>
+            <option value="lineage">親機関寄せ（名称が分かる親だけ）</option>
+            <option value="custom">統合マップ優先</option>
+          </select>
+          <div class="form-hint">通常は「個別ID」が安全です。親機関寄せではOpenAlex lineageを使いますが、名称が取得できた親IDだけに集約します。名称不明の親IDには寄せず、元の機関名を維持するため、IDだけの「親機関 I...」ノードは作りません。</div>
+          <div id="identityLineageStatus" class="identity-status" style="margin-top:6px;"></div>
+        </div>
+      </div>
+
+      <div class="identity-browser-box">
+        <h4>名寄せワークベンチ</h4>
+        <div class="alert alert-info" style="margin-bottom:10px;">
+          <strong>使い方:</strong>
+          <span>対象を「著者」または「機関」に切り替え、行の「詳細・名寄せ」を開いてください。ポップアップ内で論文、共著者/共同研究先、Topic、同じ名前の候補を確認しながら統合できます。「分離」はクリックで作成した統合ルールを削除し、OpenAlex ID/RORまたは「名前のみ（IDなし）」の元単位へ戻す操作です。</span>
+        </div>
+        <div class="form-row" style="margin-bottom:8px;">
+          <div class="form-group">
+            <label for="identityBrowserType">対象</label>
+            <select id="identityBrowserType" onchange="IdentityManager.renderBrowser()">
+              <option value="author">著者</option>
+              <option value="institution">機関</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="identityBrowserView">表示</label>
+            <select id="identityBrowserView" onchange="IdentityManager.renderBrowser()">
+              <option value="all" selected>すべて（名寄せ後）</option>
+              <option value="sameName">同じ名前・複数キー候補</option>
+              <option value="nameOnly">名前のみ（IDなし）</option>
+              <option value="manual">統合済み（結合単位）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="identityBrowserSort">並び順</label>
+            <select id="identityBrowserSort" onchange="IdentityManager.renderBrowser()">
+              <option value="name_asc" selected>名前順（同名を並べる）</option>
+              <option value="same_name_desc">同名候補を優先</option>
+              <option value="name_desc">名前逆順</option>
+              <option value="count_desc">論文件数順</option>
+              <option value="citations_desc">被引用数順</option>
+              <option value="avg_citations_desc">平均被引用順</option>
+              <option value="hindex_desc">h-index順</option>
+            </select>
+            <div class="form-hint">名前順にすると、同じ著者名・機関名の候補が隣接します。</div>
+          </div>
+          <div class="form-group">
+            <label for="identityBrowserSearch">絞り込み</label>
+            <input type="text" id="identityBrowserSearch" placeholder="表示名、キー、Topic、共著者/共同研究先" oninput="IdentityManager.queueRenderBrowser()">
+          </div>
+          <div class="form-group">
+            <label for="identityBrowserLimit">表示件数</label>
+            <select id="identityBrowserLimit" onchange="IdentityManager.renderBrowser()">
+              <option value="50" selected>1ページ50件</option>
+              <option value="100">1ページ100件</option>
+              <option value="200">1ページ200件</option>
+              <option value="500">1ページ500件</option>
+              <option value="1000">1ページ1,000件</option>
+              <option value="all">全件表示（ページなし）</option>
+            </select>
+            <div class="form-hint">全件表示は大量データでは描画に時間がかかる場合があります。名前順・絞り込みと併用すると確認しやすくなります。</div>
+          </div>
+        </div>
+        <div class="export-row" style="margin-top:0;">
+          <button class="btn btn-secondary btn-sm" onclick="IdentityManager.renderBrowser()">一覧を更新</button>
+          <button class="btn btn-primary btn-sm" onclick="IdentityManager.mergeSelectedFromBrowser()">チェックしたキーを統合</button>
+          <button class="btn btn-secondary btn-sm" onclick="IdentityManager.separateSelectedFromBrowser()">チェックしたキーを分離</button>
+          <button class="btn btn-secondary btn-sm" onclick="IdentityManager.renderDiagnostics()">診断を更新</button>
+          <button class="btn btn-secondary btn-sm" onclick="IdentityManager.exportMap()">名寄せマップをJSON出力</button>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('identityMapUpload').click()">名寄せマップを読込</button>
+          <button class="btn btn-secondary btn-sm" onclick="IdentityManager.resetMap()">名寄せマップをリセット</button>
+          <input type="file" id="identityMapUpload" accept=".json" style="display:none" onchange="IdentityManager.importMap(this)">
+        </div>
+        <div class="form-hint" style="margin-top:6px;">一括統合では、表示順で最初にチェックされたキーを統合先にします。統合先を明示したい場合は、行の「詳細・名寄せ」を開いて選択してください。</div>
+        <div id="identityBrowserStatus" class="identity-status" style="margin-top:8px;"></div>
+        <div id="identityBrowser" class="table-wrapper" style="margin-top:10px;"></div>
+      </div>
+
+      <div id="identityRules" class="table-wrapper" style="margin-top:12px;"></div>
+      <div id="identityDiagnostics" style="margin-top:12px;"></div>
     </div>
 
     <!-- DATA TABLE -->
@@ -1705,7 +2044,9 @@ select:disabled {
       <button class="tab-btn" onclick="UIController.switchTab('awardRank', this)">C. 助成番号ランキング</button>
       <button class="tab-btn" onclick="UIController.switchTab('funderInst', this)">D. 資金源×機関</button>
       <button class="tab-btn" onclick="UIController.switchTab('funderInstMatrix', this)">E. 資金源×機関マトリクス</button>
-      <button class="tab-btn" onclick="UIController.switchTab('externalFunding', this)">F. 外部補完</button>
+      <button class="tab-btn" onclick="UIController.switchTab('funderAuthor', this)">F. 資金源×著者</button>
+      <button class="tab-btn" onclick="UIController.switchTab('funderAuthorMatrix', this)">G. 資金源×著者マトリクス</button>
+      <button class="tab-btn" onclick="UIController.switchTab('externalFunding', this)">H. 外部補完</button>
     </div>
 
     <!-- Tab A: Funder Ranking -->
@@ -1822,7 +2163,47 @@ select:disabled {
       </div>
     </div>
 
-    <!-- Tab F: External enrichment -->
+
+    <!-- Tab F: Funder x Author -->
+    <div class="tab-panel" id="panel-funderAuthor">
+      <div class="chart-controls">
+        <div class="form-group" style="width:150px;">
+          <label for="topNFunderAuthor">表示数</label>
+          <input type="number" id="topNFunderAuthor" min="5" max="50" value="20" onchange="FundingRenderer.renderFunderAuthor()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.renderFunderAuthor()">描画</button>
+      </div>
+      <div class="form-hint">資金提供機関と著者の組み合わせを集計します。「どの資金が、どの著者の論文群に現れているか」を確認できます。著者名は名寄せ後の表示単位で集計します。</div>
+      <div class="chart-container" id="funderAuthorContainer">
+        <canvas id="chartFunderAuthor"></canvas>
+      </div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartPNG('funderAuthor', 'funder_author_ranking.png')">PNGダウンロード</button>
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('funderAuthor', 'funder_author_full.csv')">CSVダウンロード（全ペア）</button>
+      </div>
+    </div>
+
+    <!-- Tab G: Funder x Author Matrix -->
+    <div class="tab-panel" id="panel-funderAuthorMatrix">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="funderAuthorMatrixRows">対象資金源数</label>
+          <input type="number" id="funderAuthorMatrixRows" min="5" max="25" value="12" onchange="FundingRenderer.renderFunderAuthorMatrix()">
+        </div>
+        <div class="form-group" style="width:160px;">
+          <label for="funderAuthorMatrixCols">対象著者数</label>
+          <input type="number" id="funderAuthorMatrixCols" min="5" max="25" value="12" onchange="FundingRenderer.renderFunderAuthorMatrix()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="FundingRenderer.renderFunderAuthorMatrix()">描画</button>
+      </div>
+      <div class="matrix-tab-note">上位資金源 × 上位著者のマトリクスです。色が濃いほど、その資金源と著者の組み合わせで現れる論文数が多いことを示します。セルをクリックすると該当論文一覧が開きます。</div>
+      <div id="funderAuthorMatrixContainer" class="collab-matrix-wrapper" style="margin-top:12px; max-height:700px;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('funderAuthorMatrix', 'funder_author_matrix.csv')">CSVダウンロード（マトリクス）</button>
+      </div>
+    </div>
+
+    <!-- Tab H: External enrichment -->
     <div class="tab-panel" id="panel-externalFunding">
       <div class="alert alert-warning">
         <strong>外部補完:</strong>
@@ -1871,7 +2252,7 @@ select:disabled {
     <div class="alert alert-info">
       <strong>Topic分析:</strong>
       <span>
-        OpenAlex の <code>primary_topic</code> / <code>topics</code> をもとに、研究テーマの規模・年次推移・新興トピック・機関や資金源との関係を分析します。
+        OpenAlex の <code>primary_topic</code> / <code>topics</code> をもとに、研究テーマの規模・年次推移・新興トピック・機関・著者・資金源との関係を分析します。
         組み合わせ分析に有効な箇所は、棒グラフに加えてマトリクス（ヒートマップ）でも表示できます。
       </span>
     </div>
@@ -1884,7 +2265,8 @@ select:disabled {
       <button class="tab-btn" onclick="UIController.switchTab('topicFunder', this)">E. Topic×資金源</button>
       <button class="tab-btn" onclick="UIController.switchTab('topicYearMatrix', this)">F. Topic×年マトリクス</button>
       <button class="tab-btn" onclick="UIController.switchTab('topicInstMatrix', this)">G. Topic×機関マトリクス</button>
-      <button class="tab-btn" onclick="UIController.switchTab('topicFunderMatrix', this)">H. Topic×資金源マトリクス</button>
+      <button class="tab-btn" onclick="UIController.switchTab('authorTopicMatrix', this)">H. 著者×Topicマトリクス</button>
+      <button class="tab-btn" onclick="UIController.switchTab('topicFunderMatrix', this)">I. Topic×資金源マトリクス</button>
     </div>
 
     <div class="tab-panel active" id="panel-topicRank">
@@ -2022,6 +2404,26 @@ select:disabled {
       </div>
     </div>
 
+
+    <div class="tab-panel" id="panel-authorTopicMatrix">
+      <div class="chart-controls">
+        <div class="form-group" style="width:160px;">
+          <label for="matrixAuthorTopicRows">対象著者数</label>
+          <input type="number" id="matrixAuthorTopicRows" min="5" max="25" value="10" onchange="TopicRenderer.renderAuthorTopicMatrix()">
+        </div>
+        <div class="form-group" style="width:160px;">
+          <label for="matrixAuthorTopicCols">対象Topic数</label>
+          <input type="number" id="matrixAuthorTopicCols" min="5" max="25" value="10" onchange="TopicRenderer.renderAuthorTopicMatrix()">
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="TopicRenderer.renderAuthorTopicMatrix()">描画</button>
+      </div>
+      <div class="matrix-tab-note">上位著者 × 上位Topicのマトリクスです。色が濃いほど件数が多く、セルをクリックすると該当論文一覧が開きます。著者は名寄せ後の表示単位で集計します。</div>
+      <div id="authorTopicMatrixContainer" class="collab-matrix-wrapper" style="margin-top:12px; max-height:700px;"></div>
+      <div class="export-row">
+        <button class="btn btn-secondary btn-sm" onclick="Exporter.downloadChartCSV('authorTopicMatrix', 'author_topic_matrix.csv')">CSVダウンロード（マトリクス）</button>
+      </div>
+    </div>
+
     <div class="tab-panel" id="panel-topicFunderMatrix">
       <div class="chart-controls">
         <div class="form-group" style="width:160px;">
@@ -2044,7 +2446,7 @@ select:disabled {
 
   <!-- Collaboration / Author Network Graphs -->
   <div class="card">
-    <div class="card-title"><span class="icon">N</span> ネットワーク図（共同研究・共著）</div>
+    <div class="card-title"><span class="icon">＊</span> ネットワーク図（共同研究・共著）</div>
 
     <div class="alert alert-info">
       <strong>ネットワーク分析:</strong>
@@ -2242,6 +2644,13 @@ const AppState = {
   networks: {},
   collectorPlan: null,
   collectorStats: null,
+  identityMaps: {
+    author: { version: 1, aliases: {} },
+    institution: { version: 1, aliases: {} },
+  },
+  identityLabelCache: { author: {}, institution: {} },
+  institutionLineageLabelCache: {},
+  institutionAggregationMode: 'exact',
 };
 
 // OpenAlex API Module
@@ -2257,10 +2666,23 @@ const OpenAlexAPI = {
     return new Promise(r => setTimeout(r, ms));
   },
 
+  _normalizeOpenAlexIdInput(value, prefix) {
+    const v = String(value || '').trim();
+    if (!v) return '';
+    if (/^https:\/\/openalex\.org\/[A-Z]\d+/i.test(v)) return v;
+    const m = v.match(new RegExp(`^${prefix}\\d+$`, 'i'));
+    return m ? `https://openalex.org/${v.toUpperCase()}` : '';
+  },
+
   async resolveInstitution(name, signal = null) {
+    const directId = this._normalizeOpenAlexIdInput(name, 'I');
+    if (directId) return { id: directId, display_name: directId.replace('https://openalex.org/', ''), ror: '', country_code: '', type: '', lineage: [], candidates: [] };
+    if (/^https:\/\/ror\.org\//i.test(String(name || '').trim())) {
+      return { id: '', display_name: String(name).trim(), ror: String(name).trim(), country_code: '', type: '', lineage: [], candidates: [] };
+    }
     const urlParams = new URLSearchParams({
       search: name.trim(),
-      per_page: 5,
+      per_page: 10,
       mailto: this.MAILTO,
     });
     const url = `${this.INST_URL}?${urlParams.toString()}`;
@@ -2269,16 +2691,30 @@ const OpenAlexAPI = {
     const data = await resp.json();
     const results = data.results || [];
     if (!results.length) return null;
+    const top = results[0];
     return {
-      id: results[0].id,  // e.g., "https://openalex.org/I136199984"
-      display_name: results[0].display_name,
+      id: top.id || '',  // e.g., "https://openalex.org/I136199984"
+      display_name: top.display_name || '',
+      ror: top.ror || '',
+      country_code: top.country_code || '',
+      type: top.type || '',
+      lineage: Array.isArray(top.lineage) ? top.lineage : [],
+      works_count: top.works_count || 0,
+      cited_by_count: top.cited_by_count || 0,
+      candidates: results.slice(0, 5).map(r => ({
+        id: r.id || '', display_name: r.display_name || '', ror: r.ror || '',
+        country_code: r.country_code || '', type: r.type || '',
+        works_count: r.works_count || 0, cited_by_count: r.cited_by_count || 0,
+      })),
     };
   },
 
   async resolveAuthor(name, signal = null) {
+    const directId = this._normalizeOpenAlexIdInput(name, 'A');
+    if (directId) return { id: directId, display_name: directId.replace('https://openalex.org/', ''), works_count: 0, cited_by_count: 0, candidates: [] };
     const urlParams = new URLSearchParams({
       search: name.trim(),
-      per_page: 5,
+      per_page: 10,
       mailto: this.MAILTO,
     });
     const url = `${this.AUTHOR_URL}?${urlParams.toString()}`;
@@ -2289,10 +2725,17 @@ const OpenAlexAPI = {
     if (!results.length) return null;
     const top = results[0];
     return {
-      id: top.id,  // e.g., "https://openalex.org/A123..."
-      display_name: top.display_name,
+      id: top.id || '',  // e.g., "https://openalex.org/A123..."
+      display_name: top.display_name || '',
+      orcid: top.orcid || '',
       works_count: top.works_count || 0,
       cited_by_count: top.cited_by_count || 0,
+      last_known_institutions: top.last_known_institutions || [],
+      candidates: results.slice(0, 5).map(r => ({
+        id: r.id || '', display_name: r.display_name || '', orcid: r.orcid || '',
+        works_count: r.works_count || 0, cited_by_count: r.cited_by_count || 0,
+        last_known_institutions: r.last_known_institutions || [],
+      })),
     };
   },
 
@@ -2700,10 +3143,36 @@ const OpenAlexAPI = {
 
   transformPaper(raw) {
     const authorships = raw.authorships || [];
-    const authors = authorships
-      .map(a => (a.author && a.author.display_name) || '')
-      .filter(n => n)
-      .join('; ');
+    const cleanAuthorName = v => this._stripTags(String(v || '').trim());
+    const authorEntities = authorships
+      .map((a, idx) => {
+        const author = a.author || {};
+        const displayName = cleanAuthorName(author.display_name || '');
+        if (!displayName && !author.id) return null;
+        const institutions = (a.institutions || []).map(inst => ({
+          id: inst.id || '',
+          ror: inst.ror || '',
+          display_name: this._stripTags(inst.display_name || ''),
+          country_code: inst.country_code || '',
+          type: inst.type || '',
+          lineage: Array.isArray(inst.lineage) ? inst.lineage : [],
+        })).filter(inst => inst.id || inst.ror || inst.display_name);
+        return {
+          id: author.id || '',
+          display_name: displayName,
+          orcid: author.orcid || '',
+          position: a.author_position || '',
+          is_corresponding: !!a.is_corresponding,
+          order: idx + 1,
+          institutions,
+          raw_affiliation_strings: Array.isArray(a.raw_affiliation_strings) ? a.raw_affiliation_strings.map(s => this._stripTags(s)) : [],
+        };
+      })
+      .filter(Boolean);
+
+    const authors = this._uniq(authorEntities.map(a => a.display_name)).join('; ');
+    const authorIds = this._uniq(authorEntities.map(a => a.id)).join('; ');
+    const authorOrcids = this._uniq(authorEntities.map(a => a.orcid)).join('; ');
 
     let doi = raw.doi || '';
     if (doi) doi = doi.replace('https://doi.org/', '');
@@ -2718,14 +3187,54 @@ const OpenAlexAPI = {
 
     const abstract = this.reconstructAbstract(raw.abstract_inverted_index);
 
-    const instSet = new Set();
+    const instMap = new Map();
     authorships.forEach(a => {
+      const author = a.author || {};
+      const rawAffs = Array.isArray(a.raw_affiliation_strings) ? a.raw_affiliation_strings : [];
       (a.institutions || []).forEach(inst => {
-        const name = inst.display_name || '';
-        if (name) instSet.add(name);
+        const name = this._stripTags(inst.display_name || '');
+        const id = inst.id || '';
+        const ror = inst.ror || '';
+        const key = id || ror || (name ? `name:${name.toLowerCase()}` : '');
+        if (!key) return;
+        if (!instMap.has(key)) {
+          instMap.set(key, {
+            key,
+            id,
+            ror,
+            display_name: name,
+            country_code: inst.country_code || '',
+            type: inst.type || '',
+            lineage: Array.isArray(inst.lineage) ? inst.lineage : [],
+            author_ids: new Set(),
+            author_names: new Set(),
+            raw_affiliation_strings: new Set(),
+          });
+        }
+        const ent = instMap.get(key);
+        if (author.id) ent.author_ids.add(author.id);
+        if (author.display_name) ent.author_names.add(this._stripTags(author.display_name));
+        rawAffs.forEach(s => ent.raw_affiliation_strings.add(this._stripTags(s)));
       });
     });
-    const institutions = [...instSet].join('; ');
+    const institutionEntities = [...instMap.values()].map(ent => ({
+      key: ent.key,
+      id: ent.id,
+      ror: ent.ror,
+      display_name: ent.display_name,
+      country_code: ent.country_code,
+      type: ent.type,
+      lineage: ent.lineage,
+      author_ids: [...ent.author_ids],
+      author_names: [...ent.author_names],
+      raw_affiliation_strings: [...ent.raw_affiliation_strings],
+    }));
+    const institutions = this._uniq(institutionEntities.map(inst => inst.display_name)).join('; ');
+    const institutionIds = this._uniq(institutionEntities.map(inst => inst.id)).join('; ');
+    const institutionRors = this._uniq(institutionEntities.map(inst => inst.ror)).join('; ');
+    const institutionCountries = this._uniq(institutionEntities.map(inst => inst.country_code)).join('; ');
+    const institutionTypes = this._uniq(institutionEntities.map(inst => inst.type)).join('; ');
+    const institutionLineageIds = this._uniq(institutionEntities.flatMap(inst => inst.lineage || [])).join('; ');
 
     const cleanTitle = this._stripTags(raw.title || '');
     // referenced_works: OpenAlex Work ID 配列（例: ["https://openalex.org/W123", ...]）。
@@ -2743,7 +3252,24 @@ const OpenAlexAPI = {
       abstract: this._stripTags(abstract),
       year: raw.publication_year || null,
       authors: this._stripTags(authors),
+      raw_authors: this._stripTags(authors),
+      authors_original: this._stripTags(authors),
+      author_names: this._stripTags(authors),
+      author_ids: authorIds,
+      author_orcids: authorOrcids,
+      author_entities: authorEntities,
+      author_entities_json: JSON.stringify(authorEntities),
       institutions: this._stripTags(institutions),
+      raw_institutions: this._stripTags(institutions),
+      institutions_original: this._stripTags(institutions),
+      institution_names: this._stripTags(institutions),
+      institution_ids: institutionIds,
+      institution_rors: institutionRors,
+      institution_country_codes: institutionCountries,
+      institution_types: institutionTypes,
+      institution_lineage_ids: institutionLineageIds,
+      institution_entities: institutionEntities,
+      institution_entities_json: JSON.stringify(institutionEntities),
       venue: this._stripTags(venue),
       citation_count: raw.cited_by_count || 0,
       publication_date: raw.publication_date || '',
@@ -2769,11 +3295,1510 @@ const OpenAlexAPI = {
       nih_orgs: [],
       nih_pis: [],
       nih_project_titles: [],
+      identity_version: 'v6.0',
     };
   }
 };
 
-// Collector Query DSL v5.0
+// Entity identity resolution / 名寄せマップ v6.0
+const IdentityManager = {
+  STORAGE_KEY: 'openalex_collector_v6_identity_map',
+  _cacheRev: 0,
+  _paperEntityCache: null,
+  _profileCache: null,
+  _labelMapCache: null,
+  _renderBrowserTimer: null,
+  _heavyRenderTimer: null,
+  _institutionLabelCacheToken: '',
+
+  _defaultMaps() {
+    return {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      institutionAggregationMode: 'exact',
+      author: { aliases: {}, labels: {} },
+      institution: { aliases: {}, labels: {} },
+    };
+  },
+
+  init() {
+    this.load();
+    const sel = document.getElementById('institutionIdentityMode');
+    if (sel) sel.value = AppState.institutionAggregationMode || 'exact';
+    this.renderRules();
+    this.renderDiagnostics();
+    this.renderBrowser();
+  },
+  _ensure() {
+    const base = this._defaultMaps();
+    AppState.identityMaps = AppState.identityMaps || {};
+    ['author', 'institution'].forEach(type => {
+      AppState.identityMaps[type] = AppState.identityMaps[type] || {};
+      AppState.identityMaps[type].aliases = AppState.identityMaps[type].aliases || {};
+      AppState.identityMaps[type].labels = AppState.identityMaps[type].labels || {};
+    });
+    if (!AppState.institutionAggregationMode) AppState.institutionAggregationMode = base.institutionAggregationMode;
+    AppState.identityLabelCache = AppState.identityLabelCache || { author: {}, institution: {} };
+    AppState.identityLabelCache.institution = AppState.identityLabelCache.institution || {};
+    this._initCaches();
+  },
+
+  _initCaches() {
+    if (!this._paperEntityCache) this._paperEntityCache = new WeakMap();
+    if (!this._profileCache) this._profileCache = new Map();
+    if (!this._labelMapCache) this._labelMapCache = new Map();
+    if (typeof this._cacheRev !== 'number') this._cacheRev = 0;
+  },
+
+  _bumpIdentityCache() {
+    this._cacheRev = (this._cacheRev || 0) + 1;
+    this._profileCache = new Map();
+    this._labelMapCache = new Map();
+    this._institutionLabelCacheToken = '';
+  },
+
+  _dataSignature(data = AppState.tableData) {
+    const list = Array.isArray(data) ? data : [];
+    if (!list.length) return '0';
+    const idOf = (p) => String((p && (p.paper_id || p.doi || p.title || p.publication_date)) || '');
+    const step = Math.max(1, Math.floor(list.length / 12));
+    const sample = [];
+    for (let i = 0; i < list.length; i += step) sample.push(idOf(list[i]));
+    const last = idOf(list[list.length - 1]);
+    if (sample[sample.length - 1] !== last) sample.push(last);
+    return `${list.length}|${sample.join('|')}`;
+  },
+
+  _profileCacheKey(type, canonical, data = AppState.tableData) {
+    return `${type}|${canonical ? '1' : '0'}|${AppState.institutionAggregationMode || 'exact'}|${this._cacheRev || 0}|${this._dataSignature(data)}`;
+  },
+
+  _paperCache(paper) {
+    this._initCaches();
+    if (!paper || typeof paper !== 'object') return { raw: {}, entities: {} };
+    let cached = this._paperEntityCache.get(paper);
+    if (!cached) {
+      cached = { raw: {}, entities: {} };
+      this._paperEntityCache.set(paper, cached);
+    }
+    return cached;
+  },
+
+  _computedEntityCacheKey(type, canonical) {
+    return `${type}|${canonical ? '1' : '0'}|${AppState.institutionAggregationMode || 'exact'}|${this._cacheRev || 0}`;
+  },
+
+  queueRenderBrowser(delay = 180) {
+    if (this._renderBrowserTimer) clearTimeout(this._renderBrowserTimer);
+    const status = document.getElementById('identityBrowserStatus');
+    if (status) status.textContent = '名寄せ一覧を更新中…';
+    this._renderBrowserTimer = setTimeout(() => {
+      this._renderBrowserTimer = null;
+      this.renderBrowser();
+    }, delay);
+  },
+
+  _scheduleHeavyRenderers(delay = 220) {
+    if (this._heavyRenderTimer) clearTimeout(this._heavyRenderTimer);
+    this._heavyRenderTimer = setTimeout(() => {
+      this._heavyRenderTimer = null;
+      if (!AppState.tableData || !AppState.tableData.length) return;
+      if (typeof FundingRenderer !== 'undefined') FundingRenderer.renderAll();
+      if (typeof TopicRenderer !== 'undefined') TopicRenderer.renderAll();
+    }, delay);
+  },
+
+  _sortBrowserRows(rows, sortKey = 'name_asc') {
+    const collator = this._identityCollator || (this._identityCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' }));
+    const firstName = (r) => {
+      const names = Array.from(r.names || []).filter(Boolean);
+      return this.normalizeName(this.stripDisplayIdSuffix(r.label || names[0] || ''));
+    };
+    const text = (v) => String(v == null ? '' : v);
+    const byName = (a, b) => {
+      const n = collator.compare(firstName(a), firstName(b));
+      if (n) return n;
+      const l = collator.compare(text(a.label), text(b.label));
+      if (l) return l;
+      return collator.compare(text(this.shortKey(a.key)), text(this.shortKey(b.key)));
+    };
+    const desc = (getter) => (a, b) => {
+      const d = (Number(getter(b)) || 0) - (Number(getter(a)) || 0);
+      return d || byName(a, b);
+    };
+    const sorted = rows.slice();
+    switch (sortKey) {
+      case 'same_name_desc':
+        sorted.sort(desc(r => r.sameNameKeyCount || 1));
+        break;
+      case 'name_desc':
+        sorted.sort((a, b) => -byName(a, b));
+        break;
+      case 'count_desc':
+        sorted.sort(desc(r => r.count));
+        break;
+      case 'citations_desc':
+        sorted.sort(desc(r => r.totalCitations));
+        break;
+      case 'avg_citations_desc':
+        sorted.sort(desc(r => r.avgCitations));
+        break;
+      case 'hindex_desc':
+        sorted.sort(desc(r => r.hIndex));
+        break;
+      case 'name_asc':
+      default:
+        sorted.sort(byName);
+        break;
+    }
+    return sorted;
+  },
+
+
+
+  load() {
+    const base = this._defaultMaps();
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        AppState.identityMaps = {
+          author: {
+            aliases: parsed.author?.aliases || {},
+            labels: parsed.author?.labels || {},
+          },
+          institution: {
+            aliases: parsed.institution?.aliases || {},
+            labels: parsed.institution?.labels || {},
+          },
+        };
+        AppState.institutionAggregationMode = parsed.institutionAggregationMode || 'exact';
+      } else {
+        AppState.identityMaps = { author: base.author, institution: base.institution };
+        AppState.institutionAggregationMode = 'exact';
+      }
+    } catch (e) {
+      AppState.identityMaps = { author: base.author, institution: base.institution };
+      AppState.institutionAggregationMode = 'exact';
+    }
+    this._ensure();
+  },
+
+  save() {
+    this._ensure();
+    const payload = {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      institutionAggregationMode: AppState.institutionAggregationMode || 'exact',
+      author: AppState.identityMaps.author,
+      institution: AppState.identityMaps.institution,
+    };
+    try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify(payload, null, 2)); } catch (e) {}
+    this._bumpIdentityCache();
+  },
+
+  async setInstitutionMode(mode) {
+    AppState.institutionAggregationMode = ['exact', 'lineage', 'custom'].includes(mode) ? mode : 'exact';
+    this.save();
+    if (AppState.institutionAggregationMode === 'lineage') {
+      await this.prefetchLineageParentLabels(true);
+    }
+    this.refreshAnalyses();
+    UIController.showToast('機関集計単位を変更し、名寄せを再適用しました。', 'success');
+  },
+
+  esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  },
+
+  jsArg(s) {
+    // Safe JS string literal for use inside double-quoted HTML attributes.
+    const v = String(s == null ? '' : s)
+      .replace(/\\/g, '\\\\')
+      .replace(/&/g, '\\x26')
+      .replace(/'/g, "\\'")
+      .replace(/"/g, '\\x22')
+      .replace(/\r/g, '\\r')
+      .replace(/\n/g, '\\n')
+      .replace(/</g, '\\x3C')
+      .replace(/>/g, '\\x3E')
+      .replace(/\u2028/g, '\\u2028')
+      .replace(/\u2029/g, '\\u2029');
+    return `'${v}'`;
+  },
+
+  typeLabel(type) {
+    return type === 'author' ? '著者' : '機関';
+  },
+
+  statusLabel(status) {
+    const s = String(status || '').trim();
+    const map = {
+      openalex_id: 'OpenAlex ID',
+      orcid: 'ORCID',
+      ror: 'ROR',
+      lineage: '親機関寄せ',
+      name_only: '名前のみ（IDなし）',
+      manual_merge: '統合済み',
+      gui_merge: '統合済み',
+      gui_bulk_merge: '統合済み',
+      manual_label: '表示名変更済み',
+    };
+    return map[s] || (s ? s.replace(/_/g, ' ') : '');
+  },
+
+  showEntityReviewFromButton(btn) {
+    if (!btn) return;
+    this.showEntityReview(btn.dataset.type || 'author', btn.dataset.key || '');
+  },
+
+  mergePairFromButton(btn) {
+    if (!btn) return;
+    this.mergePairFromReview(btn.dataset.type || 'author', btn.dataset.from || '', btn.dataset.to || '', btn.dataset.label || '');
+  },
+
+  copyKeyFromButton(btn) {
+    if (!btn) return;
+    this.copyKey(btn.dataset.key || '', btn);
+  },
+
+  _splitSemi(value) {
+    if (Array.isArray(value)) return value.map(v => String(v || '').trim()).filter(Boolean);
+    return String(value || '').split(';').map(s => s.trim()).filter(Boolean);
+  },
+
+  _uniq(arr) {
+    return [...new Set((arr || []).map(v => String(v == null ? '' : v).trim()).filter(Boolean))];
+  },
+
+  _parseJson(value, fallback = []) {
+    if (Array.isArray(value)) return value;
+    if (!value || typeof value !== 'string') return fallback;
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  },
+
+  normalizeName(name) {
+    return String(name || '')
+      .normalize('NFKC')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/[\u2018\u2019]/g, "'")
+      .replace(/[\u201C\u201D]/g, '"')
+      .replace(/[.,，、。()（）\[\]{}]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  },
+
+  makeNameKey(name) {
+    const n = this.normalizeName(name);
+    return n ? `name:${n}` : '';
+  },
+
+  cleanKey(key) {
+    const k = String(key || '').trim();
+    if (!k) return '';
+    const m = k.match(/^(?:https?:\/\/openalex\.org\/)?([AI]\d+)$/i);
+    if (m) return `https://openalex.org/${m[1].toUpperCase()}`;
+    if (/^https?:\/\/openalex\.org\/[AI]\d+/i.test(k)) return k.replace(/^http:/i, 'https:');
+    if (/^https?:\/\/ror\.org\//i.test(k)) return k.replace(/^http:/i, 'https:');
+    if (/^ror:/i.test(k)) return `https://ror.org/${k.replace(/^ror:/i, '').trim()}`;
+    if (/^name:/i.test(k)) return this.makeNameKey(k.replace(/^name:/i, ''));
+    if (/^group:/i.test(k)) return `group:${this.normalizeName(k.replace(/^group:/i, ''))}`;
+    return k;
+  },
+
+  shortKey(key) {
+    const k = String(key || '');
+    if (!k) return '';
+    const m = k.match(/openalex\.org\/([AI]\d+)/i);
+    if (m) return m[1];
+    const r = k.match(/ror\.org\/([^/]+)/i);
+    if (r) return `ROR:${r[1]}`;
+    if (k.startsWith('name:')) return `IDなし:${k.slice(5, 24)}${k.length > 24 ? '…' : ''}`;
+    return k.length > 32 ? k.slice(0, 29) + '…' : k;
+  },
+
+  stripDisplayIdSuffix(label) {
+    return String(label || '')
+      .replace(/[\r\n]+/g, ' ')
+      .replace(/\s+\[(?:[AI]\d+|ROR:[^\]]+|IDなし:[^\]]+|name:[^\]]+)\]\s*$/i, '')
+      .trim();
+  },
+
+  _map(type) {
+    this._ensure();
+    return AppState.identityMaps[type] || { aliases: {}, labels: {} };
+  },
+  _rawAuthorEntities(paper) {
+    const cache = this._paperCache(paper);
+    if (cache.raw.author) return cache.raw.author;
+    let raw = this._parseJson(paper.author_entities, []);
+    if (!raw.length) raw = this._parseJson(paper.author_entities_json, []);
+    let entities = [];
+    if (raw.length) {
+      entities = raw.map(a => ({
+        id: a.id || '',
+        orcid: a.orcid || '',
+        display_name: a.display_name || a.name || '',
+        label: a.display_name || a.name || a.id || '',
+        key: a.id || a.orcid || this.makeNameKey(a.display_name || a.name),
+        institutions: Array.isArray(a.institutions) ? a.institutions : [],
+        order: a.order || '',
+        position: a.position || '',
+        is_corresponding: !!a.is_corresponding,
+        status: a.id ? 'openalex_id' : (a.orcid ? 'orcid' : 'name_only'),
+      })).filter(a => a.key || a.display_name);
+    } else {
+      const names = this._splitSemi(paper.authors_original || paper.raw_authors || paper.author_names || paper.authors);
+      const ids = this._splitSemi(paper.author_ids);
+      const orcids = this._splitSemi(paper.author_orcids);
+      entities = names.map((name, i) => ({
+        id: ids[i] || '',
+        orcid: orcids[i] || '',
+        display_name: name,
+        label: name,
+        key: ids[i] || orcids[i] || this.makeNameKey(name),
+        status: ids[i] ? 'openalex_id' : (orcids[i] ? 'orcid' : 'name_only'),
+      }));
+    }
+    cache.raw.author = entities;
+    return entities;
+  },
+
+  _rawInstitutionEntities(paper) {
+    const cache = this._paperCache(paper);
+    if (cache.raw.institution) return cache.raw.institution;
+    let raw = this._parseJson(paper.institution_entities, []);
+    if (!raw.length) raw = this._parseJson(paper.institution_entities_json, []);
+    let entities = [];
+    if (raw.length) {
+      entities = raw.map(inst => ({
+        id: inst.id || '',
+        ror: inst.ror || '',
+        display_name: inst.display_name || inst.name || '',
+        label: inst.display_name || inst.name || inst.id || inst.ror || '',
+        key: inst.id || inst.ror || this.makeNameKey(inst.display_name || inst.name),
+        country_code: inst.country_code || '',
+        type: inst.type || '',
+        lineage: Array.isArray(inst.lineage) ? inst.lineage : this._splitSemi(inst.lineage),
+        status: inst.id ? 'openalex_id' : (inst.ror ? 'ror' : 'name_only'),
+      })).filter(inst => inst.key || inst.display_name);
+    } else {
+      const names = this._splitSemi(paper.institutions_original || paper.raw_institutions || paper.institution_names || paper.institutions);
+      const ids = this._splitSemi(paper.institution_ids);
+      const rors = this._splitSemi(paper.institution_rors);
+      const countries = this._splitSemi(paper.institution_country_codes);
+      const types = this._splitSemi(paper.institution_types);
+      entities = names.map((name, i) => ({
+        id: ids[i] || '',
+        ror: rors[i] || '',
+        display_name: name,
+        label: name,
+        key: ids[i] || rors[i] || this.makeNameKey(name),
+        country_code: countries[i] || '',
+        type: types[i] || '',
+        lineage: [],
+        status: ids[i] ? 'openalex_id' : (rors[i] ? 'ror' : 'name_only'),
+      }));
+    }
+    cache.raw.institution = entities;
+    return entities;
+  },
+
+
+
+  _lineageParentKey(entity) {
+    const ownKey = this.cleanKey(entity.id || entity.key || entity.ror || this.makeNameKey(entity.display_name || entity.name || entity.label));
+    const lineage = Array.isArray(entity.lineage) ? entity.lineage.filter(Boolean) : this._splitSemi(entity.lineage);
+    const cleaned = lineage.map(x => this.cleanKey(x)).filter(Boolean);
+    if (!cleaned.length) return '';
+    if (!ownKey) return cleaned.slice(-1)[0] || '';
+    const parents = cleaned.filter(x => x !== ownKey);
+    return parents.slice(-1)[0] || '';
+  },
+  buildInstitutionLabelCache(data = AppState.tableData) {
+    this._initCaches();
+    const token = `${this._dataSignature(data)}|${Object.keys(AppState.institutionLineageLabelCache || {}).length}|${this._cacheRev || 0}`;
+    if (this._institutionLabelCacheToken === token && AppState.identityLabelCache?.institution) {
+      return AppState.identityLabelCache.institution;
+    }
+    const labels = { ...(AppState.institutionLineageLabelCache || {}) };
+    const list = Array.isArray(data) ? data : [];
+    list.forEach(paper => {
+      this._rawInstitutionEntities(paper).forEach(inst => {
+        const ownKey = this.cleanKey(inst.key || inst.id || inst.ror || this.makeNameKey(inst.display_name || inst.name || inst.label));
+        const name = inst.display_name || inst.name || inst.label || '';
+        // 実際にWork内で名称が取れている機関ID、またはOpenAlexから別途取得した親機関名だけをラベル候補にする。
+        // lineage配列にIDだけ存在する親機関へ、IDだけのまま寄せることはしない。
+        if (ownKey && name && !/^親機関\s/i.test(name) && !/^Parent institution\s/i.test(name)) labels[ownKey] = name;
+      });
+    });
+    this._ensure();
+    AppState.identityLabelCache.institution = labels;
+    this._institutionLabelCacheToken = token;
+    return labels;
+  },
+
+
+
+  _institutionLabelForKey(key) {
+    const clean = this.cleanKey(key);
+    const cache = AppState.identityLabelCache?.institution || {};
+    const lineageCache = AppState.institutionLineageLabelCache || {};
+    return cache[clean] || lineageCache[clean] || '';
+  },
+
+  _collectLineageParentKeys(data = AppState.tableData) {
+    const keys = new Set();
+    const list = Array.isArray(data) ? data : [];
+    list.forEach(paper => {
+      this._rawInstitutionEntities(paper).forEach(inst => {
+        const parent = this._lineageParentKey(inst);
+        if (parent) keys.add(parent);
+      });
+    });
+    return [...keys].filter(k => /^https:\/\/openalex\.org\/I\d+$/i.test(k));
+  },
+
+  async prefetchLineageParentLabels(showStatus = false) {
+    if (!AppState.tableData || !AppState.tableData.length) return;
+    AppState.institutionLineageLabelCache = AppState.institutionLineageLabelCache || {};
+    this.buildInstitutionLabelCache(AppState.tableData);
+    const statusEl = document.getElementById('identityLineageStatus');
+    const existing = AppState.identityLabelCache?.institution || {};
+    const keys = this._collectLineageParentKeys(AppState.tableData)
+      .filter(k => !existing[k] && !AppState.institutionLineageLabelCache[k])
+      .slice(0, 80);
+    if (!keys.length) {
+      if (showStatus && statusEl) statusEl.textContent = '親機関ラベル: 取得済み。名称未取得の親IDは個別機関名のまま表示します。';
+      return;
+    }
+    if (showStatus && statusEl) statusEl.textContent = `親機関ラベルをOpenAlexから取得中: ${keys.length}件`;
+    let ok = 0;
+    for (const key of keys) {
+      try {
+        const short = key.replace('https://openalex.org/', '');
+        const params = new URLSearchParams({ mailto: OpenAlexAPI.MAILTO });
+        const resp = await fetch(`${OpenAlexAPI.INST_URL}/${short}?${params.toString()}`);
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.display_name) {
+            AppState.institutionLineageLabelCache[key] = data.display_name;
+            ok++;
+          }
+        }
+        await OpenAlexAPI.sleep(40);
+      } catch (e) {
+        // ネットワークやCORSの失敗時は親寄せせず、元機関名を維持する。
+      }
+    }
+    this._bumpIdentityCache();
+    this.buildInstitutionLabelCache(AppState.tableData);
+    if (showStatus && statusEl) {
+      statusEl.textContent = ok
+        ? `親機関ラベル: ${ok}件取得しました。名称未取得の親IDは個別機関名のまま表示します。`
+        : '親機関ラベルは取得できませんでした。個別機関名のまま表示します。';
+    }
+  },
+
+  resolveAlias(type, key) {
+    const map = this._map(type);
+    let cur = this.cleanKey(key);
+    const seen = new Set();
+    for (let i = 0; i < 12; i++) {
+      if (!cur || seen.has(cur)) break;
+      seen.add(cur);
+      const alias = map.aliases[cur];
+      if (!alias || !alias.canonical) break;
+      cur = this.cleanKey(alias.canonical);
+    }
+    return cur;
+  },
+
+  _applyCanonical(type, entity, opts = {}) {
+    const canonical = opts.canonical !== false;
+    const originalKey = this.cleanKey(entity.key || entity.id || entity.ror || this.makeNameKey(entity.display_name || entity.name || entity.label));
+    let rawKey = originalKey;
+    let rawStatus = entity.status || (entity.id ? 'openalex_id' : entity.orcid ? 'orcid' : entity.ror ? 'ror' : 'name_only');
+    let lineageLabel = '';
+
+    if (type === 'institution' && canonical) {
+      const mode = AppState.institutionAggregationMode || 'exact';
+      if (mode === 'lineage') {
+        const parent = this._lineageParentKey(entity);
+        const parentLabel = parent ? this._institutionLabelForKey(parent) : '';
+        // 親IDの表示名を取得できた場合だけ親寄せする。
+        // 名称不明の親IDへ寄せると「親機関 I...」のようなノードになり、分析上もGUI上も扱いづらいため元の機関単位を維持する。
+        if (parent && parentLabel) {
+          rawKey = this.cleanKey(parent);
+          rawStatus = 'lineage';
+          lineageLabel = parentLabel;
+        }
+      }
+    }
+
+    const map = this._map(type);
+    const key = canonical ? this.resolveAlias(type, rawKey) : rawKey;
+    const alias = map.aliases[rawKey] || map.aliases[key] || {};
+    const defaultLabel = lineageLabel || entity.label || entity.display_name || entity.name || this.shortKey(key || rawKey) || '(unknown)';
+    const label = alias.label || map.labels[key] || defaultLabel;
+    return {
+      ...entity,
+      raw_key: rawKey,
+      key: key || rawKey,
+      label,
+      name: label,
+      status: alias.decision || rawStatus,
+    };
+  },
+
+  _dedupeEntities(entities) {
+    const seen = new Set();
+    const out = [];
+    entities.forEach(e => {
+      const k = e.key || e.raw_key || e.source_key || e.label;
+      if (!k || seen.has(k)) return;
+      seen.add(k);
+      out.push(e);
+    });
+    return out;
+  },
+  getAuthors(paper, opts = {}) {
+    const canonical = opts.canonical !== false;
+    const cache = this._paperCache(paper);
+    const cacheKey = this._computedEntityCacheKey('author', canonical);
+    if (cache.entities[cacheKey]) return cache.entities[cacheKey];
+    const entities = this._dedupeEntities(this._rawAuthorEntities(paper).map(e => this._applyCanonical('author', e, { canonical })));
+    cache.entities[cacheKey] = entities;
+    return entities;
+  },
+  getInstitutions(paper, opts = {}) {
+    const canonical = opts.canonical !== false;
+    const cache = this._paperCache(paper);
+    const cacheKey = this._computedEntityCacheKey('institution', canonical);
+    if (cache.entities[cacheKey]) return cache.entities[cacheKey];
+    const entities = this._dedupeEntities(this._rawInstitutionEntities(paper).map(e => this._applyCanonical('institution', e, { canonical })));
+    cache.entities[cacheKey] = entities;
+    return entities;
+  },
+
+
+
+  getEntities(paper, type, opts = {}) {
+    return type === 'author' ? this.getAuthors(paper, opts) : this.getInstitutions(paper, opts);
+  },
+
+  hasEntity(paper, type, keyOrLabel) {
+    const q = String(keyOrLabel || '').trim();
+    if (!q) return false;
+    const qClean = this.cleanKey(q);
+    const bracket = q.match(/\[([^\]]+)\]\s*$/);
+    const shortHint = bracket ? bracket[1] : '';
+    return this.getEntities(paper, type).some(e => {
+      const vals = [e.key, e.raw_key, e.source_key, e.label, e.display_name, e.name].map(v => String(v || '').trim()).filter(Boolean);
+      if (vals.includes(q) || vals.includes(qClean)) return true;
+      if (shortHint && (this.shortKey(e.key) === shortHint || this.shortKey(e.raw_key) === shortHint || this.shortKey(e.source_key) === shortHint)) return true;
+      return false;
+    });
+  },
+
+  filterPapersByEntity(type, keyOrLabel) {
+    return AppState.tableData.filter(p => this.hasEntity(p, type, keyOrLabel));
+  },
+
+  filterPapersByPair(type, a, b) {
+    return AppState.tableData.filter(p => this.hasEntity(p, type, a) && this.hasEntity(p, type, b));
+  },
+  _canonicalLabelMap(type, data = AppState.tableData) {
+    this._initCaches();
+    const cacheKey = `label|${this._profileCacheKey(type, true, data)}`;
+    if (this._labelMapCache.has(cacheKey)) return this._labelMapCache.get(cacheKey);
+    const explicit = this._map(type).labels || {};
+    const buckets = new Map();
+    const list = Array.isArray(data) ? data : [];
+    list.forEach(p => {
+      // canonical:true の getEntities() は同一論文内で同じcanonical keyを重複除外するため、
+      // 親機関寄せ時の子機関名が失われる。ラベル生成だけはraw entitiesから全ラベルを拾う。
+      this.getEntities(p, type, { canonical: false }).forEach(raw => {
+        const can = this._applyCanonical(type, raw, { canonical: true });
+        const key = can.key || can.raw_key;
+        if (!key) return;
+        if (!buckets.has(key)) buckets.set(key, { labels: new Map(), statuses: new Set(), rawKeys: new Set() });
+        const b = buckets.get(key);
+        const isLineage = type === 'institution' && can.status === 'lineage';
+        // 親機関寄せでは、取得できた親機関名（can.label）を優先する。
+        // 親名が取れない場合は _applyCanonical() の段階で親寄せしないため、IDだけの親ノードは出ない。
+        const label = can.label || raw.display_name || raw.name || raw.label || this.shortKey(key);
+        if (label) b.labels.set(label, (b.labels.get(label) || 0) + 1);
+        if (can.status) b.statuses.add(can.status);
+        if (can.raw_key) b.rawKeys.add(can.raw_key);
+      });
+    });
+    const out = new Map();
+    buckets.forEach((b, key) => {
+      if (explicit[key]) { out.set(key, explicit[key]); return; }
+      const sortedLabels = [...b.labels.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'));
+      const topLabel = sortedLabels[0]?.[0] || this.shortKey(key);
+      if (type === 'institution' && (AppState.institutionAggregationMode || 'exact') === 'lineage' && b.statuses.has('lineage') && sortedLabels.length > 1) {
+        out.set(key, `${topLabel} ほか${sortedLabels.length - 1}機関`);
+      } else {
+        out.set(key, topLabel);
+      }
+    });
+    this._labelMapCache.set(cacheKey, out);
+    return out;
+  },
+
+
+
+  _withDisplayCollision(rows) {
+    const labelToKeys = new Map();
+    rows.forEach(r => {
+      const label = r.baseLabel || r.label || this.shortKey(r.key);
+      if (!labelToKeys.has(label)) labelToKeys.set(label, new Set());
+      labelToKeys.get(label).add(r.key);
+    });
+    return rows.map(r => {
+      const label = r.baseLabel || r.label || this.shortKey(r.key);
+      const keys = labelToKeys.get(label);
+      return { ...r, label: keys && keys.size > 1 ? `${label} [${this.shortKey(r.key)}]` : label };
+    });
+  },
+
+  applyIdentityLabels(data = AppState.tableData) {
+    const list = Array.isArray(data) ? data : [];
+    this.buildInstitutionLabelCache(list);
+    const authorLabelMap = this._canonicalLabelMap('author', list);
+    const instLabelMap = this._canonicalLabelMap('institution', list);
+    const authorRows = [];
+    const instRows = [];
+    list.forEach(p => {
+      this.getAuthors(p).forEach(e => authorRows.push({ key: e.key, baseLabel: authorLabelMap.get(e.key) || e.label }));
+      this.getInstitutions(p).forEach(e => instRows.push({ key: e.key, baseLabel: instLabelMap.get(e.key) || e.label }));
+    });
+    const authorDisplay = new Map(this._withDisplayCollision(authorRows).map(r => [r.key, r.label]));
+    const instDisplay = new Map(this._withDisplayCollision(instRows).map(r => [r.key, r.label]));
+
+    list.forEach(p => {
+      if (p.authors_original == null) p.authors_original = p.author_names || p.raw_authors || p.authors || '';
+      if (p.institutions_original == null) p.institutions_original = p.institution_names || p.raw_institutions || p.institutions || '';
+      if (!p.raw_authors) p.raw_authors = p.authors_original || p.author_names || p.authors || '';
+      if (!p.raw_institutions) p.raw_institutions = p.institutions_original || p.institution_names || p.institutions || '';
+
+      const authors = this.getAuthors(p).map(e => ({ ...e, label: authorDisplay.get(e.key) || e.label || this.shortKey(e.key) }));
+      const insts = this.getInstitutions(p).map(e => ({ ...e, label: instDisplay.get(e.key) || e.label || this.shortKey(e.key) }));
+
+      p.author_names = p.authors_original || p.raw_authors || p.author_names || p.authors || '';
+      p.institution_names = p.institutions_original || p.raw_institutions || p.institution_names || p.institutions || '';
+      p.authors = authors.map(e => e.label).filter(Boolean).join('; ');
+      p.author_identity_keys = authors.map(e => e.key).filter(Boolean).join('; ');
+      p.author_identity_status = [...new Set(authors.map(e => e.status).filter(Boolean))].join('; ');
+      p.author_identity_labels = authors.map(e => e.label).filter(Boolean).join('; ');
+      p.institutions = insts.map(e => e.label).filter(Boolean).join('; ');
+      p.institution_identity_keys = insts.map(e => e.key).filter(Boolean).join('; ');
+      p.institution_identity_status = [...new Set(insts.map(e => e.status).filter(Boolean))].join('; ');
+      p.institution_identity_labels = insts.map(e => e.label).filter(Boolean).join('; ');
+      p.identity_version = 'v6.0';
+    });
+    return list;
+  },
+
+  refreshViews(showToast = false) {
+    if (AppState.tableData && AppState.tableData.length) {
+      this.applyIdentityLabels(AppState.tableData);
+      if (typeof TableRenderer !== 'undefined') TableRenderer.sortAndRender();
+      if (typeof ChartRenderer !== 'undefined') {
+        ChartRenderer.renderTrendBar();
+        ChartRenderer.renderTrendLine();
+        ChartRenderer.renderAuthorRanking();
+        ChartRenderer.renderInstRanking();
+        ChartRenderer.populateEgoSelect();
+      }
+      if (typeof FundingRenderer !== 'undefined') FundingRenderer.renderAll();
+      if (typeof TopicRenderer !== 'undefined') TopicRenderer.renderAll();
+      if (typeof NetworkRenderer !== 'undefined') NetworkRenderer.resetContainers();
+      this.renderDiagnostics();
+      this.renderBrowser();
+    }
+    this.renderRules();
+    if (showToast) UIController.showToast('名寄せマップを適用しました。', 'success');
+  },
+
+  _labelRows(rows) {
+    const byLabel = new Map();
+    rows.forEach(r => byLabel.set(r.label, (byLabel.get(r.label) || 0) + 1));
+    rows.forEach(r => {
+      if ((byLabel.get(r.label) || 0) > 1) r.label = `${r.label} [${this.shortKey(r.key)}]`;
+    });
+    return rows;
+  },
+
+  aggregateCounts(type) {
+    const stats = new Map();
+    const labelMap = this._canonicalLabelMap(type, AppState.tableData);
+    AppState.tableData.forEach(p => {
+      this.getEntities(p, type).forEach(e => {
+        const label = labelMap.get(e.key) || e.label;
+        if (!stats.has(e.key)) stats.set(e.key, { key: e.key, label, count: 0, status: e.status });
+        const st = stats.get(e.key);
+        st.count++;
+        if (e.status && !String(st.status || '').includes(e.status)) st.status = st.status ? `${st.status}; ${e.status}` : e.status;
+      });
+    });
+    const rows = this._labelRows([...stats.values()]);
+    return rows.sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, 'ja'));
+  },
+
+  aggregateCitationStats(type) {
+    const stats = new Map();
+    const labelMap = this._canonicalLabelMap(type, AppState.tableData);
+    AppState.tableData.forEach(p => {
+      const cite = Number(p.citation_count) || 0;
+      const pid = p.paper_id || p.title;
+      this.getEntities(p, type).forEach(e => {
+        const label = labelMap.get(e.key) || e.label;
+        if (!stats.has(e.key)) stats.set(e.key, { key: e.key, name: label, label, papers: 0, totalCitations: 0, citations: [], paperIds: new Set(), status: e.status });
+        const st = stats.get(e.key);
+        if (!st.paperIds.has(pid)) {
+          st.paperIds.add(pid);
+          st.papers++;
+          st.totalCitations += cite;
+          st.citations.push(cite);
+        }
+      });
+    });
+    const rows = this._labelRows([...stats.values()].map(s => ({ ...s, label: s.name })));
+    rows.forEach(s => { s.name = s.label; delete s.paperIds; });
+    return rows;
+  },
+
+  applyToPapers(data = AppState.tableData) {
+    return this.applyIdentityLabels(data);
+  },
+
+  refreshAnalyses() {
+    if (!AppState.tableData || !AppState.tableData.length) {
+      this.renderRules();
+      this.renderDiagnostics();
+      this.renderBrowser();
+      return;
+    }
+    this.applyIdentityLabels(AppState.tableData);
+    if (typeof TableRenderer !== 'undefined') TableRenderer.sortAndRender();
+    if (typeof ChartRenderer !== 'undefined') {
+      ChartRenderer.renderTrendLine();
+      ChartRenderer.renderAuthorRanking();
+      ChartRenderer.renderInstRanking();
+      ChartRenderer.populateEgoSelect();
+    }
+    if (typeof NetworkRenderer !== 'undefined') NetworkRenderer.resetContainers();
+    this.renderDiagnostics();
+    this.renderBrowser();
+    this.renderRules();
+    this._scheduleHeavyRenderers();
+  },
+  addAlias(type, fromKey, toKey, label = '', decision = 'manual_merge', options = {}) {
+    this._ensure();
+    const from = this.cleanKey(fromKey);
+    const to = this.cleanKey(toKey);
+    if (!from || !to) throw new Error('元キーと統合先キーを入力してください。');
+    const map = this._map(type);
+    map.aliases[from] = { canonical: to, label: label || '', decision, updated_at: new Date().toISOString() };
+    if (label) map.labels[to] = label;
+    if (options.save !== false) this.save();
+  },
+
+
+
+  setLabel(type, key, label) {
+    const clean = this.cleanKey(key);
+    const text = String(label || '').trim();
+    if (!clean) throw new Error('キーが空です。');
+    if (!text) throw new Error('表示名を入力してください。');
+    const map = this._map(type);
+    map.labels[clean] = text;
+    this.save();
+  },
+
+  addAliasFromUI() {
+    UIController.showToast('キーを直接入力する欄は廃止しました。名寄せワークベンチまたは詳細ポップアップから統合してください。', 'error');
+  },
+
+  removeAlias(type, fromKey) {
+    const map = this._map(type);
+    delete map.aliases[this.cleanKey(fromKey) || fromKey];
+    this.save();
+    this.refreshAnalyses();
+  },
+  removeManualRuleForKey(type, key, options = {}) {
+    const clean = this.cleanKey(key);
+    const map = this._map(type);
+    let removed = 0;
+    if (map.aliases[clean]) { delete map.aliases[clean]; removed++; }
+    Object.entries({ ...(map.aliases || {}) }).forEach(([from, rule]) => {
+      const canonical = this.cleanKey(rule?.canonical || '');
+      const resolved = this.resolveAlias(type, from);
+      if (canonical === clean || resolved === clean) {
+        delete map.aliases[from];
+        removed++;
+      }
+    });
+    if (map.labels[clean]) { delete map.labels[clean]; removed++; }
+    if (options.save !== false) this.save();
+    return removed;
+  },
+
+
+
+  _topicList(paper) {
+    const topics = Array.isArray(paper.topics)
+      ? paper.topics.slice()
+      : this._splitSemi(paper.topics);
+    if (paper.primary_topic) topics.push(paper.primary_topic);
+    return this._uniq(topics);
+  },
+
+  _yearRange(papers) {
+    const years = (papers || []).map(p => Number(p.year)).filter(Boolean);
+    return years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '-';
+  },
+
+  _topFromMap(map, limit = 10) {
+    return [...map.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja')).slice(0, limit);
+  },
+
+  _hIndexForPapers(papers) {
+    const cites = (papers || []).map(p => Number(p.citation_count) || 0).sort((a, b) => b - a);
+    let h = 0;
+    for (let i = 0; i < cites.length; i++) {
+      if (cites[i] >= i + 1) h = i + 1; else break;
+    }
+    return h;
+  },
+  aggregateEntityProfiles(type, opts = {}) {
+    const canonical = opts.canonical === true;
+    const list = Array.isArray(AppState.tableData) ? AppState.tableData : [];
+    const cacheKey = `profiles|${this._profileCacheKey(type, canonical, list)}`;
+    this._initCaches();
+    if (this._profileCache.has(cacheKey)) return this._profileCache.get(cacheKey);
+    if (type === 'institution') this.buildInstitutionLabelCache(list);
+    const profiles = new Map();
+    const partnerType = type;
+    const affiliationType = type === 'author' ? 'institution' : 'author';
+    list.forEach(paper => {
+      const cite = Number(paper.citation_count) || 0;
+      const pid = paper.paper_id || paper.title || Math.random().toString(36);
+      const entities = this.getEntities(paper, type, { canonical });
+      const partners = this.getEntities(paper, partnerType, { canonical: true });
+      const affiliations = this.getEntities(paper, affiliationType, { canonical: true });
+      entities.forEach(ent => {
+        const key = ent.key || ent.raw_key || ent.source_key;
+        if (!key) return;
+        if (!profiles.has(key)) {
+          profiles.set(key, {
+            type,
+            key,
+            label: ent.label || ent.display_name || ent.name || this.shortKey(key),
+            status: ent.status || '',
+            rawKeys: new Set(),
+            names: new Set(),
+            ids: new Set(),
+            orcids: new Set(),
+            rors: new Set(),
+            countries: new Set(),
+            instTypes: new Set(),
+            lineage: new Set(),
+            papers: [],
+            paperIds: new Set(),
+            totalCitations: 0,
+            topics: new Map(),
+            partners: new Map(),
+            affiliations: new Map(),
+          });
+        }
+        const st = profiles.get(key);
+        [ent.label, ent.display_name, ent.name].filter(Boolean).forEach(n => st.names.add(n));
+        [ent.raw_key, ent.source_key].filter(Boolean).forEach(k => st.rawKeys.add(k));
+        if (ent.id) st.ids.add(ent.id);
+        if (ent.orcid) st.orcids.add(ent.orcid);
+        if (ent.ror) st.rors.add(ent.ror);
+        if (ent.country_code) st.countries.add(ent.country_code);
+        if (ent.type) st.instTypes.add(ent.type);
+        (ent.lineage || []).forEach(x => { if (x) st.lineage.add(this.cleanKey(x)); });
+        if (ent.status && !st.status) st.status = ent.status;
+        if (!st.paperIds.has(pid)) {
+          st.paperIds.add(pid);
+          st.papers.push(paper);
+          st.totalCitations += cite;
+          this._topicList(paper).forEach(t => st.topics.set(t, (st.topics.get(t) || 0) + 1));
+          partners.forEach(p => {
+            if (!p.key || p.key === key) return;
+            const pl = p.label || p.display_name || p.name || this.shortKey(p.key);
+            if (pl) st.partners.set(pl, (st.partners.get(pl) || 0) + 1);
+          });
+          affiliations.forEach(a => {
+            const al = a.label || a.display_name || a.name || this.shortKey(a.key);
+            if (al) st.affiliations.set(al, (st.affiliations.get(al) || 0) + 1);
+          });
+        }
+      });
+    });
+    const rows = [...profiles.values()].map(st => {
+      const count = st.papers.length;
+      const normalizedName = this.normalizeName([...st.names][0] || st.label);
+      return {
+        ...st,
+        count,
+        normalizedName,
+        avgCitations: count ? st.totalCitations / count : 0,
+        hIndex: this._hIndexForPapers(st.papers),
+        topTopics: this._topFromMap(st.topics, 5),
+        topPartners: this._topFromMap(st.partners, 10),
+        topAffiliations: this._topFromMap(st.affiliations, 10),
+        yearRange: this._yearRange(st.papers),
+        isNameOnly: keyIsNameOnly(st.key),
+        hasManualRule: !!(this._map(type).aliases[st.key] || this._map(type).labels[st.key]),
+      };
+    });
+    function keyIsNameOnly(key) { return String(key || '').startsWith('name:'); }
+    const result = this._labelRows(rows).sort((a, b) => b.count - a.count || b.totalCitations - a.totalCitations || a.label.localeCompare(b.label, 'ja'));
+    this._profileCache.set(cacheKey, result);
+    return result;
+  },
+
+
+
+  _sameNameKeyCounts(rows) {
+    const map = new Map();
+    rows.forEach(r => {
+      if (!r.normalizedName) return;
+      if (!map.has(r.normalizedName)) map.set(r.normalizedName, new Set());
+      map.get(r.normalizedName).add(r.key);
+    });
+    return map;
+  },
+
+  _mergeInfo(type, key) {
+    const clean = this.cleanKey(key);
+    const map = this._map(type);
+    const incoming = [];
+    Object.entries(map.aliases || {}).forEach(([from, rule]) => {
+      const fromClean = this.cleanKey(from);
+      const directTo = this.cleanKey(rule?.canonical || '');
+      const resolved = this.resolveAlias(type, fromClean);
+      if (fromClean !== clean && (directTo === clean || resolved === clean)) incoming.push(fromClean);
+    });
+    const direct = map.aliases[clean] || null;
+    return {
+      key: clean,
+      incoming,
+      target: direct?.canonical ? this.cleanKey(direct.canonical) : '',
+      decision: direct?.decision || '',
+      hasLabel: !!(map.labels || {})[clean],
+      isAliasSource: !!direct,
+      isMergedGroup: incoming.length > 0,
+    };
+  },
+
+  _annotateMergeState(type, rows) {
+    return rows.map(r => {
+      const info = this._mergeInfo(type, r.key);
+      const rawKeys = [...(r.rawKeys || new Set())].filter(Boolean);
+      const mergeSourceKeys = this._uniq([...(info.incoming || []), ...rawKeys.filter(k => this.cleanKey(k) !== this.cleanKey(r.key))]);
+      const hasManualRule = !!(r.hasManualRule || info.isAliasSource || info.isMergedGroup || info.hasLabel || mergeSourceKeys.length);
+      return { ...r, ...info, mergeSourceKeys, hasManualRule };
+    });
+  },
+
+  findEntityForPapers(type, name, papers) {
+    const cleanName = this.normalizeName(this.stripDisplayIdSuffix(name));
+    const counts = new Map();
+    const list = Array.isArray(papers) ? papers : [];
+    list.forEach(paper => {
+      this.getEntities(paper, type).forEach(ent => {
+        const key = ent.key || ent.raw_key;
+        if (!key) return;
+        const labels = [ent.label, ent.display_name, ent.name].map(v => this.stripDisplayIdSuffix(v)).filter(Boolean);
+        const matched = !cleanName || labels.some(v => {
+          const n = this.normalizeName(v);
+          return n === cleanName || n.includes(cleanName) || cleanName.includes(n);
+        });
+        if (!matched) return;
+        if (!counts.has(key)) counts.set(key, { key, label: labels[0] || ent.label || this.shortKey(key), count: 0 });
+        counts.get(key).count++;
+      });
+    });
+    return [...counts.values()].sort((a, b) => b.count - a.count)[0] || null;
+  },
+
+  buildEntityActionPanel(type, key) {
+    const clean = this.cleanKey(key);
+    if (!clean) return '';
+    const info = this._mergeInfo(type, clean);
+    const sourceText = info.incoming.length
+      ? info.incoming.slice(0, 8).map(k => `<code>${this.esc(this.shortKey(k))}</code>`).join(' / ') + (info.incoming.length > 8 ? ` ほか${info.incoming.length - 8}件` : '')
+      : '';
+    const targetText = info.target ? `<code>${this.esc(this.shortKey(info.target))}</code>` : '';
+    const state = info.isMergedGroup
+      ? `統合後の表示単位です。統合元キー: ${sourceText}`
+      : info.isAliasSource
+        ? `このキーは ${targetText} へ統合されています。`
+        : 'この表示単位にはGUI統合ルールはありません。';
+    const unmergeBtn = (info.isMergedGroup || info.isAliasSource || info.hasLabel)
+      ? `<button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(clean)}" onclick="IdentityManager.unmergeFromReview(this.dataset.type, this.dataset.key)">この統合を解除</button>`
+      : '';
+    return `<div class="identity-action-panel compact">
+      <div><strong>名寄せ状態:</strong> ${state}</div>
+      <div class="identity-action-bar" style="margin:8px 0 0; padding:0; border:0; background:transparent;">
+        <button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(clean)}" onclick="IdentityManager.showEntityReviewFromButton(this)">名寄せ詳細を開く</button>
+        ${unmergeBtn}
+      </div>
+    </div>`;
+  },
+  renderBrowser() {
+    const el = document.getElementById('identityBrowser');
+    const status = document.getElementById('identityBrowserStatus');
+    if (!el) return;
+    if (!AppState.tableData || !AppState.tableData.length) {
+      el.innerHTML = '<div class="funding-empty">論文データ取得後に、著者・機関キーの一覧を表示します。</div>';
+      if (status) status.textContent = '';
+      return;
+    }
+    const type = document.getElementById('identityBrowserType')?.value || 'author';
+    const view = document.getElementById('identityBrowserView')?.value || 'all';
+    const sortKey = document.getElementById('identityBrowserSort')?.value || 'name_asc';
+    const q = this.normalizeName(document.getElementById('identityBrowserSearch')?.value || '');
+    const limitValue = document.getElementById('identityBrowserLimit')?.value || '50';
+    const rawRows = this.aggregateEntityProfiles(type, { canonical: false });
+    const sameNameMap = this._sameNameKeyCounts(rawRows);
+    const useCanonicalView = view === 'all' || view === 'manual';
+    let rows = this.aggregateEntityProfiles(type, { canonical: useCanonicalView });
+    rows = this._annotateMergeState(type, rows);
+    rows = rows.map(r => ({ ...r, sameNameKeyCount: sameNameMap.get(r.normalizedName)?.size || 1 }));
+    if (view === 'sameName') rows = this._annotateMergeState(type, rawRows.map(r => ({ ...r, sameNameKeyCount: sameNameMap.get(r.normalizedName)?.size || 1 }))).filter(r => r.sameNameKeyCount > 1);
+    if (view === 'nameOnly') rows = this._annotateMergeState(type, rawRows.map(r => ({ ...r, sameNameKeyCount: sameNameMap.get(r.normalizedName)?.size || 1 }))).filter(r => r.isNameOnly);
+    if (view === 'manual') rows = rows.filter(r => r.hasManualRule || r.isMergedGroup || r.isAliasSource);
+    if (q) {
+      rows = rows.filter(r => {
+        const hay = [
+          r.label, r.key, this.shortKey(r.key), [...r.names].join(' '), [...r.rawKeys].join(' '), [...r.ids].join(' '), [...r.orcids].join(' '), [...r.rors].join(' '),
+          r.topTopics.map(x => x[0]).join(' '), r.topPartners.map(x => x[0]).join(' '), r.topAffiliations.map(x => x[0]).join(' '),
+        ].join(' ').toLowerCase();
+        return this.normalizeName(hay).includes(q);
+      });
+    }
+    rows = this._sortBrowserRows(rows, sortKey);
+    const allMode = limitValue === 'all';
+    const pageSize = allMode ? Math.max(rows.length, 1) : Math.max(1, Number(limitValue) || 50);
+    const stateKey = [type, view, q, sortKey, limitValue].join('||');
+    if (this._browserStateKey !== stateKey) {
+      this._browserPage = 1;
+      this._browserStateKey = stateKey;
+    }
+    const totalPages = allMode ? 1 : Math.max(1, Math.ceil(rows.length / pageSize));
+    this._browserPage = Math.min(Math.max(1, Number(this._browserPage) || 1), totalPages);
+    const start = allMode ? 0 : (this._browserPage - 1) * pageSize;
+    const shown = rows.slice(start, allMode ? rows.length : start + pageSize);
+    if (!shown.length) {
+      el.innerHTML = '<div class="funding-empty">該当するキーがありません。</div>';
+      if (status) status.textContent = `0件表示 / ${this.typeLabel(type)}`;
+      return;
+    }
+    const badgeList = (pairs, max = 3) => pairs && pairs.length
+      ? pairs.slice(0, max).map(([n, c]) => `<span class="identity-badge">${this.esc(n)} ${c}</span>`).join('')
+      : '<span style="color:#80868b;">-</span>';
+    const statusBadges = (r) => {
+      const out = [];
+      const st = this.statusLabel(r.status);
+      if (st) out.push(`<span class="identity-badge">${this.esc(st)}</span>`);
+      if (r.sameNameKeyCount > 1) out.push(`<span class="identity-badge warn">同じ名前 ${r.sameNameKeyCount}キー</span>`);
+      if (r.isNameOnly) out.push('<span class="identity-badge warn">名前のみ（IDなし）</span>');
+      if (r.isMergedGroup) out.push(`<span class="identity-badge merge">結合済み ${Math.max(2, (r.mergeSourceKeys || []).length + 1)}キー</span>`);
+      else if (r.isAliasSource) out.push('<span class="identity-badge warn">統合元</span>');
+      else if (r.hasManualRule) out.push('<span class="identity-badge">統合済み</span>');
+      return out.join('');
+    };
+    const mergeNote = (r) => {
+      if (r.isMergedGroup) {
+        const keys = (r.mergeSourceKeys || []).slice(0, 5).map(k => this.shortKey(k)).join(' / ');
+        return `<div class="identity-merge-note">統合元: ${this.esc(keys || '-')} ${(r.mergeSourceKeys || []).length > 5 ? `ほか${(r.mergeSourceKeys || []).length - 5}件` : ''}</div>`;
+      }
+      if (r.isAliasSource && r.target) return `<div class="identity-merge-note">統合先: ${this.esc(this.shortKey(r.target))}</div>`;
+      return '';
+    };
+    el.innerHTML = `<table class="identity-browser-table"><thead><tr>
+      <th style="width:34px">選択</th><th>表示名</th><th>キー</th><th>論文</th><th>被引用</th><th>主なTopic</th><th>${type === 'author' ? '主な共著者' : '主な共同研究先'}</th><th>操作</th>
+    </tr></thead><tbody>${shown.map(r => `
+      <tr class="${r.isMergedGroup ? 'identity-row-merged' : (r.isAliasSource ? 'identity-row-alias' : '')}">
+        <td><input type="checkbox" class="identity-browser-check" data-type="${this.esc(type)}" data-key="${this.esc(r.key)}" data-label="${this.esc(r.label)}"></td>
+        <td><strong>${this.esc(r.label)}</strong><br>${statusBadges(r)}${mergeNote(r)}</td>
+        <td><code class="identity-key">${this.esc(this.shortKey(r.key))}</code><br><span class="identity-key">${this.esc(r.key)}</span></td>
+        <td>${r.count.toLocaleString()}<br><span class="identity-status">${this.esc(r.yearRange)}</span></td>
+        <td>${r.totalCitations.toLocaleString()}<br><span class="identity-status">平均 ${r.avgCitations.toFixed(1)}</span></td>
+        <td>${badgeList(r.topTopics)}</td>
+        <td>${badgeList(r.topPartners)}</td>
+        <td><button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(r.key)}" onclick="IdentityManager.showEntityReviewFromButton(this)">詳細・名寄せ</button></td>
+      </tr>`).join('')}</tbody></table>`;
+    const makePager = () => {
+      if (allMode || rows.length <= pageSize) return '';
+      const cur = this._browserPage;
+      const disFirst = cur <= 1 ? 'disabled' : '';
+      const disLast = cur >= totalPages ? 'disabled' : '';
+      return `<div class="pagination" style="margin-top:10px;">
+        <button ${disFirst} onclick="IdentityManager._setBrowserPage(1)">最初</button>
+        <button ${disFirst} onclick="IdentityManager._setBrowserPage(${cur - 1})">前へ</button>
+        <span class="page-info">ページ ${cur.toLocaleString()} / ${totalPages.toLocaleString()}</span>
+        <button ${disLast} onclick="IdentityManager._setBrowserPage(${cur + 1})">次へ</button>
+        <button ${disLast} onclick="IdentityManager._setBrowserPage(${totalPages})">最後</button>
+      </div>`;
+    };
+    el.innerHTML += makePager();
+    const sortLabel = document.getElementById('identityBrowserSort')?.selectedOptions?.[0]?.textContent || '';
+    if (status) {
+      const end = start + shown.length;
+      const displayMode = allMode
+        ? '全件表示'
+        : `${pageSize.toLocaleString()}件/ページ、${Math.min(start + 1, rows.length).toLocaleString()}〜${end.toLocaleString()}件を表示`;
+      const perfNote = allMode && rows.length > 1000 ? '全件表示は件数が多い場合に描画が重くなることがあります。' : '';
+      status.textContent = `${rows.length.toLocaleString()}件中 ${shown.length.toLocaleString()}件を表示（${displayMode}）。並び順: ${sortLabel}。名前順では同名候補が隣接します。チェック統合では、表示順で最初にチェックされたキーを統合先にします。${perfNote}`;
+    }
+  },
+
+  _setBrowserPage(page) {
+    this._browserPage = Math.max(1, Number(page) || 1);
+    this.renderBrowser();
+  },
+
+
+
+  showEntityReview(type, key) {
+    const cleanKey = this.cleanKey(key);
+    const mergeInfo = this._mergeInfo(type, cleanKey);
+    const profileRows = this.aggregateEntityProfiles(type, { canonical: mergeInfo.isMergedGroup });
+    const profile = profileRows.find(p => p.key === cleanKey) || profileRows.find(p => this.shortKey(p.key) === key);
+    const profiles = this.aggregateEntityProfiles(type, { canonical: false });
+    if (!profile) {
+      UIController.showToast('対象キーが見つかりません。', 'error');
+      return;
+    }
+    const e = Modal.esc;
+    const sameName = profiles.filter(p => p.key !== profile.key && p.normalizedName && p.normalizedName === profile.normalizedName)
+      .sort((a, b) => b.count - a.count || b.totalCitations - a.totalCitations)
+      .slice(0, 30);
+    const otherOptions = profiles
+      .filter(p => p.key !== profile.key)
+      .slice(0, 500);
+    const options = [
+      sameName.length ? '<optgroup label="同じ名前の候補">' + sameName.map(p => `<option value="${this.esc(p.key)}" data-label="${this.esc(p.label)}">${this.esc(p.label)} — ${p.count}件 — ${this.esc(this.shortKey(p.key))}</option>`).join('') + '</optgroup>' : '',
+      '<optgroup label="その他のキー">' + otherOptions.map(p => `<option value="${this.esc(p.key)}" data-label="${this.esc(p.label)}">${this.esc(p.label)} — ${p.count}件 — ${this.esc(this.shortKey(p.key))}</option>`).join('') + '</optgroup>',
+    ].join('');
+    const topList = (pairs, max = 15) => pairs.length
+      ? `<ul>${pairs.slice(0, max).map(([n, c]) => `<li>${e(n)} — ${c}件</li>`).join('')}</ul>`
+      : '<p style="color:#5f6368;">なし</p>';
+    const candidateTable = sameName.length ? `<table class="identity-candidate-table"><thead><tr><th>同じ名前の候補</th><th>キー</th><th>論文</th><th>被引用</th><th>操作</th></tr></thead><tbody>${sameName.map(c => `<tr>
+      <td><strong>${e(c.label)}</strong><br><span class="identity-status">${e(c.yearRange)}</span></td>
+      <td><code>${e(this.shortKey(c.key))}</code></td>
+      <td>${c.count.toLocaleString()}</td>
+      <td>${c.totalCitations.toLocaleString()}</td>
+      <td>
+        <button class="btn btn-primary btn-sm" data-type="${this.esc(type)}" data-from="${this.esc(profile.key)}" data-to="${this.esc(c.key)}" data-label="${this.esc(c.label)}" onclick="IdentityManager.mergePairFromButton(this)">この候補に統合</button>
+        <button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-from="${this.esc(c.key)}" data-to="${this.esc(profile.key)}" data-label="${this.esc(profile.label)}" onclick="IdentityManager.mergePairFromButton(this)">候補をこちらに統合</button>
+        <button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(c.key)}" onclick="IdentityManager.showEntityReviewFromButton(this)">候補を開く</button>
+      </td>
+    </tr>`).join('')}</tbody></table>` : '<p style="color:#5f6368;">このコレクション内では、同じ正規化名を持つ別キーは見つかりません。</p>';
+    const ids = [...profile.ids].map(x => `<code>${e(this.shortKey(x))}</code>`).join(' / ') || '-';
+    const rors = [...profile.rors].map(x => `<code>${e(this.shortKey(x))}</code>`).join(' / ') || '-';
+    const orcids = [...profile.orcids].map(x => `<code>${e(x)}</code>`).join(' / ') || '-';
+    const rawKeys = [...profile.rawKeys].filter(Boolean).map(x => `<code>${e(this.shortKey(x))}</code>`).join(' / ') || '-';
+    const names = [...profile.names].filter(Boolean).map(n => e(n)).join(' / ') || '-';
+    const lineage = [...profile.lineage].map(x => this.shortKey(x)).join(' / ') || '-';
+    const summary = [
+      `${this.typeLabel(type)}: ${profile.label}`,
+      `キー: ${profile.key}`,
+      `論文数: ${profile.count}`,
+      `合計被引用: ${profile.totalCitations}`,
+      `平均被引用: ${profile.avgCitations.toFixed(1)}`,
+      `h-index: ${profile.hIndex}`,
+      `期間: ${profile.yearRange}`,
+      `代表Topic: ${profile.topTopics.map(x => `${x[0]}(${x[1]})`).join('; ')}`,
+    ].join('\n');
+    const actionHtml = `
+      <div class="identity-modal-actions">
+        <div class="identity-action-row">
+          <div class="form-group">
+            <label for="identityMergeTarget">統合先キー</label>
+            <select id="identityMergeTarget">${options}</select>
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(profile.key)}" onclick="IdentityManager.mergeFromReview(this.dataset.type, this.dataset.key)">このキーを選択した統合先へ統合</button>
+        <button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(profile.key)}" onclick="IdentityManager.unmergeFromReview(this.dataset.type, this.dataset.key)">このキーの統合を解除</button>
+        <button class="btn btn-secondary btn-sm" data-key="${this.esc(profile.key)}" onclick="IdentityManager.copyKeyFromButton(this)">キーをコピー</button>
+      </div>`;
+    const content = `
+      <dl>
+        <dt>${this.typeLabel(type)}</dt><dd>${e(profile.label)}</dd>
+        <dt>キー</dt><dd><code>${e(profile.key)}</code></dd>
+        <dt>短縮キー</dt><dd><code>${e(this.shortKey(profile.key))}</code></dd>
+        <dt>状態</dt><dd>${e(this.statusLabel(profile.status) || '-')}</dd>
+        <dt>論文数</dt><dd>${profile.count.toLocaleString()}</dd>
+        <dt>合計被引用数</dt><dd>${profile.totalCitations.toLocaleString()}</dd>
+        <dt>平均被引用</dt><dd>${profile.avgCitations.toFixed(1)}</dd>
+        <dt>h-index</dt><dd>${profile.hIndex}（コレクション内のみ）</dd>
+        <dt>期間</dt><dd>${e(profile.yearRange)}</dd>
+        <dt>ID</dt><dd>${ids}</dd>
+        ${type === 'author' ? `<dt>ORCID</dt><dd>${orcids}</dd>` : `<dt>ROR</dt><dd>${rors}</dd><dt>国</dt><dd>${e([...profile.countries].join(' / ') || '-')}</dd><dt>種別</dt><dd>${e([...profile.instTypes].join(' / ') || '-')}</dd><dt>lineage</dt><dd>${e(lineage)}</dd>`}
+        <dt>元キー</dt><dd>${rawKeys}</dd>
+        <dt>表示名候補</dt><dd>${names}</dd>
+      </dl>
+      ${actionHtml}
+      <h4>同じ名前の候補（クリック統合）</h4>
+      ${candidateTable}
+      <h4>主なTopic</h4>
+      ${topList(profile.topTopics, 15)}
+      <h4>${type === 'author' ? '主な共著者' : '主な共同研究先'}</h4>
+      ${topList(profile.topPartners, 15)}
+      <h4>${type === 'author' ? '所属機関' : '関連著者'}</h4>
+      ${topList(profile.topAffiliations, 15)}
+      <h4>論文 Top 30（被引用数順）</h4>
+      ${Modal.paperListHtml(profile.papers, 30)}
+      <h4>コピー用サマリ</h4>
+      ${Modal.copyBlock(summary)}
+    `;
+    Modal.show(`${this.typeLabel(type)}キー: ${profile.label}`, content, { wide: true });
+  },
+
+  mergePairFromReview(type, fromKey, toKey, label = '') {
+    try {
+      this.addAlias(type, fromKey, toKey, label, 'gui_merge');
+      this.refreshAnalyses();
+      Modal.hide();
+      UIController.showToast('名寄せを適用しました。', 'success');
+    } catch (err) {
+      UIController.showToast(err.message, 'error');
+    }
+  },
+
+  mergeFromReview(type, key) {
+    const sel = document.getElementById('identityMergeTarget');
+    const target = sel?.value || '';
+    const label = sel?.selectedOptions?.[0]?.dataset?.label || '';
+    if (!target) {
+      UIController.showToast('統合先キーを選択してください。', 'error');
+      return;
+    }
+    this.mergePairFromReview(type, key, target, label);
+  },
+
+  setLabelFromReview(type, key) {
+    UIController.showToast('表示名の直接入力欄は廃止しました。統合先キーの表示名を使ってください。', 'error');
+  },
+
+  unmergeFromReview(type, key) {
+    const removed = this.removeManualRuleForKey(type, key);
+    this.refreshAnalyses();
+    Modal.hide();
+    UIController.showToast(removed ? 'このキーの統合を解除しました。' : 'このキーには解除できる統合ルールがありません。', removed ? 'success' : 'error');
+  },
+
+  fillAliasFields() {
+    UIController.showToast('キーを直接入力する欄は廃止しました。名寄せワークベンチまたは詳細ポップアップから統合してください。', 'error');
+  },
+  mergeSelectedFromBrowser() {
+    const boxes = [...document.querySelectorAll('.identity-browser-check:checked')];
+    if (boxes.length < 2) {
+      UIController.showToast('統合するキーを2つ以上チェックしてください。表示順で最初のチェックが統合先になります。', 'error');
+      return;
+    }
+    const type = boxes[0].dataset.type || 'author';
+    const target = boxes[0].dataset.key;
+    const label = boxes[0].dataset.label || '';
+    try {
+      boxes.slice(1).forEach(b => this.addAlias(type, b.dataset.key, target, label, 'gui_bulk_merge', { save: false }));
+      this.save();
+      this.refreshAnalyses();
+      UIController.showToast(`${boxes.length - 1}件のキーを統合しました。`, 'success');
+    } catch (err) {
+      UIController.showToast(err.message, 'error');
+    }
+  },
+  separateSelectedFromBrowser() {
+    const boxes = [...document.querySelectorAll('.identity-browser-check:checked')];
+    if (!boxes.length) {
+      UIController.showToast('分離するキーをチェックしてください。', 'error');
+      return;
+    }
+    let removed = 0;
+    boxes.forEach(b => { removed += this.removeManualRuleForKey(b.dataset.type || 'author', b.dataset.key, { save: false }); });
+    if (removed) this.save();
+    this.refreshAnalyses();
+    UIController.showToast(removed ? `${removed}件の統合を解除しました。` : '選択キーに解除できる統合ルールはありませんでした。', removed ? 'success' : 'error');
+  },
+
+
+
+  copyKey(key, btn) {
+    const text = String(key || '');
+    navigator.clipboard.writeText(text).then(() => {
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = 'コピー済み';
+        setTimeout(() => { btn.textContent = orig; }, 1200);
+      } else {
+        UIController.showToast('キーをコピーしました。', 'success');
+      }
+    }).catch(() => UIController.showToast(text, 'success'));
+  },
+
+  renderRules() {
+    const el = document.getElementById('identityRules');
+    if (!el) return;
+    this._ensure();
+    const rows = [];
+    ['author', 'institution'].forEach(type => {
+      Object.entries(this._map(type).aliases).forEach(([from, rule]) => rows.push({ type, from, ...rule }));
+    });
+    if (!rows.length) {
+      el.innerHTML = '<div class="funding-empty">名寄せマップにはまだ統合ルールがありません。</div>';
+      return;
+    }
+    el.innerHTML = `<table><thead><tr><th>対象</th><th>元キー</th><th>統合先キー</th><th>表示名</th><th>操作種別</th><th></th></tr></thead><tbody>${rows.map(r => `
+      <tr>
+        <td>${r.type === 'author' ? '著者' : '機関'}</td>
+        <td><code>${this.esc(r.from)}</code></td>
+        <td><code>${this.esc(r.canonical || '')}</code></td>
+        <td>${this.esc(r.label || '')}</td>
+        <td>${this.esc(this.statusLabel(r.decision) || r.decision || '')}</td>
+        <td><button class="btn btn-secondary btn-sm" data-type="${this.esc(r.type)}" data-key="${this.esc(r.from)}" onclick="IdentityManager.removeAlias(this.dataset.type, this.dataset.key)">削除</button></td>
+      </tr>`).join('')}</tbody></table>`;
+  },
+
+  _diagnoseType(type) {
+    let occurrences = 0, idLike = 0, nameOnly = 0, rorCount = 0;
+    const keyNames = new Map();
+    const nameKeys = new Map();
+    AppState.tableData.forEach(p => {
+      this.getEntities(p, type, { canonical: false }).forEach(e => {
+        occurrences++;
+        const rawKey = e.raw_key || e.key || '';
+        const name = this.normalizeName(e.display_name || e.label || e.name || '');
+        if (type === 'institution' && e.ror) rorCount++;
+        if (e.id || e.orcid || /^https:\/\/openalex\.org\//i.test(rawKey) || (type === 'institution' && e.ror)) idLike++; else nameOnly++;
+        if (!keyNames.has(rawKey)) keyNames.set(rawKey, new Set());
+        if (name) keyNames.get(rawKey).add(e.display_name || e.label || e.name || '');
+        if (name) {
+          if (!nameKeys.has(name)) nameKeys.set(name, { label: e.display_name || e.label || e.name || name, keys: new Set(), type });
+          nameKeys.get(name).keys.add(rawKey);
+        }
+      });
+    });
+    const sameNameMultiKey = [...nameKeys.values()].filter(v => v.keys.size > 1).sort((a, b) => b.keys.size - a.keys.size).slice(0, 20);
+    const sameKeyMultiName = [...keyNames.entries()].filter(([, names]) => names.size > 1).map(([key, names]) => ({ key, names: [...names] })).slice(0, 20);
+    return { occurrences, idLike, nameOnly, rorCount, sameNameMultiKey, sameKeyMultiName };
+  },
+
+  renderDiagnostics() {
+    const el = document.getElementById('identityDiagnostics');
+    if (!el) return;
+    if (!AppState.tableData.length) {
+      el.innerHTML = '<div class="funding-empty">論文データ取得後に名寄せ診断を表示します。</div>';
+      return;
+    }
+    const a = this._diagnoseType('author');
+    const i = this._diagnoseType('institution');
+    const pct = (num, den) => den ? `${(100 * num / den).toFixed(1)}%` : '-';
+    const dupTable = (title, rows, type) => rows.length ? `
+      <h4 style="margin:12px 0 6px;color:var(--primary-dark);">${title}</h4>
+      <div class="table-wrapper"><table><thead><tr><th>表示名</th><th>キー数</th><th>キー</th></tr></thead><tbody>
+        ${rows.map(r => `<tr><td>${this.esc(r.label)}</td><td>${r.keys.size}</td><td>${[...r.keys].map(k => `<button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(k)}" onclick="IdentityManager.showEntityReviewFromButton(this)">${this.esc(this.shortKey(k))}</button>`).join(' ')}</td></tr>`).join('')}
+      </tbody></table></div>` : '';
+    const keyNameTable = (title, rows, type) => rows.length ? `
+      <h4 style="margin:12px 0 6px;color:var(--primary-dark);">${title}</h4>
+      <div class="table-wrapper"><table><thead><tr><th>キー</th><th>表示名</th></tr></thead><tbody>
+        ${rows.map(r => `<tr><td><button class="btn btn-secondary btn-sm" data-type="${this.esc(type)}" data-key="${this.esc(r.key)}" onclick="IdentityManager.showEntityReviewFromButton(this)">${this.esc(this.shortKey(r.key))}</button></td><td>${this.esc(r.names.join(' / '))}</td></tr>`).join('')}
+      </tbody></table></div>` : '';
+    el.innerHTML = `
+      <div class="metrics-row">
+        <div class="metric-card"><div class="metric-value">${pct(a.idLike, a.occurrences)}</div><div class="metric-label">著者IDカバレッジ</div></div>
+        <div class="metric-card"><div class="metric-value">${a.nameOnly.toLocaleString()}</div><div class="metric-label">著者：名前のみ（IDなし）</div></div>
+        <div class="metric-card"><div class="metric-value">${a.sameNameMultiKey.length.toLocaleString()}</div><div class="metric-label">同名・複数著者ID候補</div></div>
+        <div class="metric-card"><div class="metric-value">${pct(i.idLike, i.occurrences)}</div><div class="metric-label">機関ID/RORカバレッジ</div></div>
+        <div class="metric-card"><div class="metric-value">${i.nameOnly.toLocaleString()}</div><div class="metric-label">機関：名前のみ（IDなし）</div></div>
+        <div class="metric-card"><div class="metric-value">${i.rorCount.toLocaleString()}</div><div class="metric-label">RORあり所属</div></div>
+        <div class="metric-card"><div class="metric-value">${i.sameNameMultiKey.length.toLocaleString()}</div><div class="metric-label">同名・複数機関ID候補</div></div>
+      </div>
+      <div class="form-hint">現在の機関集計単位: ${this.esc(AppState.institutionAggregationMode || 'exact')}。GUIでの統合・分離は主要分析へ即時再適用されます。</div>
+      ${dupTable('著者: 同じ表示名だが複数キーに分かれる候補', a.sameNameMultiKey, 'author')}
+      ${dupTable('機関: 同じ表示名だが複数キーに分かれる候補', i.sameNameMultiKey, 'institution')}
+      ${keyNameTable('著者: 同じキーに複数表示名がある候補', a.sameKeyMultiName, 'author')}
+      ${keyNameTable('機関: 同じキーに複数表示名がある候補', i.sameKeyMultiName, 'institution')}
+    `;
+  },
+
+  exportMap() {
+    this._ensure();
+    const payload = {
+      version: 1,
+      updated_at: new Date().toISOString(),
+      institutionAggregationMode: AppState.institutionAggregationMode || 'exact',
+      author: AppState.identityMaps.author,
+      institution: AppState.identityMaps.institution,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `openalex_collector_v6_名寄せマップ_${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+
+  importMap(input) {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        AppState.identityMaps = {
+          author: { aliases: parsed.author?.aliases || {}, labels: parsed.author?.labels || {} },
+          institution: { aliases: parsed.institution?.aliases || {}, labels: parsed.institution?.labels || {} },
+        };
+        AppState.institutionAggregationMode = parsed.institutionAggregationMode || AppState.institutionAggregationMode || 'exact';
+        this.save();
+        const sel = document.getElementById('institutionIdentityMode');
+        if (sel) sel.value = AppState.institutionAggregationMode;
+        this.refreshAnalyses();
+        UIController.showToast('名寄せマップを読み込み、名寄せを再適用しました。', 'success');
+      } catch (err) {
+        UIController.showToast(`名寄せマップ読込エラー: ${err.message}`, 'error');
+      } finally {
+        input.value = '';
+      }
+    };
+    reader.readAsText(file, 'utf-8');
+  },
+
+  resetMap() {
+    AppState.identityMaps = { author: { aliases: {}, labels: {} }, institution: { aliases: {}, labels: {} } };
+    AppState.institutionAggregationMode = 'exact';
+    const sel = document.getElementById('institutionIdentityMode');
+    if (sel) sel.value = 'exact';
+    this.save();
+    this.refreshAnalyses();
+    UIController.showToast('名寄せマップをリセットし、名寄せを再適用しました。', 'success');
+  },
+};
+
+// Collector Query DSL v6.0
 const CollectorQuery = {
   FIELD_LABELS: { TI: 'タイトル', AB: '要旨', TA: 'タイトル＋要旨', TX: 'OpenAlex総合', FT: 'fulltext索引' },
   SEARCH_SCOPE_LABELS: {
@@ -2839,7 +4864,7 @@ const CollectorQuery = {
     } else {
       lines.push('今回の式はすべてフィールド指定済みのため、「検索範囲」は内部判定には使いません。');
     }
-    lines.push('複数フィールドが混在する場合は偽陰性を避けるため、式中フィールドに応じて候補取得scopeを自動決定し、内部フィルタで最終判定します。');
+    lines.push('複数フィールドが混在する場合は偽陰性を避けるため、式中フィールドに応じてOpenAlex候補取得scopeを自動決定します。内部除外はnear/adjがある場合だけ行います。');
     lines.push(`今回のOpenAlex候補取得scope: ${candidateLabel}`);
     return lines.join('\n');
   },
@@ -3043,7 +5068,9 @@ const CollectorQuery = {
     if (uniqueCandidates.includes('')) uniqueCandidates = [''];
     if (!uniqueCandidates.length) uniqueCandidates.push('');
     const hasCandidateOnly = asts.some(item => this.hasCandidateOnlyField(item.ast, defaultField));
-    const hasStrict = asts.some(item => this.hasStrictField(item.ast, defaultField));
+    // Collector内部で候補を除外するのは、TI/AB/TA 内の nearN / adjN だけ。
+    // 通常語・Boolean・ワイルドカードは OpenAlex 候補をそのまま採用する。
+    const requiresInternalFilter = asts.some(item => this.requiresInternalFilter(item.ast, defaultField));
     const hasExplicitField = asts.some(item => this.hasExplicitField(item.ast));
     const hasUnfieldedExpression = asts.some(item => this.hasUnfieldedExpression(item.ast));
     const usesDefaultField = hasUnfieldedExpression;
@@ -3055,6 +5082,7 @@ const CollectorQuery = {
     });
     const candidateScope = this.candidateScopeFromFields(positiveFields);
     if (hasExplicitField) warnings.push('式内のTI=/AB=/TA=/TX=/FT=が優先されます。詳細フィルタの「検索範囲」はフィールド未指定語の既定値としてのみ使われます。');
+    if (requiresInternalFilter) warnings.push('near/adjを含むため、OpenAlex候補取得後にCollector内部で距離判定を行います。内部除外が発生する場合があります。');
     if (hasCandidateOnly) warnings.push('TX/FTはOpenAlex索引による候補取得のみです。本文全文がないため、Collector内部での厳密なnear/adj検証とスニペット表示は行いません。');
     if (compressed) warnings.push('OR展開数が上限を超えたため、一部のOpenAlex候補式はBoolean式1本に圧縮しました。');
 
@@ -3066,7 +5094,8 @@ const CollectorQuery = {
       searchScope,
       asts,
       candidateQueries: uniqueCandidates,
-      hasStrictFilter: hasStrict,
+      requiresInternalFilter,
+      hasStrictFilter: requiresInternalFilter,
       hasCandidateOnly,
       hasExplicitField,
       hasUnfieldedExpression,
@@ -3251,12 +5280,33 @@ const CollectorQuery = {
     }
   },
 
+  requiresInternalFilter(node, defaultField = 'TX', currentField = defaultField) {
+    if (!node) return false;
+    if (node.type === 'FIELD') return this.requiresInternalFilter(node.child, defaultField, node.field);
+    if (node.type === 'PROX') return this.STRICT_FIELDS.has(currentField);
+    if (node.type === 'NOT') return this.requiresInternalFilter(node.child, defaultField, currentField);
+    return this.requiresInternalFilter(node.left, defaultField, currentField) ||
+      this.requiresInternalFilter(node.right, defaultField, currentField) ||
+      this.requiresInternalFilter(node.child, defaultField, currentField);
+  },
+
   hasStrictField(node, defaultField = 'TX', currentField = defaultField) {
     if (!node) return false;
     if (node.type === 'FIELD') return this.hasStrictField(node.child, defaultField, node.field);
-    if (['TERM', 'PHRASE', 'PROX'].includes(node.type)) return this.STRICT_FIELDS.has(currentField);
+    // 内部除外が必要なのは、OpenAlexだけでは距離制約を厳密保証できないnear/adjのみ。
+    // TI=(word), AB=(A AND B), TA=(word OR phrase), wildcard, NOTなどでは内部除外しない。
+    if (node.type === 'PROX') return this.STRICT_FIELDS.has(currentField);
+    if (node.type === 'TERM' || node.type === 'PHRASE') return false;
     if (node.type === 'NOT') return this.hasStrictField(node.child, defaultField, currentField);
     return this.hasStrictField(node.left, defaultField, currentField) || this.hasStrictField(node.right, defaultField, currentField);
+  },
+
+  hasStrictProximity(node, defaultField = 'TX', currentField = defaultField) {
+    if (!node) return false;
+    if (node.type === 'FIELD') return this.hasStrictProximity(node.child, defaultField, node.field);
+    if (node.type === 'PROX') return this.STRICT_FIELDS.has(currentField);
+    if (node.type === 'NOT') return this.hasStrictProximity(node.child, defaultField, currentField);
+    return this.hasStrictProximity(node.left, defaultField, currentField) || this.hasStrictProximity(node.right, defaultField, currentField) || this.hasStrictProximity(node.child, defaultField, currentField);
   },
 
   hasCandidateOnlyField(node, defaultField = 'TX', currentField = defaultField) {
@@ -3486,11 +5536,6 @@ const CollectorQuery = {
       };
     }
     const docs = this.makeDocs(paper);
-    if (field === 'TA' && this.containsProximity(node)) {
-      const ti = this.evalInDoc(node, docs.TI, opts);
-      if (ti.matched) return ti;
-      return this.evalInDoc(node, docs.AB, opts);
-    }
     const doc = docs[field] || docs.TA;
     return this.evalInDoc(node, doc, opts);
   },
@@ -3544,7 +5589,16 @@ const CollectorQuery = {
     papers.forEach(row => {
       let res;
       if (candidateOnlyPlan) {
-        res = { matched: true, field: plan.hasCandidateOnly ? 'TX/FT' : '', fieldLabel: '候補取得', operator: 'candidate-only', candidateOnly: true, sourceQuery: plan.normalized, snippet: '', snippetHtml: '' };
+        res = {
+          matched: true,
+          field: plan.candidateScope || '',
+          fieldLabel: 'OpenAlex候補',
+          operator: 'openalex-candidate',
+          candidateOnly: true,
+          sourceQuery: plan.normalized,
+          snippet: '',
+          snippetHtml: ''
+        };
       } else {
         res = this.evaluatePlan(row, plan);
       }
@@ -3823,7 +5877,7 @@ const CollectorQuery = {
         <strong>OpenAlex候補検索式（${plan.candidateQueries.length}件 / scope=${this.escapeHtml(this.scopeLabel(plan.candidateScope))}）</strong>
         <pre>${this.escapeHtml(plan.candidateQueries.map((x, i) => `${i + 1}. ${x || '(空クエリ: フィルタのみ)'}`).join('\n'))}</pre>
         <strong>内部フィルタ</strong>
-        <pre>${this.escapeHtml(plan.hasStrictFilter ? `TI/AB/TAで厳密判定。近傍グループ最大幅=${plan.groupWidth}語` : 'TX/FTまたは全文候補のみ。内部厳密フィルタなし。')}${this.escapeHtml(warnings)}</pre>`;
+        <pre>${this.escapeHtml(plan.hasStrictFilter ? `near/adjをCollector内部で距離判定。近傍グループ最大幅=${plan.groupWidth}語` : (plan.hasCandidateOnly ? 'TX/FTはOpenAlex候補取得のみ。内部除外なし。' : '通常キーワード検索。OpenAlex候補を採用し、内部除外なし。'))}${this.escapeHtml(warnings)}</pre>`;
     } catch (e) {
       if (status) status.textContent = '構文エラー';
       box.classList.remove('hidden');
@@ -4051,7 +6105,7 @@ const SearchController = {
       await this._resolveAuthorFilter(params, signal);
 
       const rawPapers = await this._fetchRawPapers(queries, params, yearlyMode, yearFrom, yearTo, maxResults, signal);
-      UIController.updateProgress(92, collectorPlan ? 'Collector内部フィルタを適用中...' : 'データ整形中...');
+      UIController.updateProgress(92, collectorPlan && collectorPlan.hasStrictFilter ? 'Collector近傍フィルタを適用中...' : 'データ整形中...');
 
       let tableData = rawPapers.map(p => OpenAlexAPI.transformPaper(p));
       const candidateCountBeforeLang = tableData.length;
@@ -4070,18 +6124,28 @@ const SearchController = {
       if (collectorPlan) {
         const filtered = CollectorQuery.applyToPapers(tableData, collectorPlan);
         tableData = filtered.rows;
-        collectorStats = {
-          enabled: true,
-          candidateCount: filtered.candidateCount,
-          candidateCountBeforeLang,
-          matchedCount: filtered.matchedCount,
-          droppedCount: filtered.droppedCount,
-          candidateOnly: filtered.candidateOnly,
-          queryCount: queries.length,
-          warnings: collectorPlan.warnings || [],
-        };
-        AppState.collectorStats = collectorStats;
+        // 内部除外の件数カードは near/adj の距離判定を実施した場合だけ表示する。
+        // 通常の TI/AB/TA キーワード検索では OpenAlex候補をそのまま採用するため表示しない。
+        if (collectorPlan.hasStrictFilter) {
+          collectorStats = {
+            enabled: true,
+            candidateCount: filtered.candidateCount,
+            candidateCountBeforeLang,
+            matchedCount: filtered.matchedCount,
+            droppedCount: filtered.droppedCount,
+            candidateOnly: filtered.candidateOnly,
+            internalFilter: !!collectorPlan.hasStrictFilter,
+            queryCount: queries.length,
+            warnings: collectorPlan.warnings || [],
+          };
+          AppState.collectorStats = collectorStats;
+        } else {
+          AppState.collectorStats = null;
+        }
       }
+
+      UIController.updateProgress(96, '著者名・機関名の名寄せを適用中...');
+      if (typeof IdentityManager !== 'undefined') IdentityManager.applyIdentityLabels(tableData);
 
       UIController.updateProgress(100, '完了');
 
@@ -4118,12 +6182,14 @@ const SearchController = {
 
     if (!data.length) {
       let emptyMsg = '該当する論文が見つかりませんでした。';
-      if (collectorStats && collectorStats.enabled) emptyMsg += `（OpenAlex候補 ${collectorStats.candidateCount.toLocaleString()} 件、内部除外 ${collectorStats.droppedCount.toLocaleString()} 件）`;
+      if (collectorStats && collectorStats.enabled && collectorStats.internalFilter) emptyMsg += `（OpenAlex候補 ${collectorStats.candidateCount.toLocaleString()} 件、内部除外 ${collectorStats.droppedCount.toLocaleString()} 件）`;
       if (droppedByLang > 0) emptyMsg += `（CJK等タイトル ${droppedByLang} 件を除外しました）`;
       UIController.showToast(emptyMsg, 'error');
       collectorCards.forEach(c => c.classList.add('hidden'));
       return;
     }
+
+    if (typeof IdentityManager !== 'undefined') IdentityManager.applyIdentityLabels(data);
 
     document.getElementById('resultsSection').classList.remove('hidden');
     document.getElementById('uploadSection').classList.add('hidden');
@@ -4137,7 +6203,7 @@ const SearchController = {
     document.getElementById('metricAbstract').textContent = absCount.toLocaleString();
     document.getElementById('metricPeriod').textContent = years.length ? `${minY}-${maxY}` : '-';
 
-    if (collectorStats && collectorStats.enabled) {
+    if (collectorStats && collectorStats.enabled && collectorStats.internalFilter) {
       collectorCards.forEach(c => c.classList.remove('hidden'));
       document.getElementById('metricCandidate').textContent = collectorStats.candidateCount.toLocaleString();
       document.getElementById('metricCollectorMatched').textContent = collectorStats.matchedCount.toLocaleString();
@@ -4151,9 +6217,10 @@ const SearchController = {
     document.getElementById('metricTrend').textContent = trend;
 
     let msg = `論文 ${data.length} 件を取得しました（要約あり: ${absCount} 件）。`;
-    if (collectorStats && collectorStats.enabled) {
+    if (collectorStats && collectorStats.enabled && collectorStats.internalFilter) {
       msg += ` OpenAlex候補 ${collectorStats.candidateCount.toLocaleString()} 件 → 内部一致 ${collectorStats.matchedCount.toLocaleString()} 件。`;
-      if (collectorStats.candidateOnly) msg += ' TX/FT候補取得のみのため内部厳密判定は未実施。';
+    } else if (collectorStats && collectorStats.enabled && !collectorStats.internalFilter && collectorStats.candidateOnly) {
+      msg += ' near/adjなしのため、OpenAlex候補をそのまま採用しました（内部除外なし）。';
     } else if (queryCount > 1) {
       msg += `（${queryCount} クエリ統合、重複除去済み）`;
     }
@@ -4170,6 +6237,7 @@ const SearchController = {
     FundingRenderer.renderAll();
     if (typeof TopicRenderer !== 'undefined') TopicRenderer.renderAll();
     if (typeof NetworkRenderer !== 'undefined') NetworkRenderer.resetContainers();
+    if (typeof IdentityManager !== 'undefined') IdentityManager.renderDiagnostics();
   },
 
   calculateCAGR(data) {
@@ -4324,27 +6392,20 @@ const ChartRenderer = {
   // Shared aggregation helpers (used by both rendering and CSV export). Returns ALL entries,
   // sorted by count descending. Caller can `.slice(0, topN)` for chart rendering.
   getAuthorCounts() {
-    const counts = {};
-    AppState.tableData.forEach(d => {
-      if (!d.authors) return;
-      d.authors.split('; ').forEach(a => {
-        a = a.trim();
-        if (a) counts[a] = (counts[a] || 0) + 1;
-      });
-    });
-    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    return IdentityManager.aggregateCounts('author').map(s => [s.label, s.count, s.key, s.status]);
   },
 
   getInstCounts() {
-    const counts = {};
-    AppState.tableData.forEach(d => {
-      if (!d.institutions) return;
-      d.institutions.split('; ').forEach(inst => {
-        inst = inst.trim();
-        if (inst) counts[inst] = (counts[inst] || 0) + 1;
-      });
-    });
-    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    return IdentityManager.aggregateCounts('institution').map(s => [s.label, s.count, s.key, s.status]);
+  },
+
+  _entityLabelMap(type) {
+    return new Map(IdentityManager.aggregateCounts(type).map(s => [s.key, s.label]));
+  },
+
+  _paperEntityLabels(paper, type, labelMap = null) {
+    const map = labelMap || this._entityLabelMap(type);
+    return [...new Set(IdentityManager.getEntities(paper, type).map(e => map.get(e.key) || e.label).filter(Boolean))];
   },
 
   destroyChart(key) {
@@ -4475,22 +6536,12 @@ const ChartRenderer = {
     const container = document.getElementById('authorSelectContainer');
     container.classList.remove('hidden');
 
-    const authorCounts = {};
-    AppState.tableData.forEach(d => {
-      if (!d.authors) return;
-      d.authors.split('; ').forEach(a => {
-        a = a.trim();
-        if (a) authorCounts[a] = (authorCounts[a] || 0) + 1;
-      });
-    });
-
-    const sorted = Object.entries(authorCounts).sort((a, b) => b[1] - a[1]).slice(0, 50);
-
+    const sorted = IdentityManager.aggregateCounts('author').slice(0, 50);
     const listEl = document.getElementById('authorSelectList');
-    listEl.innerHTML = sorted.map(([name, count]) =>
+    listEl.innerHTML = sorted.map(row =>
       `<div class="author-select-item">
-        <input type="checkbox" class="author-cb" value="${TableRenderer.escapeHtml(name)}" onchange="ChartRenderer.onAuthorSelect()">
-        <label>${TableRenderer.escapeHtml(name)} (${count})</label>
+        <input type="checkbox" class="author-cb" value="${TableRenderer.escapeHtml(row.key)}" data-label="${TableRenderer.escapeHtml(row.label)}" onchange="ChartRenderer.onAuthorSelect()">
+        <label>${TableRenderer.escapeHtml(row.label)} (${row.count})</label>
       </div>`
     ).join('');
   },
@@ -4509,7 +6560,7 @@ const ChartRenderer = {
     this.destroyChart('trendLine');
 
     const selected = [];
-    document.querySelectorAll('.author-cb:checked').forEach(cb => selected.push(cb.value));
+    document.querySelectorAll('.author-cb:checked').forEach(cb => selected.push({ key: cb.value, label: cb.dataset.label || cb.value }));
 
     if (!selected.length) {
       this.renderTotalLine();
@@ -4527,12 +6578,12 @@ const ChartRenderer = {
       const counts = {};
       years.forEach(y => counts[y] = 0);
       AppState.tableData.forEach(d => {
-        if (d.year && d.authors && d.authors.split('; ').map(a => a.trim()).includes(author)) {
+        if (d.year && IdentityManager.hasEntity(d, 'author', author.key)) {
           counts[d.year] = (counts[d.year] || 0) + 1;
         }
       });
       return {
-        label: author,
+        label: author.label,
         data: years.map(y => counts[y]),
         borderColor: this.COLORS[i % this.COLORS.length],
         backgroundColor: 'transparent',
@@ -4568,9 +6619,8 @@ const ChartRenderer = {
           const el = els[0];
           const year = years[el.index];
           const author = selected[el.datasetIndex];
-          const matched = AppState.tableData.filter(d =>
-            d.year === year && (d.authors || '').split('; ').map(s => s.trim()).includes(author));
-          Modal.show(`${author} - ${year}年（${matched.length}件）`, Modal.buildPaperListContent(`${author} / ${year}年`, matched));
+          const matched = AppState.tableData.filter(d => d.year === year && IdentityManager.hasEntity(d, 'author', author.key));
+          Modal.show(`${author.label} - ${year}年（${matched.length}件）`, Modal.buildPaperListContent(`${author.label} / ${year}年`, matched));
         },
         scales: {
           x: { title: { display: true, text: '年', color: '#5f6368' }, grid: { display: false } },
@@ -4624,7 +6674,7 @@ const ChartRenderer = {
         onClick: (evt, els) => {
           if (!els.length) return;
           const name = labels[els[0].index];
-          const matched = AppState.tableData.filter(d => (d.authors || '').split('; ').map(s => s.trim()).includes(name));
+          const matched = AppState.tableData.filter(d => IdentityManager.hasEntity(d, 'author', sorted[els[0].index][2] || name));
           Modal.show(`著者: ${name}`, Modal.buildEntityContent(name, '著者', matched));
         },
         scales: {
@@ -4681,7 +6731,7 @@ const ChartRenderer = {
         onClick: (evt, els) => {
           if (!els.length) return;
           const name = labels[els[0].index];
-          const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+          const matched = AppState.tableData.filter(d => IdentityManager.hasEntity(d, 'institution', sorted[els[0].index][2] || name));
           Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
         },
         scales: {
@@ -4710,45 +6760,21 @@ const ChartRenderer = {
   // listed author (standard convention; OpenAlex authorship-level fractional weighting is
   // not used here for simplicity).
   getAuthorCitationStats() {
-    const stats = {};
-    AppState.tableData.forEach(d => {
-      if (!d.authors) return;
-      const cite = Number(d.citation_count) || 0;
-      d.authors.split('; ').forEach(a => {
-        a = a.trim();
-        if (!a) return;
-        if (!stats[a]) stats[a] = { name: a, papers: 0, totalCitations: 0, citations: [] };
-        stats[a].papers++;
-        stats[a].totalCitations += cite;
-        stats[a].citations.push(cite);
-      });
-    });
-    Object.values(stats).forEach(s => {
-      s.hIndex = this._computeHIndex(s.citations);
+    const rows = IdentityManager.aggregateCitationStats('author');
+    rows.forEach(s => {
+      s.hIndex = this._computeHIndex(s.citations || []);
       s.avgCitations = s.papers > 0 ? s.totalCitations / s.papers : 0;
     });
-    return Object.values(stats);
+    return rows;
   },
 
   getInstCitationStats() {
-    const stats = {};
-    AppState.tableData.forEach(d => {
-      if (!d.institutions) return;
-      const cite = Number(d.citation_count) || 0;
-      d.institutions.split('; ').forEach(inst => {
-        inst = inst.trim();
-        if (!inst) return;
-        if (!stats[inst]) stats[inst] = { name: inst, papers: 0, totalCitations: 0, citations: [] };
-        stats[inst].papers++;
-        stats[inst].totalCitations += cite;
-        stats[inst].citations.push(cite);
-      });
-    });
-    Object.values(stats).forEach(s => {
-      s.hIndex = this._computeHIndex(s.citations);
+    const rows = IdentityManager.aggregateCitationStats('institution');
+    rows.forEach(s => {
+      s.hIndex = this._computeHIndex(s.citations || []);
       s.avgCitations = s.papers > 0 ? s.totalCitations / s.papers : 0;
     });
-    return Object.values(stats);
+    return rows;
   },
 
   getVenueCitationStats() {
@@ -4886,7 +6912,7 @@ const ChartRenderer = {
         onClick: (evt, els) => {
           if (!els.length) return;
           const name = sorted[els[0].index].name;
-          const matched = AppState.tableData.filter(d => (d.authors || '').split('; ').map(s => s.trim()).includes(name));
+          const matched = AppState.tableData.filter(d => IdentityManager.hasEntity(d, 'author', sorted[els[0].index].key || name));
           Modal.show(`著者: ${name}`, Modal.buildEntityContent(name, '著者', matched));
         },
         scales: {
@@ -4946,7 +6972,7 @@ const ChartRenderer = {
         onClick: (evt, els) => {
           if (!els.length) return;
           const name = sorted[els[0].index].name;
-          const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+          const matched = AppState.tableData.filter(d => IdentityManager.hasEntity(d, 'institution', sorted[els[0].index].key || name));
           Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
         },
         scales: {
@@ -5041,6 +7067,7 @@ const ChartRenderer = {
       y: s.avgCitations,
       r: 4 + 14 * Math.sqrt(s.totalCitations / maxTotal),
       name: s.name,
+      key: s.key,
       total: s.totalCitations,
       hIndex: s.hIndex,
     }));
@@ -5089,8 +7116,7 @@ const ChartRenderer = {
           const d = data[els[0].index];
           const isInst = mode === 'institution';
           const matched = AppState.tableData.filter(p =>
-            (isInst ? (p.institutions || '') : (p.authors || ''))
-              .split('; ').map(s => s.trim()).includes(d.name));
+            IdentityManager.hasEntity(p, isInst ? 'institution' : 'author', d.key || d.name));
           Modal.show(`${isInst ? '機関' : '著者'}: ${d.name}`, Modal.buildEntityContent(d.name, isInst ? '所属機関' : '著者', matched));
         },
         scales: {
@@ -5116,6 +7142,7 @@ const ChartRenderer = {
     const labels = sorted.map(s => this._truncateLabel(s.name, 60));
     const values = sorted.map(s => s.hIndex);
     const fullNames = sorted.map(s => s.name);
+    const fullKeys = sorted.map(s => s.key || s.name);
     const totals = sorted.map(s => s.totalCitations);
     const papers = sorted.map(s => s.papers);
 
@@ -5155,10 +7182,9 @@ const ChartRenderer = {
         onClick: (evt, els) => {
           if (!els.length) return;
           const name = fullNames[els[0].index];
+          const key = fullKeys[els[0].index];
           const isInst = mode === 'institution';
-          const matched = AppState.tableData.filter(d =>
-            (isInst ? (d.institutions || '') : (d.authors || ''))
-              .split('; ').map(s => s.trim()).includes(name));
+          const matched = AppState.tableData.filter(d => IdentityManager.hasEntity(d, isInst ? 'institution' : 'author', key));
           Modal.show(`${isInst ? '機関' : '著者'}: ${name}`, Modal.buildEntityContent(name, isInst ? '所属機関' : '著者', matched));
         },
         scales: {
@@ -5175,9 +7201,9 @@ const ChartRenderer = {
   // Returns Map<"instA||instB", count> with instA < instB lexicographically (canonical key)
   getCollabPairs() {
     const pairs = new Map();
+    const labelMap = this._entityLabelMap('institution');
     AppState.tableData.forEach(d => {
-      if (!d.institutions) return;
-      const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+      const insts = this._paperEntityLabels(d, 'institution', labelMap);
       if (insts.length < 2) return;
       for (let i = 0; i < insts.length; i++) {
         for (let j = i + 1; j < insts.length; j++) {
@@ -5193,17 +7219,15 @@ const ChartRenderer = {
   // Returns Map<inst, Map<partnerInst, count>>
   getInstPartnerMap() {
     const map = new Map();
+    const labelMap = this._entityLabelMap('institution');
     AppState.tableData.forEach(d => {
-      if (!d.institutions) return;
-      const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+      const insts = this._paperEntityLabels(d, 'institution', labelMap);
       if (insts.length < 2) return;
       insts.forEach(inst => {
         if (!map.has(inst)) map.set(inst, new Map());
         const partners = map.get(inst);
         insts.forEach(other => {
-          if (other !== inst) {
-            partners.set(other, (partners.get(other) || 0) + 1);
-          }
+          if (other !== inst) partners.set(other, (partners.get(other) || 0) + 1);
         });
       });
     });
@@ -5278,8 +7302,7 @@ const ChartRenderer = {
           const i = els[0].index;
           const [a, b] = sorted[i][0].split('||');
           const shared = AppState.tableData.filter(d => {
-            const insts = (d.institutions || '').split('; ').map(s => s.trim());
-            return insts.includes(a) && insts.includes(b);
+            return IdentityManager.hasEntity(d, 'institution', a) && IdentityManager.hasEntity(d, 'institution', b);
           });
           Modal.show(`${a} × ${b}`, Modal.buildPairContent(a, '所属機関', b, '所属機関', shared, '共著論文'));
         },
@@ -5344,8 +7367,7 @@ const ChartRenderer = {
           if (!els.length) return;
           const partner = fullNames[els[0].index];
           const shared = AppState.tableData.filter(d => {
-            const insts = (d.institutions || '').split('; ').map(s => s.trim());
-            return insts.includes(inst) && insts.includes(partner);
+            return IdentityManager.hasEntity(d, 'institution', inst) && IdentityManager.hasEntity(d, 'institution', partner);
           });
           Modal.show(`${inst} × ${partner}`, Modal.buildPairContent(inst, '所属機関', partner, '所属機関', shared, '共著論文'));
         },
@@ -5409,7 +7431,7 @@ const ChartRenderer = {
         onClick: (evt, els) => {
           if (!els.length) return;
           const name = fullNames[els[0].index];
-          const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+          const matched = AppState.tableData.filter(d => IdentityManager.hasEntity(d, 'institution', name));
           Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
         },
         scales: {
@@ -5431,10 +7453,11 @@ const ChartRenderer = {
     const topPairKeys = new Set(topPairs.map(([k]) => k));
 
     // Build year × pair counts
+    const labelMap = this._entityLabelMap('institution');
     const yearCounts = {};   // pairKey -> {year -> count}
     AppState.tableData.forEach(d => {
       if (!d.year || !d.institutions) return;
-      const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+      const insts = this._paperEntityLabels(d, 'institution', labelMap || this._entityLabelMap('institution'));
       if (insts.length < 2) return;
       for (let i = 0; i < insts.length; i++) {
         for (let j = i + 1; j < insts.length; j++) {
@@ -5493,8 +7516,7 @@ const ChartRenderer = {
           const [a, b] = pairKey.split('||');
           const shared = AppState.tableData.filter(d => {
             if (d.year !== year) return false;
-            const insts = (d.institutions || '').split('; ').map(s => s.trim());
-            return insts.includes(a) && insts.includes(b);
+            return IdentityManager.hasEntity(d, 'institution', a) && IdentityManager.hasEntity(d, 'institution', b);
           });
           Modal.show(`${a} × ${b} - ${year}年（${shared.length}件）`, Modal.buildPaperListContent(`${a} × ${b} / ${year}年`, shared));
         },
@@ -5509,8 +7531,7 @@ const ChartRenderer = {
   // Open pair modal for two institutions (used by collabMatrix cell click)
   showInstPairModal(nameA, nameB) {
     const shared = AppState.tableData.filter(d => {
-      const insts = (d.institutions || '').split('; ').map(s => s.trim());
-      return insts.includes(nameA) && insts.includes(nameB);
+      return IdentityManager.hasEntity(d, 'institution', nameA) && IdentityManager.hasEntity(d, 'institution', nameB);
     });
     Modal.show(`${nameA} × ${nameB}`, Modal.buildPairContent(nameA, '所属機関', nameB, '所属機関', shared, '共著論文'));
   },
@@ -5583,7 +7604,7 @@ const ChartRenderer = {
       const rowHead = e.target.closest('th.row-head');
       if (rowHead && rowHead.dataset.rowClick != null) {
         const name = insts[Number(rowHead.dataset.rowClick)];
-        const matched = AppState.tableData.filter(d => (d.institutions || '').split('; ').map(s => s.trim()).includes(name));
+        const matched = AppState.tableData.filter(d => IdentityManager.hasEntity(d, 'institution', name));
         Modal.show(`機関: ${name}`, Modal.buildEntityContent(name, '所属機関', matched));
       }
     };
@@ -6459,12 +8480,48 @@ const FundingRenderer = {
     return [...map.values()].map(st => ({ ...st, paperCount: st.papers.length, avgCitations: st.papers.length ? st.totalCitations / st.papers.length : 0 }));
   },
 
+  _paperAuthorEntries(paper) {
+    let authors = [];
+    if (typeof IdentityManager !== 'undefined' && IdentityManager.getEntities) {
+      authors = IdentityManager.getEntities(paper, 'author').map(e => ({ key: e.key || e.raw_key || e.label, label: e.label || e.display_name || e.name || e.key })).filter(a => a.key && a.label);
+    } else {
+      authors = this._splitSemi(paper.authors).map(name => ({ key: name, label: name }));
+    }
+    const seen = new Set();
+    return authors.filter(a => { const key = String(a.key || a.label); if (!key || seen.has(key)) return false; seen.add(key); return true; });
+  },
+
+  getFunderAuthorStats() {
+    const map = new Map();
+    AppState.tableData.forEach(p => {
+      const funders = this._paperFunders(p);
+      const authors = this._paperAuthorEntries(p);
+      if (!funders.length || !authors.length) return;
+      const cite = Number(p.citation_count) || 0;
+      funders.forEach(f => {
+        authors.forEach(author => {
+          const key = `${(f.id || f.name).toLowerCase()}||${author.key}`;
+          if (!map.has(key)) map.set(key, { funder: f.name, funder_id: f.id || '', author: author.label, author_key: author.key, papers: [], paperIds: new Set(), totalCitations: 0 });
+          const st = map.get(key);
+          if (!st.paperIds.has(p.paper_id || p.title)) {
+            st.paperIds.add(p.paper_id || p.title);
+            st.papers.push(p);
+            st.totalCitations += cite;
+          }
+        });
+      });
+    });
+    return [...map.values()].map(st => ({ ...st, paperCount: st.papers.length, avgCitations: st.papers.length ? st.totalCitations / st.papers.length : 0 }));
+  },
+
   renderAll() {
     this.renderMetrics();
     this.renderFunderRank();
     this.renderAwardRank();
     this.renderFunderInst();
+    this.renderFunderAuthor();
     if (document.getElementById('funderInstMatrixContainer')) this.renderFunderInstMatrix();
+    if (document.getElementById('funderAuthorMatrixContainer')) this.renderFunderAuthorMatrix();
     this.renderExternalFundingTable();
   },
 
@@ -6652,6 +8709,40 @@ const FundingRenderer = {
     });
   },
 
+  renderFunderAuthor() {
+    ChartRenderer.destroyChart('funderAuthor');
+    const container = document.getElementById('funderAuthorContainer');
+    if (!container) return;
+    const topN = parseInt(document.getElementById('topNFunderAuthor')?.value) || 20;
+    const sorted = this.getFunderAuthorStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations).slice(0, topN);
+    if (!sorted.length) {
+      this._showEmpty('funderAuthorContainer', '資金源と著者を結び付けて集計できるデータがありません。');
+      return;
+    }
+    this._showCanvas('funderAuthorContainer', 'chartFunderAuthor', Math.max(400, sorted.length * 38 + 90));
+    const labels = sorted.map(s => ChartRenderer._truncateLabel(`${s.funder} × ${s.author}`, 70));
+    const values = sorted.map(s => s.paperCount);
+    const ctx = document.getElementById('chartFunderAuthor').getContext('2d');
+    AppState.charts.funderAuthor = new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: '論文件数', data: values, backgroundColor: 'rgba(26,115,232,0.75)', borderColor: '#0b57d0', borderWidth: 1, borderRadius: 3 }] },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: `資金源×著者 Top ${topN}`, font: { size: 16, weight: '600' }, color: '#202124' },
+          tooltip: { callbacks: { title: items => `${sorted[items[0].dataIndex].funder} × ${sorted[items[0].dataIndex].author}`, label: item => [`論文件数: ${item.raw}`, `合計被引用: ${sorted[item.dataIndex].totalCitations.toLocaleString()}`, 'クリックで詳細表示'] } }
+        },
+        onClick: (evt, els) => {
+          if (!els.length) return;
+          const st = sorted[els[0].index];
+          Modal.show(`${st.funder} × ${st.author}`, Modal.buildPairContent(st.funder, '資金源', st.author, '著者', st.papers, '関連論文'));
+        },
+        scales: { x: { title: { display: true, text: '論文件数', color: '#5f6368' }, beginAtZero: true, grid: { color: '#f1f3f4' }, ticks: { stepSize: 1 } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+      }
+    });
+  },
+
   _makeFundingMatrixHtml(rowNames, colNames, valueGetter, cellFactory) {
     let maxVal = 0;
     rowNames.forEach(r => colNames.forEach(c => { const v = valueGetter(r, c) || 0; if (v > maxVal) maxVal = v; }));
@@ -6696,6 +8787,38 @@ const FundingRenderer = {
       const stats = map.get(`${funder}||${inst}`);
       const papers = stats ? stats.papers : AppState.tableData.filter(p => this._paperFunders(p).map(f => f.name).includes(funder) && this._splitSemi(p.institutions).includes(inst));
       Modal.show(`${funder} × ${inst}`, stats ? Modal.buildFunderInstitutionContent(stats) : Modal.buildPairContent(funder, '資金源', inst, '所属機関', papers, '関連論文'));
+    }));
+  },
+
+  renderFunderAuthorMatrix() {
+    const container = document.getElementById('funderAuthorMatrixContainer');
+    if (!container) return;
+    const rowN = parseInt(document.getElementById('funderAuthorMatrixRows')?.value) || 12;
+    const colN = parseInt(document.getElementById('funderAuthorMatrixCols')?.value) || 12;
+    const pairStats = this.getFunderAuthorStats();
+    if (!pairStats.length) {
+      container.innerHTML = '<div class="funding-empty">資金源×著者のマトリクス対象データがありません。</div>';
+      return;
+    }
+    const funderNames = this.getFunderStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, rowN).map(s => s.name);
+    const authorCounts = new Map();
+    const authorLabels = new Map();
+    pairStats.forEach(s => {
+      authorCounts.set(s.author_key, (authorCounts.get(s.author_key) || 0) + s.paperCount);
+      authorLabels.set(s.author_key, s.author);
+    });
+    const authors = [...authorCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, colN).map(([key]) => ({ key, label: authorLabels.get(key) || key }));
+    const authorKeyByLabel = new Map(authors.map(a => [a.label, a.key]));
+    const authorNames = authors.map(a => a.label);
+    const map = new Map(pairStats.map(s => [`${s.funder}||${s.author_key}`, s]));
+    container.innerHTML = this._makeFundingMatrixHtml(funderNames, authorNames, (funder, author) => (map.get(`${funder}||${authorKeyByLabel.get(author) || author}`)?.paperCount) || 0, (funder, author, v, bg, color) => `<td class="cell ${v ? '' : 'zero'}" data-funder="${Modal.esc(funder)}" data-author="${Modal.esc(author)}" data-author-key="${Modal.esc(authorKeyByLabel.get(author) || author)}" style="background:${bg};color:${color};cursor:pointer;">${v || ''}</td>`);
+    container.querySelectorAll('td[data-funder]').forEach(td => td.addEventListener('click', () => {
+      const funder = td.getAttribute('data-funder');
+      const author = td.getAttribute('data-author');
+      const authorKey = td.getAttribute('data-author-key');
+      const stats = map.get(`${funder}||${authorKey}`);
+      const papers = stats ? stats.papers : AppState.tableData.filter(p => this._paperFunders(p).map(f => f.name).includes(funder) && (typeof IdentityManager !== 'undefined' ? IdentityManager.hasEntity(p, 'author', authorKey) : this._splitSemi(p.authors).includes(author)));
+      Modal.show(`${funder} × ${author}`, Modal.buildPairContent(funder, '資金源', author, '著者', papers, '関連論文'));
     }));
   },
 
@@ -7233,6 +9356,56 @@ const TopicRenderer = {
     }));
   },
 
+  _paperAuthorEntries(paper) {
+    let authors = [];
+    if (typeof IdentityManager !== 'undefined' && IdentityManager.getEntities) {
+      authors = IdentityManager.getEntities(paper, 'author').map(e => ({ key: e.key || e.raw_key || e.label, label: e.label || e.display_name || e.name || e.key })).filter(a => a.key && a.label);
+    } else {
+      authors = this._splitSemi(paper.authors).map(name => ({ key: name, label: name }));
+    }
+    const seen = new Set();
+    return authors.filter(a => { const key = String(a.key || a.label); if (!key || seen.has(key)) return false; seen.add(key); return true; });
+  },
+
+  renderAuthorTopicMatrix() {
+    const container = document.getElementById('authorTopicMatrixContainer');
+    if (!container) return;
+    const rowN = parseInt(document.getElementById('matrixAuthorTopicRows')?.value) || 10;
+    const colN = parseInt(document.getElementById('matrixAuthorTopicCols')?.value) || 10;
+    const authorRanks = (typeof IdentityManager !== 'undefined' && IdentityManager.aggregateCounts)
+      ? IdentityManager.aggregateCounts('author').slice(0, rowN).map(s => ({ key: s.key, label: s.label }))
+      : ChartRenderer.getAuthorCounts().slice(0, rowN).map(([label, count, key]) => ({ key: key || label, label }));
+    const topicStats = this.getTopicStats().sort((a, b) => b.paperCount - a.paperCount).slice(0, colN);
+    if (!authorRanks.length || !topicStats.length) { container.innerHTML = '<div class="funding-empty">著者×Topicのマトリクス対象データがありません。</div>'; return; }
+    const authorKeyByLabel = new Map(authorRanks.map(a => [a.label, a.key]));
+    const authorNames = authorRanks.map(a => a.label);
+    const topicNames = topicStats.map(s => s.name);
+    const topicSet = new Set(topicNames);
+    const matrix = new Map();
+    AppState.tableData.forEach(p => {
+      const topics = this._paperTopics(p).filter(t => topicSet.has(t));
+      if (!topics.length) return;
+      this._paperAuthorEntries(p).forEach(author => {
+        topics.forEach(topic => {
+          const key = `${author.key}||${topic}`;
+          if (!matrix.has(key)) matrix.set(key, { author: author.label, author_key: author.key, topic, papers: [], paperIds: new Set() });
+          const st = matrix.get(key);
+          const pid = p.paper_id || p.title;
+          if (!st.paperIds.has(pid)) { st.paperIds.add(pid); st.papers.push(p); }
+        });
+      });
+    });
+    container.innerHTML = this._makeMatrixHtml(authorNames, topicNames, (author, topic) => (matrix.get(`${authorKeyByLabel.get(author) || author}||${topic}`)?.papers.length) || 0, (author, topic, v, bg, color) => `<td class="cell ${v ? '' : 'zero'}" data-author="${Modal.esc(author)}" data-author-key="${Modal.esc(authorKeyByLabel.get(author) || author)}" data-topic="${Modal.esc(topic)}" style="background:${bg};color:${color};cursor:pointer;">${v || ''}</td>`);
+    container.querySelectorAll('td[data-author]').forEach(td => td.addEventListener('click', () => {
+      const author = td.getAttribute('data-author');
+      const authorKey = td.getAttribute('data-author-key');
+      const topic = td.getAttribute('data-topic');
+      const stats = matrix.get(`${authorKey}||${topic}`);
+      const papers = stats ? stats.papers : AppState.tableData.filter(p => this._paperTopics(p).includes(topic) && (typeof IdentityManager !== 'undefined' ? IdentityManager.hasEntity(p, 'author', authorKey) : this._splitSemi(p.authors).includes(author)));
+      Modal.show(`${author} × ${topic}`, Modal.buildPairContent(author, '著者', topic, 'Topic', papers, '関連論文'));
+    }));
+  },
+
   renderTopicFunderMatrix() {
     const container = document.getElementById('topicFunderMatrixContainer');
     const rowN = parseInt(document.getElementById('matrixTopicFunderRows').value) || 10;
@@ -7256,14 +9429,39 @@ const TopicRenderer = {
     this.renderTopicFunder();
     this.renderTopicYearMatrix();
     this.renderTopicInstMatrix();
+    this.renderAuthorTopicMatrix();
     this.renderTopicFunderMatrix();
   },
 };
 
 const NetworkRenderer = {
-  _splitEntities(paper, type) {
+  _cleanDisplayLabel(label) {
+    if (typeof IdentityManager !== 'undefined' && IdentityManager.stripDisplayIdSuffix) {
+      return IdentityManager.stripDisplayIdSuffix(label);
+    }
+    return String(label || '')
+      .replace(/[\r\n]+/g, ' ')
+      .replace(/\s+\[(?:[AI]\d+|ROR:[^\]]+|IDなし:[^\]]+|name:[^\]]+)\]\s*$/i, '')
+      .trim();
+  },
+
+  _paperEntities(paper, type) {
+    if (typeof IdentityManager !== 'undefined' && IdentityManager.getEntities) {
+      const rows = IdentityManager.getEntities(paper, type).map(e => {
+        const id = e.key || e.raw_key || e.source_key || e.id || e.ror || e.orcid || this._cleanDisplayLabel(e.label || e.display_name || e.name);
+        const name = this._cleanDisplayLabel(e.label || e.display_name || e.name || (IdentityManager.shortKey ? IdentityManager.shortKey(id) : id));
+        return { id: String(id || '').trim(), key: String(id || '').trim(), name: name || String(id || '').trim() };
+      }).filter(e => e.id && e.name);
+      const seen = new Set();
+      return rows.filter(e => { if (seen.has(e.id)) return false; seen.add(e.id); return true; });
+    }
     const raw = type === 'author' ? (paper.authors || '') : (paper.institutions || '');
-    return [...new Set(String(raw).split(';').map(s => OpenAlexAPI._stripTags(s.trim())).filter(Boolean))];
+    const seen = new Set();
+    return String(raw).split(';').map(s => this._cleanDisplayLabel(OpenAlexAPI._stripTags(s.trim()))).filter(Boolean).map(name => ({ id: name, key: name, name })).filter(e => { if (seen.has(e.id)) return false; seen.add(e.id); return true; });
+  },
+
+  _splitEntities(paper, type) {
+    return this._paperEntities(paper, type).map(e => e.name);
   },
 
   _filters(prefix) {
@@ -7336,54 +9534,58 @@ const NetworkRenderer = {
     const nodeMap = new Map();
     const edgeMap = new Map();
     sourcePapers.forEach(p => {
-      const entities = this._splitEntities(p, type);
+      const entities = this._paperEntities(p, type);
       if (!entities.length) return;
       const cite = Number(p.citation_count) || 0;
-      entities.forEach(name => {
-        if (!nodeMap.has(name)) nodeMap.set(name, { name, papers: [], paperIds: new Set(), totalCitations: 0 });
-        const st = nodeMap.get(name);
+      entities.forEach(ent => {
+        if (!nodeMap.has(ent.id)) nodeMap.set(ent.id, { id: ent.id, key: ent.key || ent.id, name: ent.name, papers: [], paperIds: new Set(), totalCitations: 0 });
+        const st = nodeMap.get(ent.id);
+        if (!st.name && ent.name) st.name = ent.name;
         const pid = p.paper_id || p.title;
         if (!st.paperIds.has(pid)) { st.paperIds.add(pid); st.papers.push(p); st.totalCitations += cite; }
       });
       for (let i=0; i<entities.length; i++) {
         for (let j=i+1; j<entities.length; j++) {
-          const [a,b] = entities[i] < entities[j] ? [entities[i], entities[j]] : [entities[j], entities[i]];
-          const key = `${a}||${b}`;
-          if (!edgeMap.has(key)) edgeMap.set(key, { a, b, weight: 0, papers: [] });
+          const left = entities[i].id < entities[j].id ? entities[i] : entities[j];
+          const right = entities[i].id < entities[j].id ? entities[j] : entities[i];
+          const key = `${left.id}||${right.id}`;
+          if (!edgeMap.has(key)) edgeMap.set(key, { id: key, a: left.id, b: right.id, aName: left.name, bName: right.name, weight: 0, papers: [] });
           const e = edgeMap.get(key); e.weight++; e.papers.push(p);
         }
       }
     });
-    const eligibleNames = [...nodeMap.values()]
+    const eligibleIds = [...nodeMap.values()]
       .filter(n => n.papers.length >= filters.minPapers && (n.papers.length ? n.totalCitations / n.papers.length : 0) >= filters.minAvgCite)
       .sort((a,b) => b.papers.length - a.papers.length || b.totalCitations - a.totalCitations)
       .slice(0, topN)
-      .map(v => v.name);
-    const visibleSet = new Set(eligibleNames);
-    const edges = [...edgeMap.values()].filter(e => visibleSet.has(e.a) && visibleSet.has(e.b) && e.weight >= minEdgeWeight);
+      .map(v => v.id);
+    const visibleSet = new Set(eligibleIds);
+    const edges = [...edgeMap.values()].filter(e => visibleSet.has(e.a) && visibleSet.has(e.b) && e.weight >= minEdgeWeight)
+      .map(e => ({ ...e, aName: nodeMap.get(e.a)?.name || e.aName || e.a, bName: nodeMap.get(e.b)?.name || e.bName || e.b }));
     const activeSet = new Set(); edges.forEach(e => { activeSet.add(e.a); activeSet.add(e.b); });
     if (!edges.length) return { nodes: [], edges: [], nodeStats: [], filteredPaperCount: sourcePapers.length };
-    const nodes = [...activeSet].map(name => nodeMap.get(name));
+    const nodes = [...activeSet].map(id => nodeMap.get(id));
     const adj = new Map();
-    nodes.forEach(n => adj.set(n.name, []));
+    nodes.forEach(n => adj.set(n.id, []));
     const degree = new Map(), weightedDegree = new Map();
-    nodes.forEach(n => { degree.set(n.name, 0); weightedDegree.set(n.name, 0); });
+    nodes.forEach(n => { degree.set(n.id, 0); weightedDegree.set(n.id, 0); });
     edges.forEach(e => {
       degree.set(e.a, (degree.get(e.a) || 0) + 1); degree.set(e.b, (degree.get(e.b) || 0) + 1);
       weightedDegree.set(e.a, (weightedDegree.get(e.a) || 0) + e.weight); weightedDegree.set(e.b, (weightedDegree.get(e.b) || 0) + e.weight);
       adj.get(e.a).push(e.b); adj.get(e.b).push(e.a);
     });
-    const between = this._computeBetweenness(nodes.map(n => n.name), adj);
+    const between = this._computeBetweenness(nodes.map(n => n.id), adj);
     const nodeStats = nodes.map(n => ({
-      id: n.name,
-      name: n.name,
+      id: n.id,
+      key: n.key || n.id,
+      name: this._cleanDisplayLabel(n.name || n.id),
       papers: n.papers,
       paperCount: n.papers.length,
       totalCitations: n.totalCitations,
       avgCitations: n.papers.length ? n.totalCitations / n.papers.length : 0,
-      degree: degree.get(n.name) || 0,
-      weightedDegree: weightedDegree.get(n.name) || 0,
-      betweenness: between[n.name] || 0,
+      degree: degree.get(n.id) || 0,
+      weightedDegree: weightedDegree.get(n.id) || 0,
+      betweenness: between[n.id] || 0,
     }));
     return { nodes, edges, nodeStats, filteredPaperCount: sourcePapers.length };
   },
@@ -7405,6 +9607,7 @@ const NetworkRenderer = {
     const sMin = Math.min(...nodeStats.map(n => Number(n[sizeMetric]) || 0));
     const sMax = Math.max(...nodeStats.map(n => Number(n[sizeMetric]) || 0));
     const statMap = new Map(nodeStats.map(n => [n.id, n]));
+    const edgeMap = new Map(built.edges.map(e => [e.id, e]));
     const visNodes = nodeStats.map(n => ({
       id: n.id,
       label: n.name.length > 24 ? n.name.slice(0, 24) + '…' : n.name,
@@ -7413,7 +9616,7 @@ const NetworkRenderer = {
       color: this._gradient(Number(n[colorMetric]) || 0, vMin, vMax),
       font: { size: 12 },
     }));
-    const visEdges = built.edges.map(e => ({ id: `${e.a}||${e.b}`, from: e.a, to: e.b, value: e.weight, width: 1 + Math.log2(1 + e.weight), color: { color: '#9aa0a6', opacity: 0.55 }, title: `${e.a} × ${e.b}\n共著/共同研究: ${e.weight} 件\nクリックで詳細` }));
+    const visEdges = built.edges.map(e => ({ id: e.id, from: e.a, to: e.b, value: e.weight, width: 1 + Math.log2(1 + e.weight), color: { color: '#9aa0a6', opacity: 0.55 }, title: `${e.aName} × ${e.bName}\n共著/共同研究: ${e.weight} 件\nクリックで詳細` }));
     container.innerHTML = '';
     const network = new vis.Network(container, { nodes: new vis.DataSet(visNodes), edges: new vis.DataSet(visEdges) }, {
       physics: { enabled: true, stabilization: { iterations: 200 }, barnesHut: { gravitationalConstant: -2800, springLength: 140 } },
@@ -7421,20 +9624,29 @@ const NetworkRenderer = {
       nodes: { shape: 'dot', scaling: { min: 10, max: 42 }, borderWidth: 1.5 },
       edges: { smooth: { type: 'continuous' } }
     });
-    network.on('click', params => {
-      if (params.nodes && params.nodes.length) {
-        const id = params.nodes[0];
-        const st = statMap.get(id);
+    let lastPopup = { key: '', at: 0 };
+    const openNetworkPopup = (params) => {
+      const nodeId = params?.nodes && params.nodes.length ? params.nodes[0] : '';
+      const edgeId = !nodeId && params?.edges && params.edges.length ? params.edges[0] : '';
+      const key = nodeId ? `n:${nodeId}` : edgeId ? `e:${edgeId}` : '';
+      if (!key) return;
+      const now = Date.now();
+      if (lastPopup.key === key && now - lastPopup.at < 250) return;
+      lastPopup = { key, at: now };
+      if (nodeId) {
+        const st = statMap.get(nodeId);
         if (!st) return;
         const extra = `<dt>次数</dt><dd>${st.degree}</dd><dt>重み付き次数</dt><dd>${st.weightedDegree}</dd><dt>媒介中心性</dt><dd>${st.betweenness.toFixed(3)}</dd><dt>平均被引用数</dt><dd>${st.avgCitations.toFixed(2)}</dd>`;
         Modal.show(`${opts.entityLabel}: ${st.name}`, Modal.buildEntityContent(st.name, opts.entityLabel, st.papers, { extraDl: extra }));
-      } else if (params.edges && params.edges.length) {
-        const eid = params.edges[0];
-        const edge = built.edges.find(e => `${e.a}||${e.b}` === eid);
+      } else if (edgeId) {
+        const edge = edgeMap.get(edgeId);
         if (!edge) return;
-        Modal.show(`${edge.a} × ${edge.b}`, Modal.buildPairContent(edge.a, opts.entityLabel, edge.b, opts.entityLabel, edge.papers, opts.metricLabel));
+        Modal.show(`${edge.aName} × ${edge.bName}`, Modal.buildPairContent(edge.aName, opts.entityLabel, edge.bName, opts.entityLabel, edge.papers, opts.metricLabel));
       }
-    });
+    };
+    network.on('click', openNetworkPopup);
+    network.on('selectNode', openNetworkPopup);
+    network.on('selectEdge', openNetworkPopup);
     AppState.networks[type] = { nodeStats, edges: built.edges, filters };
     status.textContent = `対象論文 ${built.filteredPaperCount} 件 / ノード ${nodeStats.length} 件 / エッジ ${built.edges.length} 件 / ノード色: ${document.getElementById(opts.colorSelect).selectedOptions[0].textContent}`;
   },
@@ -7484,11 +9696,25 @@ const Exporter = {
       UIController.showToast('ダウンロードするデータがありません。', 'error');
       return;
     }
-    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'institutions', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script', 'primary_topic', 'topics', 'referenced_works_count', 'referenced_works', 'collector_query', 'collector_candidate_query', 'collector_match', 'collector_match_field', 'collector_match_operator', 'collector_match_distance', 'collector_match_snippet', 'funder_names', 'funder_ids', 'award_ids', 'funding_sources', 'crossref_funder_names', 'crossref_award_ids', 'nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles'];
+    if (typeof IdentityManager !== 'undefined') IdentityManager.applyIdentityLabels(AppState.tableData);
+    const columns = ['paper_id', 'title', 'abstract', 'year', 'authors', 'raw_authors', 'authors_original', 'author_names', 'author_ids', 'author_orcids', 'author_identity_keys', 'author_identity_labels', 'author_identity_status', 'author_entities_json', 'institutions', 'raw_institutions', 'institutions_original', 'institution_names', 'institution_ids', 'institution_rors', 'institution_country_codes', 'institution_types', 'institution_lineage_ids', 'institution_identity_keys', 'institution_identity_labels', 'institution_identity_status', 'institution_entities_json', 'venue', 'citation_count', 'publication_date', 'doi', 'language', 'title_script', 'primary_topic', 'topics', 'referenced_works_count', 'referenced_works', 'collector_query', 'collector_candidate_query', 'collector_match', 'collector_match_field', 'collector_match_operator', 'collector_match_distance', 'collector_match_snippet', 'funder_names', 'funder_ids', 'award_ids', 'funding_sources', 'crossref_funder_names', 'crossref_award_ids', 'nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles', 'identity_version'];
     const _rows = [columns];
     AppState.tableData.forEach(row => {
       FundingRenderer._syncFundingFields(row);
       _rows.push(columns.map(col => {
+        if (col === 'author_names') {
+          return row.raw_authors || row.authors_original || row.author_names || row.authors || '';
+        }
+        if (col === 'institution_names') {
+          return row.raw_institutions || row.institutions_original || row.institution_names || row.institutions || '';
+        }
+        if (col === 'author_entities_json') {
+          return row.author_entities_json || (Array.isArray(row.author_entities) ? JSON.stringify(row.author_entities) : '');
+        }
+        if (col === 'institution_entities_json') {
+          return row.institution_entities_json || (Array.isArray(row.institution_entities) ? JSON.stringify(row.institution_entities) : '');
+        }
+        if (col === 'identity_version') return row.identity_version || 'v6.0';
         if (col === 'referenced_works') {
           // 配列をセミコロン区切りでフラット化（CSVラウンドトリップ用）
           return Array.isArray(row[col]) ? row[col].join('; ') : '';
@@ -7503,7 +9729,7 @@ const Exporter = {
         return row[col] == null ? '' : row[col];
       }));
     });
-    this._downloadCSVText(_rows, `openalex_collector_v5_papers_${new Date().toISOString().slice(0, 10)}.csv`);
+    this._downloadCSVText(_rows, `openalex_collector_v6_papers_${new Date().toISOString().slice(0, 10)}.csv`);
   },
 
 
@@ -7537,7 +9763,7 @@ const Exporter = {
     } else if (chartKey === 'trendLine') {
       const mode = document.getElementById('lineMode').value;
       const selected = [];
-      document.querySelectorAll('.author-cb:checked').forEach(cb => selected.push(cb.value));
+      document.querySelectorAll('.author-cb:checked').forEach(cb => selected.push({ key: cb.value, label: cb.dataset.label || cb.value }));
 
       if (mode === 'author' && selected.length) {
         // Wide format: year, author1, author2, ... (matches what's rendered in the chart)
@@ -7551,13 +9777,13 @@ const Exporter = {
         const yearList = [];
         for (let y = minY; y <= maxY; y++) yearList.push(y);
 
-        rows.push(['year', ...selected]);
+        rows.push(['year', ...selected.map(a => a.label)]);
         yearList.forEach(y => {
           const row = [y];
           selected.forEach(author => {
             let c = 0;
             AppState.tableData.forEach(d => {
-              if (d.year === y && d.authors && d.authors.split('; ').map(a => a.trim()).includes(author)) c++;
+              if (d.year === y && IdentityManager.hasEntity(d, 'author', author.key)) c++;
             });
             row.push(c);
           });
@@ -7616,6 +9842,13 @@ const Exporter = {
         i + 1, s.funder, s.funder_id || '', s.institution, s.paperCount, s.totalCitations, s.avgCitations.toFixed(2)
       ]));
 
+    } else if (chartKey === 'funderAuthor') {
+      const sorted = FundingRenderer.getFunderAuthorStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
+      rows.push(['rank', 'funder', 'funder_id', 'author', 'author_key', 'paper_count', 'total_citations', 'avg_citations']);
+      sorted.forEach((s, i) => rows.push([
+        i + 1, s.funder, s.funder_id || '', s.author, s.author_key || '', s.paperCount, s.totalCitations, s.avgCitations.toFixed(2)
+      ]));
+
     } else if (chartKey === 'externalFunding') {
       rows.push(['paper_id', 'title', 'year', 'doi', 'crossref_funders', 'crossref_awards', 'nih_project_nums', 'nih_award_amounts', 'nih_fiscal_years', 'nih_orgs', 'nih_pis', 'nih_project_titles']);
       AppState.tableData.forEach(p => rows.push([
@@ -7641,6 +9874,19 @@ const Exporter = {
       const map = new Map(pairStats.map(s => [`${s.funder}||${s.institution}`, s]));
       rows.push(['funder', ...insts]);
       funders.forEach(f => rows.push([f, ...insts.map(inst => map.get(`${f}||${inst}`)?.paperCount || 0)]));
+
+    } else if (chartKey === 'funderAuthorMatrix') {
+      const rowN = parseInt(document.getElementById('funderAuthorMatrixRows').value) || 12;
+      const colN = parseInt(document.getElementById('funderAuthorMatrixCols').value) || 12;
+      const pairStats = FundingRenderer.getFunderAuthorStats();
+      const funders = FundingRenderer.getFunderStats().sort((a,b)=>b.paperCount-a.paperCount).slice(0,rowN).map(s => s.name);
+      const authorCounts = new Map();
+      const authorLabels = new Map();
+      pairStats.forEach(s => { authorCounts.set(s.author_key, (authorCounts.get(s.author_key) || 0) + s.paperCount); authorLabels.set(s.author_key, s.author); });
+      const authors = [...authorCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,colN).map(([key]) => ({ key, label: authorLabels.get(key) || key }));
+      const map = new Map(pairStats.map(s => [`${s.funder}||${s.author_key}`, s]));
+      rows.push(['funder', ...authors.map(a => a.label)]);
+      funders.forEach(f => rows.push([f, ...authors.map(a => map.get(`${f}||${a.key}`)?.paperCount || 0)]));
 
     } else if (chartKey === 'topicRank') {
       const sorted = TopicRenderer.getTopicStats().sort((a, b) => b.paperCount - a.paperCount || b.totalCitations - a.totalCitations);
@@ -7689,6 +9935,27 @@ const Exporter = {
         rows.push([t.name, ...insts.map(inst => m.get(inst) || 0)]);
       });
 
+    } else if (chartKey === 'authorTopicMatrix') {
+      const rowN = parseInt(document.getElementById('matrixAuthorTopicRows').value) || 10;
+      const colN = parseInt(document.getElementById('matrixAuthorTopicCols').value) || 10;
+      const authors = (typeof IdentityManager !== 'undefined' && IdentityManager.aggregateCounts)
+        ? IdentityManager.aggregateCounts('author').slice(0,rowN).map(s => ({ key: s.key, label: s.label }))
+        : ChartRenderer.getAuthorCounts().slice(0,rowN).map(([label, count, key]) => ({ key: key || label, label }));
+      const topics = TopicRenderer.getTopicStats().sort((a,b)=>b.paperCount-a.paperCount).slice(0,colN).map(s => s.name);
+      const matrix = new Map();
+      AppState.tableData.forEach(p => {
+        const paperTopics = TopicRenderer._paperTopics(p).filter(t => topics.includes(t));
+        if (!paperTopics.length) return;
+        TopicRenderer._paperAuthorEntries(p).forEach(author => {
+          paperTopics.forEach(topic => {
+            const key = `${author.key}||${topic}`;
+            matrix.set(key, (matrix.get(key) || 0) + 1);
+          });
+        });
+      });
+      rows.push(['author', ...topics]);
+      authors.forEach(a => rows.push([a.label, ...topics.map(t => matrix.get(`${a.key}||${t}`) || 0)]));
+
     } else if (chartKey === 'topicFunderMatrix') {
       const rowN = parseInt(document.getElementById('matrixTopicFunderRows').value) || 10;
       const colN = parseInt(document.getElementById('matrixTopicFunderCols').value) || 10;
@@ -7702,23 +9969,23 @@ const Exporter = {
 
     } else if (chartKey === 'institutionNetworkNodes') {
       const data = (AppState.networks && AppState.networks.institution) ? AppState.networks.institution.nodeStats : [];
-      rows.push(['institution', 'paper_count', 'total_citations', 'avg_citations', 'degree', 'weighted_degree', 'betweenness']);
-      data.forEach(n => rows.push([n.name, n.paperCount, n.totalCitations, n.avgCitations.toFixed(2), n.degree, n.weightedDegree, n.betweenness.toFixed(6)]));
+      rows.push(['institution', 'institution_key', 'paper_count', 'total_citations', 'avg_citations', 'degree', 'weighted_degree', 'betweenness']);
+      data.forEach(n => rows.push([n.name, n.key || n.id || '', n.paperCount, n.totalCitations, n.avgCitations.toFixed(2), n.degree, n.weightedDegree, n.betweenness.toFixed(6)]));
 
     } else if (chartKey === 'institutionNetworkEdges') {
       const data = (AppState.networks && AppState.networks.institution) ? AppState.networks.institution.edges : [];
-      rows.push(['institution_a', 'institution_b', 'weight']);
-      data.forEach(e => rows.push([e.a, e.b, e.weight]));
+      rows.push(['institution_a', 'institution_b', 'institution_a_key', 'institution_b_key', 'weight']);
+      data.forEach(e => rows.push([e.aName || e.a, e.bName || e.b, e.a, e.b, e.weight]));
 
     } else if (chartKey === 'authorNetworkNodes') {
       const data = (AppState.networks && AppState.networks.author) ? AppState.networks.author.nodeStats : [];
-      rows.push(['author', 'paper_count', 'total_citations', 'avg_citations', 'degree', 'weighted_degree', 'betweenness']);
-      data.forEach(n => rows.push([n.name, n.paperCount, n.totalCitations, n.avgCitations.toFixed(2), n.degree, n.weightedDegree, n.betweenness.toFixed(6)]));
+      rows.push(['author', 'author_key', 'paper_count', 'total_citations', 'avg_citations', 'degree', 'weighted_degree', 'betweenness']);
+      data.forEach(n => rows.push([n.name, n.key || n.id || '', n.paperCount, n.totalCitations, n.avgCitations.toFixed(2), n.degree, n.weightedDegree, n.betweenness.toFixed(6)]));
 
     } else if (chartKey === 'authorNetworkEdges') {
       const data = (AppState.networks && AppState.networks.author) ? AppState.networks.author.edges : [];
-      rows.push(['author_a', 'author_b', 'weight']);
-      data.forEach(e => rows.push([e.a, e.b, e.weight]));
+      rows.push(['author_a', 'author_b', 'author_a_key', 'author_b_key', 'weight']);
+      data.forEach(e => rows.push([e.aName || e.a, e.bName || e.b, e.a, e.b, e.weight]));
 
     // Citation rankings
     } else if (chartKey === 'paperCiteRank') {
@@ -7833,10 +10100,11 @@ const Exporter = {
         return;
       }
       const topPairKeys = topPairs.map(([k]) => k);
+      const labelMap = ChartRenderer._entityLabelMap('institution');
       const yearCounts = {};
       AppState.tableData.forEach(d => {
         if (!d.year || !d.institutions) return;
-        const insts = [...new Set(d.institutions.split('; ').map(s => s.trim()).filter(s => s))];
+        const insts = ChartRenderer._paperEntityLabels(d, 'institution', labelMap);
         if (insts.length < 2) return;
         for (let i = 0; i < insts.length; i++) {
           for (let j = i + 1; j < insts.length; j++) {
@@ -8012,6 +10280,12 @@ const Importer = {
             ? refsRaw.split(';').map(s => s.trim()).filter(s => s)
             : [];
           const splitSemi = (v) => String(v || '').split(';').map(s => s.trim()).filter(s => s);
+          const parseJsonArray = (v) => {
+            if (!v) return [];
+            try { const parsed = JSON.parse(v); return Array.isArray(parsed) ? parsed : []; } catch (e) { return []; }
+          };
+          const authorEntities = parseJsonArray(row.author_entities_json || row.author_entities || '');
+          const institutionEntities = parseJsonArray(row.institution_entities_json || row.institution_entities || '');
           const funderNames = splitSemi(row.funder_names || row.funders || '');
           const funderIds = splitSemi(row.funder_ids || '');
           const awardIds = splitSemi(row.award_ids || '');
@@ -8034,8 +10308,32 @@ const Importer = {
             title: cleanTitle,
             abstract: OpenAlexAPI._stripTags(row.abstract || ''),
             year: row.year ? parseInt(row.year) || null : null,
-            authors: OpenAlexAPI._stripTags(row.authors || ''),
-            institutions: OpenAlexAPI._stripTags(row.institutions || ''),
+            authors: OpenAlexAPI._stripTags(row.authors || row.author_names || ''),
+            raw_authors: OpenAlexAPI._stripTags(row.raw_authors || row.authors_original || row.author_names || row.authors || ''),
+            authors_original: OpenAlexAPI._stripTags(row.authors_original || row.raw_authors || row.author_names || row.authors || ''),
+            author_names: OpenAlexAPI._stripTags(row.author_names || row.raw_authors || row.authors || ''),
+            author_ids: row.author_ids || '',
+            author_orcids: row.author_orcids || '',
+            author_entities: authorEntities,
+            author_entities_json: row.author_entities_json || (authorEntities.length ? JSON.stringify(authorEntities) : ''),
+            author_identity_keys: row.author_identity_keys || '',
+            author_identity_labels: row.author_identity_labels || '',
+            author_identity_status: row.author_identity_status || '',
+            institutions: OpenAlexAPI._stripTags(row.institutions || row.institution_names || ''),
+            raw_institutions: OpenAlexAPI._stripTags(row.raw_institutions || row.institutions_original || row.institution_names || row.institutions || ''),
+            institutions_original: OpenAlexAPI._stripTags(row.institutions_original || row.raw_institutions || row.institution_names || row.institutions || ''),
+            institution_names: OpenAlexAPI._stripTags(row.institution_names || row.raw_institutions || row.institutions || ''),
+            institution_ids: row.institution_ids || '',
+            institution_rors: row.institution_rors || '',
+            institution_country_codes: row.institution_country_codes || '',
+            institution_types: row.institution_types || '',
+            institution_lineage_ids: row.institution_lineage_ids || '',
+            institution_entities: institutionEntities,
+            institution_entities_json: row.institution_entities_json || (institutionEntities.length ? JSON.stringify(institutionEntities) : ''),
+            institution_identity_keys: row.institution_identity_keys || '',
+            institution_identity_labels: row.institution_identity_labels || '',
+            institution_identity_status: row.institution_identity_status || '',
+            identity_version: row.identity_version || '',
             venue: OpenAlexAPI._stripTags(row.venue || ''),
             citation_count: parseInt(row.citation_count) || 0,
             publication_date: row.publication_date || '',
@@ -8072,6 +10370,8 @@ const Importer = {
             nih_project_titles: splitSemi(row.nih_project_titles || ''),
           };
         });
+
+        if (typeof IdentityManager !== 'undefined') IdentityManager.applyIdentityLabels(tableData);
 
         AppState.tableData = tableData;
         AppState.papers = [];
@@ -8185,6 +10485,7 @@ const UIController = {
 
   init() {
     if (typeof CollectorQuery !== 'undefined' && CollectorQuery.initCommandUI) CollectorQuery.initCommandUI();
+    if (typeof IdentityManager !== 'undefined' && IdentityManager.init) IdentityManager.init();
 
     document.querySelectorAll('#pubTypeChips .chip').forEach(chip => {
       chip.addEventListener('click', () => chip.classList.toggle('active'));
@@ -8252,9 +10553,11 @@ const Modal = {
     this._initialized = true;
   },
 
-  show(title, bodyHtml) {
+  show(title, bodyHtml, opts = {}) {
     this._ensure();
     const el = document.getElementById('modalContainer');
+    const win = el.querySelector('.modal-window');
+    if (win) win.classList.toggle('modal-wide', !!opts.wide);
     el.querySelector('.modal-title').textContent = title;
     el.querySelector('.modal-body').innerHTML = bodyHtml;
     el.classList.add('open');
@@ -8273,6 +10576,13 @@ const Modal = {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  },
+
+  cleanDisplayName(s) {
+    if (typeof IdentityManager !== 'undefined' && IdentityManager.stripDisplayIdSuffix) {
+      return IdentityManager.stripDisplayIdSuffix(s);
+    }
+    return String(s || '').replace(/[\r\n]+/g, ' ').replace(/\s+\[(?:[AI]\d+|ROR:[^\]]+|IDなし:[^\]]+|name:[^\]]+)\]\s*$/i, '').trim();
   },
 
   // Build a copy-friendly block. id is used so the inline onclick can find it.
@@ -8381,7 +10691,7 @@ const Modal = {
       const partnerCounts = {};
       papers.forEach(p => {
         (p.institutions || '').split('; ').forEach(inst => {
-          inst = inst.trim();
+          inst = this.cleanDisplayName(inst.trim());
           if (inst && inst !== name) partnerCounts[inst] = (partnerCounts[inst] || 0) + 1;
         });
       });
@@ -8393,7 +10703,7 @@ const Modal = {
       const coCounts = {};
       papers.forEach(p => {
         (p.authors || '').split('; ').forEach(a => {
-          a = a.trim();
+          a = this.cleanDisplayName(a.trim());
           if (a && a !== name) coCounts[a] = (coCounts[a] || 0) + 1;
         });
       });
@@ -8412,6 +10722,13 @@ const Modal = {
       `期間: ${yearRange}`,
     ].join('\n');
 
+    let identityPanel = '';
+    if (typeof IdentityManager !== 'undefined' && (entityType === '著者' || entityType === '所属機関')) {
+      const identityType = entityType === '著者' ? 'author' : 'institution';
+      const found = IdentityManager.findEntityForPapers(identityType, name, papers);
+      if (found) identityPanel = IdentityManager.buildEntityActionPanel(identityType, found.key);
+    }
+
     return `
       <dl>
         <dt>${e(entityType)}</dt><dd>${e(name)}</dd>
@@ -8422,6 +10739,7 @@ const Modal = {
         <dt>期間</dt><dd>${e(yearRange)}</dd>
         ${opts.extraDl || ''}
       </dl>
+      ${identityPanel}
       ${extraSections}
       <h4>論文 Top 15（被引用数順）</h4>
       ${paperListHtml}
@@ -8468,9 +10786,9 @@ const Modal = {
 
   paperListItem(paper) {
     const e = this.esc;
-    const authors = String(paper.authors || '').split('; ').filter(Boolean);
+    const authors = String(paper.authors || '').split('; ').map(a => this.cleanDisplayName(a)).filter(Boolean);
     const authorText = authors.length ? `${authors.slice(0, 4).join('; ')}${authors.length > 4 ? ' …' : ''}` : '-';
-    const insts = String(paper.institutions || '').split('; ').filter(Boolean);
+    const insts = String(paper.institutions || '').split('; ').map(i => this.cleanDisplayName(i)).filter(Boolean);
     const instText = insts.length ? `${insts.slice(0, 3).join('; ')}${insts.length > 3 ? ' …' : ''}` : '-';
     const topics = Array.isArray(paper.topics) ? paper.topics : String(paper.topics || '').split(';').map(s => s.trim()).filter(Boolean);
     const topicText = topics.length ? `${topics.slice(0, 2).join('; ')}${topics.length > 2 ? ' …' : ''}` : (paper.primary_topic || '-');
@@ -8657,6 +10975,21 @@ const Modal = {
     `;
   }
 };
+
+
+// GUI名寄せポップアップの例外をUIに返すための安全ラッパー
+IdentityManager._showEntityReviewOriginal = IdentityManager.showEntityReview;
+IdentityManager.showEntityReview = function(type, key) {
+  try {
+    return this._showEntityReviewOriginal(type, key);
+  } catch (err) {
+    console.error(err);
+    UIController.showToast(`詳細ポップアップを開けませんでした: ${err.message}`, 'error');
+  }
+};
+
+window.IdentityManager = IdentityManager;
+window.Modal = Modal;
 
 document.addEventListener('DOMContentLoaded', () => {
   UIController.init();
